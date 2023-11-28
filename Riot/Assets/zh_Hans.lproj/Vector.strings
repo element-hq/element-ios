@@ -311,7 +311,7 @@
 "room_details_access_section_anyone" = "任何知道此房间链接的人，包括访客";
 "room_details_access_section_no_address_warning" = "要链接一个房间必须设置地址";
 "room_details_access_section_directory_toggle" = "将此房间列入房间目录";
-"room_details_history_section" = "谁可以阅读历史？";
+"room_details_history_section" = "谁可以读取历史？";
 "room_details_history_section_anyone" = "任何人";
 "room_details_history_section_members_only" = "只有成员（从选择这个选项的时间开始）";
 "room_details_history_section_members_only_since_invited" = "只有成员（从他们被邀请开始）";
@@ -2275,7 +2275,7 @@
 "user_session_learn_more" = "了解更多";
 "manage_session_name_info_link" = "了解更多";
 "threads_beta_information_link" = "了解更多";
-"authentication_qr_login_display_subtitle" = "用你登出的设备扫描下面的QR码。";
+"authentication_qr_login_display_subtitle" = "用你已登出的设备扫描下面的QR码。";
 "room_invite_to_space_option_detail" = "他们可以探索 %@，但不会成为 %@ 的成员。";
 "analytics_prompt_message_new_user" = "通过分享匿名的使用数据，帮助我们识别问题并改进 %@ 。为了了解人们如何使用多个设备，我们将生成一个随机的标识符，由你的设备共享。";
 "threads_notice_done" = "知道了";
@@ -2367,3 +2367,41 @@
 "settings_presence_offline_mode" = "离线模式";
 "room_details_polls" = "投票历史";
 "settings_labs_enable_new_app_layout" = "新版应用布局";
+"room_details_access_row_title" = "访问";
+"room_access_settings_screen_restricted_message" = "让空间中的任何人都能找到并加入。\n将要求你确认哪些空间。";
+"room_access_settings_screen_upgrade_required" = "需要升级";
+"room_participants_invite_unknown_participant_prompt_to_msg" = "未找到该 Matrix ID 的配置文件。您确定要邀请 %@ 到 %@？";
+"room_access_settings_screen_upgrade_alert_auto_invite_switch" = "自动邀请成员到新房间";
+"room_preview_decline_invitation_options" = "您想拒绝邀请还是忽略该用户？";
+"room_access_settings_screen_title" = "谁能进入此房间？";
+"room_access_settings_screen_message" = "决定谁能找到并加入 %@。";
+"room_access_settings_screen_edit_spaces" = "编辑空间";
+"room_access_settings_screen_public_message" = "任何人都可以找到并加入。";
+"settings_presence" = "存在";
+"room_details_promote_room_suggest_title" = "推荐给空间成员";
+"settings_push_rules_error" = "更新您的个性化通知时发生错误。请再试一次。";
+"room_access_settings_screen_private_message" = "只有受邀者才能找到并加入。";
+"room_access_settings_screen_upgrade_alert_message" = "%@ 中的任何人都能找到并加入此房间，无需手动邀请所有人。您可随时在房间设置中进行更改。";
+"room_access_settings_screen_upgrade_alert_note" = "请注意，升级后将创建一个新版本的房间。当前所有消息都将保留在此归档房间中。";
+"room_access_settings_screen_upgrade_alert_upgrade_button" = "升级";
+"settings_acceptable_use" = "可接受使用政策";
+"room_command_reset_user_power_level_description" = "删除指定 id 的用户";
+"settings_manage_account_title" = "账户";
+"settings_manage_account_action" = "管理账户";
+"settings_manage_account_description" = "在 %@ 管理您的账户";
+"manage_session_redirect" = "你将被重定向到服务器的验证提供者以完成登出。";
+"manage_session_redirect_error" = "功能目前不可用。请联系你的家服务器管理员";
+"room_details_promote_room_title" = "推广房间";
+
+// Room Access Settings
+"room_access_settings_screen_nav_title" = "进入房间";
+"room_access_settings_screen_upgrade_alert_title" = "升级房间";
+"room_access_settings_screen_upgrade_alert_message_no_param" = "上级房间中的任何人都能找到并加入此房间，无需手动邀请所有人。您可随时在房间设置中进行更改。";
+"room_access_settings_screen_upgrade_alert_upgrading" = "升级房间";
+"room_access_settings_screen_setting_room_access" = "设置房间权限";
+
+// Room suggestion Settings
+"room_suggestion_settings_screen_nav_title" = "建议房间";
+"room_access_space_chooser_known_spaces_section" = "您知道的包含 %@ 的空间";
+"room_access_space_chooser_other_spaces_section_info" = "这些很可能是 %@ 的管理员参与。";
+"room_access_space_chooser_other_spaces_section" = "其他空间或房间";

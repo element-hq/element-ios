@@ -5,23 +5,23 @@
 "title_rooms" = "Sales";
 "warning" = "Avís";
 // Actions
-"view" = "Veure";
+"view" = "Mostra";
 "next" = "Següent";
 "back" = "Torna";
 "continue" = "Continua";
-"create" = "Crear";
-"start" = "Començar";
-"leave" = "Sortir";
-"remove" = "Esborrar";
+"create" = "Crea";
+"start" = "Comença";
+"leave" = "Surt";
+"remove" = "Suprimeix";
 "invite" = "Convida";
 "retry" = "Torna a provar";
-"on" = "Activa";
-"off" = "Apaga";
-"cancel" = "Cancel·lar";
-"save" = "Desar";
-"join" = "Entrar";
-"decline" = "Declinar";
-"accept" = "Acceptar";
+"on" = "Activat";
+"off" = "Desactivat";
+"cancel" = "Cancel·la";
+"save" = "Desa";
+"join" = "Entra";
+"decline" = "Rebutja";
+"accept" = "Accepta";
 "preview" = "Vista prèvia";
 "camera" = "Càmera";
 "voice" = "Veu";
@@ -29,10 +29,10 @@
 "active_call" = "Trucada en curs";
 "active_call_details" = "Trucada en curs (%@)";
 "later" = "Més tard";
-"rename" = "Reanomenar";
-"collapse" = "Contraure";
-"send_to" = "Enviar a %@";
-"sending" = "Enviant";
+"rename" = "Canvia el nom";
+"collapse" = "contrau";
+"send_to" = "Envia a %@";
+"sending" = "S'està enviant";
 // Authentication
 "auth_login" = "Iniciar sessió";
 "auth_register" = "Registre";
@@ -551,7 +551,7 @@
 // String for App Store
 "store_short_description" = "Xat/VoIP segur i descentralitzat";
 "close" = "Tanca";
-"skip" = "Salta";
+"skip" = "Omet";
 "joined" = "Unit";
 "switch" = "Canvia";
 "more" = "Més";
@@ -561,7 +561,6 @@
 
 
 // MARK: - MatrixKit
-
 
 "matrix" = "Matrix";
 "login_password_placeholder" = "Contrasenya";
@@ -909,3 +908,43 @@
 "ssl_unexpected_existing_expl" = "El certificat ha canviat respecte al que el teu telèfon hi havia confiat. Això es MOLT INUSUAL. Es recomana que NO ACCEPTIS aquest nou certificat.";
 "ssl_expected_existing_expl" = "El certificat ha canviat del prèviament confiat a un que no es confiable. El servidor pot haver renovat el certificat. Posa't en contacte amb l'administrador del servidor per obtenir l'empremta digital desitjada.";
 "ssl_only_accept" = "NOMÉS accepteu el certificat si l'administrador del servidor ha publicat una empremta digital que coincideixi amb l'anterior.";
+"store_full_description" = "Element és un tipus nou d'aplicació de missatgeria i col·laboració que:\n\n1. Us dona el control per a preservar la vostra privadesa\n2. Us permet comunicar-vos amb qualsevol persona de la xarxa Matrix, i encara més enllà integrant aplicacions com ara Slack\n3. Us protegeix de la publicitat, mineria de dades, portes ocultes i jardins emmurallats\n4. Us salvaguarda mitjançant el xifratge extrem a extrem, amb signatura creuada per a la verificació dels altres\n\nElement és completament diferent d'altres aplicacions de missatgeria i col·laboració perquè és descentralitzada i de codi obert.\n\nElement us permet muntar-vos un servidor propi (o triar un amfitrió) perquè tingueu privadesa i el control sobre les dades i les converses. Us dona accés a una xarxa oberta, no parlareu només amb altres usuaris d'Element. I és molt segura.\n\nElement pot fer tot això perquè opera en Matrix, l'estàndard de les comunicacions obertes i descentralitzades.\n\nElement us dona el control, permetent-vos triar qui és l'amfitrió de les vostres converses. Des de l'aplicació d'Element podeu triar l'amfitrió de maneres diferents:\n\n1. Creeu un compte gratuït al servidor públic de matrix.org\n2. Munteu un servidor local per a acollir el vostre compte\n3. Creeu un compte en un servidor personalitzat subscrivint-vos a la plataforma d'allotjament d'Element Matrix Services \n\nPer què triar Element?\n\nCONTROLEU LES VOSTRES DADES: Vós decidiu on desar les vostres dades i missatges. En sou el propietari i les controleu, no cap MEGACORPORACIÓ que les mina les vostres dades i permet que terceres parts hi accedeixen.\n\nCOL·LABORACIÓ I MISSATGERIA OBERTA: Podeu xatejar amb qualsevol a la xarxa Matrix, tant si utilitzen Element com qualsevol altra aplicació Matrix, i fins i tot si utilitzen algun sistema de missatgeria diferent, com ara Slack, IRC o XMPP.\n\nSUPERSEGURA: Xifratge extrem a extrem real (només els participants de la conversa poden desxifrar els missatges), i signatura creuada per a verificar els dispositius dels participants de la conversa.\n\nCOMUNICACIÓ COMPLETA: Missatges, trucades d'àudio i vídeo, compartició de fitxers, de pantalla i moltes altres integracions, bots i ginys. Construïu sales, comunitats, estigueu en contacte i aconseguir que les coses es facin.\n\nESTIGUEU ON ESTIGUEU: Comuniqueu-vos estigueu on estigueu amb l'historial de missatges completament sincronitzat a tots els dispositius i al web, a https://app.element.io.";
+"store_promotional_text" = "Aplicació de col·laboració i missatgeria que preserva la privadesa, en una xarxa oberta. Descentralitzada per a donar-vos el control. Sense mineria de dades, portes ocultes ni accés a tercers.";
+
+// MARK: Onboarding
+"onboarding_splash_register_button_title" = "Crea un compte";
+"onboarding_splash_page_3_message" = "Xifrat extrem a extrem i no cal cap número de telèfon. Sense publicitat ni mineria de dades.";
+"confirm" = "Confirma";
+"callbar_only_multiple_paused" = "%@ trucades en espera";
+"existing" = "Existent";
+"add" = "Afegeix";
+"joining" = "Unió";
+"stop" = "Atura";
+"new_word" = "Nou";
+"suggest" = "Suggereix";
+"edit" = "Edita";
+
+// Activities
+"loading" = "S'està carregant";
+"saving" = "S'està desant";
+"accessibility_button_label" = "botó";
+"onboarding_splash_login_button_title" = "Ja tinc un compte";
+"onboarding_splash_page_1_title" = "Controleu les vostres converses.";
+"onboarding_splash_page_1_message" = "Comunicació independent i segura que us dona el mateix nivell de privadesa que una conversa cara a cara en casa.";
+"onboarding_splash_page_2_title" = "Sou en control.";
+"onboarding_splash_page_2_message" = "Trieu on es desen les vostres converses, el que us dona control i independència. Connectat via Matrix.";
+"onboarding_splash_page_3_title" = "Missatgeria segura.";
+"open" = "Obre";
+"callbar_return" = "Torna";
+"invite_to" = "Convida a %@";
+"callbar_only_single_active_group" = "Toqueu per a unir-vos a la trucada grupal (%@)";
+"callbar_active_and_multiple_paused" = "1 trucada activa (%@) · %@ trucades en espera";
+"callbar_only_single_paused" = "Trucada en espera";
+"enable" = "Activa";
+"done" = "Fet";
+
+// Call Bar
+"callbar_only_single_active" = "Toqueu per a tornar a la trucada (%@)";
+"callbar_active_and_single_paused" = "1 trucada activa (%@) · 1 trucada en espera";
+"accessibility_selected" = "seleccionat";
+"less" = "Menys";
