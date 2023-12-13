@@ -7,7 +7,7 @@ Please read the matrix-ios-sdk [contributing guide](https://github.com/matrix-or
 ## I want to help translating
 
 If you want to fix an issue for an English string, please submit a pull request to the Element iOS GitHub repository.
-If you want to fix an issue for another language, add a missing translation, or  add a new language, please read [Element Web translating guide](https://github.com/vector-im/element-web/blob/develop/docs/translating.md) first and then use the Element iOS [Weblate](https://translate.riot.im/projects/riot-ios/).
+If you want to fix an issue for another language, add a missing translation, or  add a new language, please read [Element Web translating guide](https://github.com/element-hq/element-web/blob/develop/docs/translating.md) first and then use the Element iOS [Weblate](https://translate.riot.im/projects/riot-ios/).
 
 If you have any question regarding translations please ask in [Element Translation room](https://matrix.to/#/#element-translations:matrix.org).
 
@@ -26,7 +26,7 @@ Otherwise please have a look to [Apple Swift conventions](https://swift.org/docu
 
 ## Pull request
 
-When you are making a pull request please read carefully the [Pull Request Checklist](https://github.com/vector-im/element-ios/blob/develop/.github/PULL_REQUEST_TEMPLATE.md).
+When you are making a pull request please read carefully the [Pull Request Checklist](https://github.com/element-hq/element-ios/blob/develop/.github/PULL_REQUEST_TEMPLATE.md).
 
 ## Thanks
 

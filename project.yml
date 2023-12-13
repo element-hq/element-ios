@@ -38,7 +38,7 @@ include:
   - path: CommonKit/target.yml
   - path: CommonKit/targetUnitTests.yml
   # Disabled due to crypto corruption issues.
-  # https://github.com/vector-im/element-ios/issues/7618
+  # https://github.com/element-hq/element-ios/issues/7618
   # - path: RiotShareExtension/target.yml
   # - path: SiriIntents/target.yml
 
@@ -55,7 +55,7 @@ packages:
     minVersion: 1.0.2
     maxVersion: 2.0.0
   SwiftOGG:
-    url: https://github.com/vector-im/swift-ogg
+    url: https://github.com/element-hq/swift-ogg
     branch: 0.0.1
   WysiwygComposer:
     url: https://github.com/matrix-org/matrix-wysiwyg-composer-swift
