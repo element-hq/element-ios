@@ -14,4 +14,4 @@ Various features of Element iOS can be enabled/disabled/configured via flags in 
 
 The themes used in Element iOS can be found in `Riot/Managers/Theme/Themes`. A newer theming system is available as nested `colors` and `fonts` properties on these themes and can be found in `DesignKit/Variants/Colors` and `DesignKit/Variants/Fonts` respectively. The newer system is used for screens built in UIKit with Swift and all of the SwiftUI screens.
 
-For logos, they're currently regular assets that can be found either in [Images.xcassets](https://github.com/vector-im/element-ios/tree/develop/Riot/Assets/Images.xcassets) or [SharedImages.xcassets](https://github.com/vector-im/element-ios/tree/develop/Riot/Assets/SharedImages.xcassets).
+For logos, they're currently regular assets that can be found either in [Images.xcassets](https://github.com/element-hq/element-ios/tree/develop/Riot/Assets/Images.xcassets) or [SharedImages.xcassets](https://github.com/element-hq/element-ios/tree/develop/Riot/Assets/SharedImages.xcassets).

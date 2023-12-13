@@ -122,7 +122,7 @@ abstract_target 'RiotPods' do
   end
 
   # Disabled due to crypto corruption issues.
-  # https://github.com/vector-im/element-ios/issues/7618
+  # https://github.com/element-hq/element-ios/issues/7618
   # target "RiotShareExtension" do
   #   import_MatrixSDK
   #   import_MatrixKit_pods
