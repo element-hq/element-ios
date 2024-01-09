@@ -1,0 +1,11 @@
+
+
+// Permissions usage explanations
+"NSCameraUsageDescription" = "Камера выкарыстоўваецца для відэазванкоў, запісу або загрузкі фота і відэа.";
+"NSPhotoLibraryUsageDescription" = "Дайце доступ да фатаграфій, каб выгружаць здымкі і відэа са сваёй бібліятэкі.";
+"NSMicrophoneUsageDescription" = "Element патрабуе доступ да вашага мікрафона, каб здзяйсняць і прымаць выклікі, здымаць відэа і запісваць галасавыя паведамленні.";
+"NSContactsUsageDescription" = "Яны будуць перададзеныя вашаму серверу ідэнтыфікацыі, каб дапамагчы знайсці вашыя кантакты на Matrix.";
+"NSCalendarsUsageDescription" = "Праглядайце свае запланаваныя сустрэчы ў праграме.";
+"NSFaceIDUsageDescription" = "Face ID выкарыстоўваецца для доступу да праграмы.";
+"NSLocationWhenInUseUsageDescription" = "Калі вы паведамляеце людзям сваё месцазнаходжанне, Element патрэбен доступ, каб паказаць ім карту.";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Калі вы паведамляеце людзям сваё месцазнаходжанне, Element патрэбен доступ, каб паказаць ім карту.";

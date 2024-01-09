@@ -1,0 +1,10 @@
+
+
+/** General **/
+
+"Notification" = "Апавяшчэнне";
+
+/** Titles **/
+
+/* Message title for a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM_TITLE" = "%@ у %@";
