@@ -1254,7 +1254,7 @@
 "bug_report_background_mode" = "Im Hintergrund fortfahren";
 "social_login_button_title_sign_up" = "Registrieren mit %@";
 "social_login_button_title_sign_in" = "Anmelden mit %@";
-"social_login_button_title_continue" = "Weiter mit %@";
+"social_login_button_title_continue" = "Weiter mit der Anmeldung";
 "social_login_list_title_sign_up" = "Oder";
 "social_login_list_title_sign_in" = "Oder";
 
