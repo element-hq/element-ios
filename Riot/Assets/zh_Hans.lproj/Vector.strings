@@ -928,7 +928,7 @@
 // MARK: Emoji picker
 "emoji_picker_title" = "反应";
 "emoji_picker_people_category" = "表情和人物";
-"emoji_picker_nature_category" = "动物和自热";
+"emoji_picker_nature_category" = "动物和自然";
 "emoji_picker_foods_category" = "食物和饮料";
 "emoji_picker_activity_category" = "活动";
 "emoji_picker_places_category" = "旅游和景点";
@@ -2405,3 +2405,4 @@
 "room_access_space_chooser_known_spaces_section" = "您知道的包含 %@ 的空间";
 "room_access_space_chooser_other_spaces_section_info" = "这些很可能是 %@ 的管理员参与。";
 "room_access_space_chooser_other_spaces_section" = "其他空间或房间";
+"event_formatter_message_deleted" = "消息已删除";
