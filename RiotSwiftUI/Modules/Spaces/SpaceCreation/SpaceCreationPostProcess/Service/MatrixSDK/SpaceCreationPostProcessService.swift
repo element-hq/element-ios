@@ -159,12 +159,8 @@ class SpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol {
     private func createSpace(andUpdate task: SpaceCreationPostProcessTask) {
         updateCurrentTask(with: .started)
         
-        var alias = creationParams.address
-        if let userDefinedAlias = creationParams.userDefinedAddress, !userDefinedAlias.isEmpty {
-            alias = userDefinedAlias
-        }
-        let userIdInvites = creationParams.inviteType == .userId ? creationParams.userIdInvites : []
-        session.spaceService.createSpace(withName: creationParams.name, topic: creationParams.topic, isPublic: creationParams.isPublic, aliasLocalPart: alias, inviteArray: userIdInvites) { [weak self] response in
+        let parameters = makeSpaceCreationParameters()
+        session.spaceService.createSpace(with: parameters) { [weak self] response in
             guard let self = self else { return }
             
             if response.isFailure {
@@ -187,6 +183,12 @@ class SpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol {
                 }
             }
         }
+    }
+    
+    private func makeSpaceCreationParameters() -> MXSpaceCreationParameters {
+        let homeserverWellknown = session.credentials.homeServerName() ?? ""
+        let spaceCreationParametersFactory = MXSpaceCreationParametersFactory(creationParams: creationParams, parentSpaceId: parentSpaceId, stateEventBuilder: stateEventBuilder, homeServers: [homeserverWellknown])
+        return spaceCreationParametersFactory.make()
     }
     
     private func uploadAvatar(andUpdate task: SpaceCreationPostProcessTask) {
