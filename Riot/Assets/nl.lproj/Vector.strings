@@ -2646,8 +2646,8 @@
 "invite_to" = "Uitnodigen %@";
 "room_event_encryption_info_key_authenticity_not_guaranteed" = "De authenticiteit van dit versleutelde bericht kan niet worden gegarandeerd op dit apparaat.";
 "deselect_all" = "Deselecteer alles";
-"wysiwyg_composer_format_action_strikethrough" = "Onderstrepen formaat toepassen";
-"wysiwyg_composer_format_action_underline" = "Doorstrepen formaat toepassen";
+"wysiwyg_composer_format_action_underline" = "Onderstrepen formaat toepassen";
+"wysiwyg_composer_format_action_strikethrough" = "Doorstrepen formaat toepassen";
 "wysiwyg_composer_format_action_italic" = "Cursief formaat toepassen";
 
 // Formatting Actions

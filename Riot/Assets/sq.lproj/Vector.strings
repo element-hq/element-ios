@@ -2420,8 +2420,8 @@
 "all_chats_edit_layout_add_section_message" = "Fiksoni ndarje te kreu, për hyrje të lehtë në ta";
 "room_event_encryption_info_key_authenticity_not_guaranteed" = "S’mund të garantohet mirëfilltësia e këtij mesazhi të fshehtëzuar në këtë pajisje.";
 "deselect_all" = "Shpërzgjidhi Krejt";
-"wysiwyg_composer_format_action_strikethrough" = "Apliko format me të nënvizuara";
-"wysiwyg_composer_format_action_underline" = "Apliko format me të hequravije";
+"wysiwyg_composer_format_action_underline" = "Apliko format me të nënvizuara";
+"wysiwyg_composer_format_action_strikethrough" = "Apliko format me të hequravije";
 "wysiwyg_composer_format_action_italic" = "Apliko format me të pjerrëta";
 
 // Formatting Actions

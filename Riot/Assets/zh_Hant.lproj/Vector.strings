@@ -2026,8 +2026,8 @@
 // Links
 "wysiwyg_composer_link_action_text" = "文字";
 "wysiwyg_composer_format_action_link" = "套用連結格式";
-"wysiwyg_composer_format_action_strikethrough" = "套用底線格式";
-"wysiwyg_composer_format_action_underline" = "套用刪除線格式";
+"wysiwyg_composer_format_action_underline" = "套用底線格式";
+"wysiwyg_composer_format_action_strikethrough" = "套用刪除線格式";
 "wysiwyg_composer_format_action_italic" = "套用義式斜體格式";
 
 // Formatting Actions

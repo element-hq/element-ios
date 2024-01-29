@@ -2778,8 +2778,8 @@
 "authentication_qr_login_start_subtitle" = "Pomocou fotoaparátu na tomto zariadení naskenujte QR kód zobrazený na vašom druhom zariadení:";
 "authentication_qr_login_start_title" = "Skenovať QR kód";
 "authentication_login_with_qr" = "Prihlásiť sa pomocou QR kódu";
-"wysiwyg_composer_format_action_strikethrough" = "Použiť formát podčiarknutia";
-"wysiwyg_composer_format_action_underline" = "Použiť formát prečiarknutia";
+"wysiwyg_composer_format_action_underline" = "Použiť formát podčiarknutia";
+"wysiwyg_composer_format_action_strikethrough" = "Použiť formát prečiarknutia";
 "wysiwyg_composer_format_action_italic" = "Použiť formát kurzívou";
 
 // Formatting Actions

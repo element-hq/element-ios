@@ -2499,8 +2499,8 @@
 "authentication_qr_login_start_title" = "Loe QR-koodi";
 "authentication_login_with_qr" = "Logi sisse QR-koodi abil";
 "wysiwyg_composer_format_action_strikethrough" = "Kasuta allajoonitud kirja";
-"wysiwyg_composer_format_action_underline" = "Kasuta läbijoonitud kirja";
-"wysiwyg_composer_format_action_italic" = "Kasuta kaldkirja";
+"wysiwyg_composer_format_action_italic" = "Kasuta läbijoonitud kirja";
+"wysiwyg_composer_format_action_underline" = "Kasuta kaldkirja";
 
 // Formatting Actions
 "wysiwyg_composer_format_action_bold" = "Kasuta paksu kirja";

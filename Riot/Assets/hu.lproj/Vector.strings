@@ -2501,8 +2501,8 @@
 "room_first_message_placeholder" = "Küld el az első üzenetedet…";
 "authentication_qr_login_confirm_title" = "Biztonságos kapcsolat beállítva";
 "room_event_encryption_info_key_authenticity_not_guaranteed" = "A titkosított üzenetek valódiságát ezen az eszközön nem lehet garantálni.";
-"wysiwyg_composer_format_action_strikethrough" = "Aláhúzott";
-"wysiwyg_composer_format_action_underline" = "Áthúzott";
+"wysiwyg_composer_format_action_underline" = "Aláhúzott";
+"wysiwyg_composer_format_action_strikethrough" = "Áthúzott";
 "wysiwyg_composer_format_action_italic" = "Dőlt";
 
 // Formatting Actions
