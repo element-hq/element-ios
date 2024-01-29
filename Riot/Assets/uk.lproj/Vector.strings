@@ -2780,8 +2780,8 @@
 "authentication_qr_login_start_subtitle" = "Використовуйте камеру на цьому пристрої, щоб зісканувати QR-код, показаний на іншому пристрої:";
 "authentication_qr_login_start_title" = "Сканувати QR-код";
 "authentication_login_with_qr" = "Увійти використавши QR-код";
-"wysiwyg_composer_format_action_strikethrough" = "Застосувати форматування підкресленим";
-"wysiwyg_composer_format_action_underline" = "Застосувати форматування перекресленим";
+"wysiwyg_composer_format_action_underline" = "Застосувати форматування підкресленим";
+"wysiwyg_composer_format_action_strikethrough" = "Застосувати форматування перекресленим";
 
 // Formatting Actions
 "wysiwyg_composer_format_action_bold" = "Застосувати форматування жирним";

@@ -2555,8 +2555,8 @@
 "authentication_qr_login_start_subtitle" = "Usa la fotocamera di questo dispositivo per scansionare il codice QR mostrato nell'altro dispositivo:";
 "authentication_qr_login_start_title" = "Scansiona codice QR";
 "authentication_login_with_qr" = "Accedi con codice QR";
-"wysiwyg_composer_format_action_strikethrough" = "Applica formato sottolineato";
-"wysiwyg_composer_format_action_underline" = "Applica formato sbarrato";
+"wysiwyg_composer_format_action_underline" = "Applica formato sottolineato";
+"wysiwyg_composer_format_action_strikethrough" = "Applica formato sbarrato";
 "wysiwyg_composer_format_action_italic" = "Applica formato corsivo";
 
 // Formatting Actions
