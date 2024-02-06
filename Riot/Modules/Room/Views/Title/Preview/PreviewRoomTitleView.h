@@ -34,6 +34,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *rightButton;
 @property (weak, nonatomic) IBOutlet UILabel *subNoticeLabel;
 @property (weak, nonatomic) IBOutlet UIView *bottomBorderView;
+@property (weak, nonatomic) IBOutlet UIImageView *iconImage;
 
 @property (nonatomic) NSString *roomAvatarURL;
 @property (nonatomic) UIImage  *roomAvatarPlaceholder;

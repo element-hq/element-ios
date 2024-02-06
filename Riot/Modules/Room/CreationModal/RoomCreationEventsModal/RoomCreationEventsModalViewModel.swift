@@ -62,7 +62,7 @@ final class RoomCreationEventsModalViewModel: RoomCreationEventsModalViewModelTy
         guard let summary = session.roomSummary(withRoomId: roomState.roomId) else {
             return nil
         }
-        return summary.displayName
+        return summary.displayName.replacingOccurrences(of: "[TG] ", with: "").replacingOccurrences(of: "$", with: "")
     }
     
     var roomInfo: String? {
@@ -76,6 +76,7 @@ final class RoomCreationEventsModalViewModel: RoomCreationEventsModalViewModelTy
         return formatter.string(from: date)
     }
     
+
     func setAvatar(in avatarImageView: MXKImageView) {
         let avatarImage = AvatarGenerator.generateAvatar(forMatrixItem: roomState.roomId, withDisplayName: roomName)
         

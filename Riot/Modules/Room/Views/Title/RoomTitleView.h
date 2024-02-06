@@ -42,6 +42,7 @@
 @property (weak, nonatomic) IBOutlet PresenceIndicatorView *presenceIndicatorView;
 @property (weak, nonatomic) IBOutlet UILabel *missedDiscussionsBadgeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *typingLabel;
+@property (weak, nonatomic) IBOutlet UILabel *displayName;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *displayNameCenterYConstraint;
 @property (weak, nonatomic) IBOutlet UIView *dotView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *missedDiscussionsBadgeLabelLeadingConstraint;

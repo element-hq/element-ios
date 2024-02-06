@@ -18,15 +18,49 @@ import Foundation
 
 extension MXKImageView {
     @objc func vc_setRoomAvatarImage(with url: String?, roomId: String, displayName: String, mediaManager: MXMediaManager) {
-        // Use the display name to prepare the default avatar image.
-        let avatarImage = AvatarGenerator.generateAvatar(forMatrixItem: roomId, withDisplayName: displayName)
 
-        if let avatarUrl = url {
-            self.enableInMemoryCache = true
-            self.setImageURI(avatarUrl, withType: nil, andImageOrientation: .up, toFitViewSize: self.frame.size, with: MXThumbnailingMethodCrop, previewImage: avatarImage, mediaManager: mediaManager)
+        var displayNameUser: String = ""
+        if displayName.hasPrefix("[TG] ") {
+            let sanitizedDisplayName = String(displayName.dropFirst(5))
+            displayNameUser = sanitizedDisplayName
+            let avatarImage = AvatarGenerator.generateAvatar(forMatrixItem: roomId, withDisplayName: sanitizedDisplayName)
+            if let avatarUrl = url {
+                self.enableInMemoryCache = true
+                MXLog.debug("Setting room avatar with URL: \(avatarUrl), roomId: \(roomId), displayName: \(sanitizedDisplayName), mediaManager:\(mediaManager)")
+
+                self.setImageURI(avatarUrl, withType: nil, andImageOrientation: .up, toFitViewSize: self.frame.size, with: MXThumbnailingMethodCrop, previewImage: avatarImage, mediaManager: mediaManager)
+            } else {
+                self.image = avatarImage
+            }
+            self.contentMode = .scaleAspectFill
+        } else if displayName.hasPrefix("$") {
+            let sanitizedDisplayName = String(displayName.dropFirst(1))
+            displayNameUser = sanitizedDisplayName
+            let avatarImage = AvatarGenerator.generateAvatar(forMatrixItem: roomId, withDisplayName: sanitizedDisplayName)
+            let avatarImageDollar = AvatarGenerator.generateAvatar(forMatrixItem: roomId, withDisplayName: sanitizedDisplayName)
+            if let avatarUrl = url {
+                self.enableInMemoryCache = true
+                MXLog.debug("Setting room avatar with URL: \(avatarUrl), roomId: \(roomId), displayName: \(displayName), mediaManager:\(mediaManager)")
+
+                self.setImageURI(avatarUrl, withType: nil, andImageOrientation: .up, toFitViewSize: self.frame.size, with: MXThumbnailingMethodCrop, previewImage: avatarImageDollar, mediaManager: mediaManager)
+            } else {
+                self.image = avatarImage
+            }
+            self.contentMode = .scaleAspectFill
         } else {
-            self.image = avatarImage
+            
+            let avatarImage = AvatarGenerator.generateAvatar(forMatrixItem: roomId, withDisplayName: displayName)
+            
+            if let avatarUrl = url {
+                self.enableInMemoryCache = true
+                MXLog.debug("Setting room avatar with URL: \(avatarUrl), roomId: \(roomId), displayName: \(displayName), mediaManager:\(mediaManager)")
+
+                self.setImageURI(avatarUrl, withType: nil, andImageOrientation: .up, toFitViewSize: self.frame.size, with: MXThumbnailingMethodCrop, previewImage: avatarImage, mediaManager: mediaManager)
+            } else {
+                self.image = avatarImage
+            }
+            self.contentMode = .scaleAspectFill
         }
-        self.contentMode = .scaleAspectFill
     }
+
 }

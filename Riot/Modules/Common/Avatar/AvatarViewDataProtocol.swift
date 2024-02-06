@@ -52,7 +52,8 @@ extension AvatarViewDataProtocol {
             .map { fallbackImage in
                 switch fallbackImage {
                 case .matrixItem(let matrixItemId, let matrixItemDisplayName):
-                    return (AvatarGenerator.generateAvatar(forMatrixItem: matrixItemId, withDisplayName: matrixItemDisplayName), .scaleAspectFill)
+                    let cleanedDisplayName = matrixItemDisplayName!.replacingOccurrences(of: "[TG] ", with: "").replacingOccurrences(of: "$", with: "")
+                    return (AvatarGenerator.generateAvatar(forMatrixItem: matrixItemId, withDisplayName: cleanedDisplayName), .scaleAspectFill)
                 case .image(let image, let contentMode):
                     return (image, contentMode ?? .scaleAspectFill)
                 }

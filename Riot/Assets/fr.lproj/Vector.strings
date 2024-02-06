@@ -2631,8 +2631,8 @@
 "wysiwyg_composer_format_action_unordered_list" = "Liste à puces";
 "wysiwyg_composer_format_action_inline_code" = "Formater comme code informatique";
 "wysiwyg_composer_format_action_link" = "Formater comme lien";
-"wysiwyg_composer_format_action_strikethrough" = "Barrer";
-"wysiwyg_composer_format_action_underline" = "Souligner";
+"wysiwyg_composer_format_action_strikethrough" = "Souligner";
+"wysiwyg_composer_format_action_underline" = "Barrer";
 "wysiwyg_composer_format_action_italic" = "Mettre en italique";
 
 // Formatting Actions

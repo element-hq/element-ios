@@ -90,7 +90,60 @@ final class RoomCreationIntroCellContentView: UIView, NibLoadable, Themable {
     
     func fill(with viewData: RoomCreationIntroViewData) {
         self.viewData = viewData
-        self.titleLabel.text = viewData.roomDisplayName
+        if viewData.roomDisplayName.hasPrefix("[TG] ") {
+            let roomDisplayNameWithoutTG = viewData.roomDisplayName.replacingOccurrences(of: "[TG] ", with: "")
+            
+            let imageAttachment = NSTextAttachment()
+            imageAttachment.image = UIImage(named: "chatimg")?.resize(targetSize: CGSize(width: 20, height: 20))
+
+            let imageSize = imageAttachment.image?.size ?? CGSize(width: 20, height: 20) // Set a default size if the image is not available
+             let yOffset = (titleLabel.font.capHeight - imageSize.height) / 2.0
+             imageAttachment.bounds = CGRect(x: 0, y: yOffset, width: imageSize.width, height: imageSize.height)
+
+            // Create an attributed string with the image attachment
+            let attributedString = NSMutableAttributedString(attachment: imageAttachment)
+
+            // Add a space between the image and the text
+            let spaceString = NSAttributedString(string: " ") // Adjust the space as needed
+
+            // Append the text to the attributed string
+            let textString = NSAttributedString(string: roomDisplayNameWithoutTG)
+
+            // Append the space, text, and space again to the attributed string
+            attributedString.append(spaceString)
+            attributedString.append(textString)
+            attributedString.append(spaceString)
+
+            // Set the attributed string to the UILabel
+            self.titleLabel.attributedText = attributedString
+        } else if let range = viewData.roomDisplayName.range(of: "$") {
+            let roomDisplayNameWithoutDollar = viewData.roomDisplayName.replacingOccurrences(of: "$", with: "")
+            
+            let imageAttachment = NSTextAttachment()
+            imageAttachment.image = UIImage(named: "dollar")?.resize(targetSize: CGSize(width: 20, height: 20))
+            let imageSize = imageAttachment.image?.size ?? CGSize(width: 20, height: 20) // Set a default size if the image is not available
+             let yOffset = (titleLabel.font.capHeight - imageSize.height) / 2.0
+             imageAttachment.bounds = CGRect(x: 0, y: yOffset, width: imageSize.width, height: imageSize.height)
+
+            // Create an attributed string with the image attachment
+            let attributedString = NSMutableAttributedString(attachment: imageAttachment)
+
+            // Add a space between the image and the text
+            let spaceString = NSAttributedString(string: " ") // Adjust the space as needed
+
+            // Append the text to the attributed string
+            let textString = NSAttributedString(string: roomDisplayNameWithoutDollar)
+
+            // Append the space, text, and space again to the attributed string
+            attributedString.append(spaceString)
+            attributedString.append(textString)
+            attributedString.append(spaceString)
+
+            // Replace the original range with the attributed string
+            self.titleLabel.attributedText = attributedString
+        } else {
+            self.titleLabel.text = viewData.roomDisplayName
+        }
         self.informationLabel.attributedText = self.buildInformationText()
         
         let hideAddParticipants: Bool
@@ -106,6 +159,7 @@ final class RoomCreationIntroCellContentView: UIView, NibLoadable, Themable {
         
         self.roomAvatarView?.fill(with: viewData.avatarViewData)
     }
+  
     
     func update(theme: Theme) {
         self.theme = theme
@@ -121,7 +175,6 @@ final class RoomCreationIntroCellContentView: UIView, NibLoadable, Themable {
         
         self.addParticipantsLabel.textColor = theme.textPrimaryColor
     }
-    
     // MARK: - Private
     
     private func buildInformationText() -> NSAttributedString? {
@@ -148,7 +201,7 @@ final class RoomCreationIntroCellContentView: UIView, NibLoadable, Themable {
         let attributedString = NSMutableAttributedString()
                                     
         let firstSentencePart1 = NSAttributedString(string: VectorL10n.roomIntroCellInformationRoomSentence1Part1, attributes: informationTextDefaultAttributes)
-        let firstSentencePart2 = NSAttributedString(string: roomName, attributes: informationTextBoldAttributes)
+        let firstSentencePart2 = NSAttributedString(string: roomName.replacingOccurrences(of: "[TG] ", with: "").replacingOccurrences(of: "$", with: ""), attributes: informationTextBoldAttributes)
         let firstSentencePart3 = NSAttributedString(string: VectorL10n.roomIntroCellInformationRoomSentence1Part3, attributes: informationTextDefaultAttributes)
         
         attributedString.append(firstSentencePart1)
@@ -166,6 +219,8 @@ final class RoomCreationIntroCellContentView: UIView, NibLoadable, Themable {
         
         return attributedString
     }
+   
+
     
     private func buildDMInformationText(with roomName: String, isDirect: Bool) -> NSAttributedString {
         
@@ -217,5 +272,23 @@ final class RoomCreationIntroCellContentView: UIView, NibLoadable, Themable {
     
     @objc private func socialButtonAction(_ sender: UIButton) {
         self.didTapAddParticipants?()
+    }
+}
+
+
+extension UIImage {
+    func resize(targetSize: CGSize) -> UIImage {
+        let size = self.size
+        let widthRatio  = targetSize.width  / size.width
+        let heightRatio = targetSize.height / size.height
+        let newSize = widthRatio > heightRatio ? CGSize(width: size.width * heightRatio, height: size.height * heightRatio) : CGSize(width: size.width * widthRatio, height: size.height * widthRatio)
+        let rect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
+
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+        self.draw(in: rect)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        return newImage ?? self
     }
 }

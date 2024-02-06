@@ -2058,7 +2058,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         {
             [userPictureView vc_setRoomAvatarImageWith:self.directChatTargetUser.avatarUrl
                                                 roomId:self.directChatTargetUser.userId
-                                           displayName:self.directChatTargetUser.displayname ?: self.directChatTargetUser.userId
+                                           displayName:  self.directChatTargetUser.displayname?: self.directChatTargetUser.userId
                                           mediaManager:self.mainSession.mediaManager];
         }
     }
@@ -2117,7 +2117,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     // Set user picture in input toolbar
     if (userPictureView)
     {
-        UIImage *preview = [AvatarGenerator generateAvatarForMatrixItem:self.mainSession.myUser.userId withDisplayName:self.mainSession.myUser.displayname];
+        UIImage *preview = [AvatarGenerator generateAvatarForMatrixItem:self.mainSession.myUser.userId withDisplayName:@"self.mainSession.myUser.displayname"];
         
         // Suppose the avatar is stored unencrypted on the Matrix media repository.
         userPictureView.enableInMemoryCache = YES;
@@ -3046,7 +3046,10 @@ static CGSize kThreadListBarButtonItemImageSize;
             }
             else if (roomPreviewData.roomId && roomPreviewData.roomName)
             {
-                previewHeader.roomAvatarPlaceholder = [AvatarGenerator generateAvatarForMatrixItem:roomPreviewData.roomId withDisplayName:roomPreviewData.roomName];
+                NSString *cleanedRoomName = [roomPreviewData.roomName stringByReplacingOccurrencesOfString:@"[TG] " withString:@""];
+                cleanedRoomName = [cleanedRoomName stringByReplacingOccurrencesOfString:@"$" withString:@""];
+                previewHeader.roomAvatarPlaceholder = [AvatarGenerator generateAvatarForMatrixItem:roomPreviewData.roomId withDisplayName:cleanedRoomName];
+//                previewHeader.roomAvatarPlaceholder = [AvatarGenerator generateAvatarForMatrixItem:roomPreviewData.roomId withDisplayName:roomPreviewData.roomName];
             }
             else
             {

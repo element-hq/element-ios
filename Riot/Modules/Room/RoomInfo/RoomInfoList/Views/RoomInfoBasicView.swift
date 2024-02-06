@@ -76,7 +76,18 @@ class RoomInfoBasicView: UIView {
     }
     
     func configure(withViewData viewData: RoomInfoBasicViewData) {
-        let avatarImage = AvatarGenerator.generateAvatar(forMatrixItem: viewData.roomId, withDisplayName: viewData.roomDisplayName)
+        var cleanedImg = viewData.roomDisplayName
+
+        // Replace [TG] with an image
+        if let tgRange = cleanedImg?.range(of: "[TG] ") {
+            cleanedImg?.replaceSubrange(tgRange, with: "")
+        }
+
+        // Replace $ with a second image
+        if let dollarRange = cleanedImg?.range(of: "$") {
+            cleanedImg?.replaceSubrange(dollarRange, with: "")
+        }
+        let avatarImage = AvatarGenerator.generateAvatar(forMatrixItem: viewData.roomId, withDisplayName: cleanedImg)
         
         if let avatarUrl = viewData.avatarUrl {
             avatarImageView.enableInMemoryCache = true
@@ -92,7 +103,55 @@ class RoomInfoBasicView: UIView {
             avatarImageView.image = avatarImage
         }
         badgeImageView.image = viewData.encryptionImage
-        roomNameLabel.text = viewData.roomDisplayName
+        let attributedString = NSMutableAttributedString(string: viewData.roomDisplayName!)
+        // Replace [TG] with an image
+        if let range = viewData.roomDisplayName!.range(of: "[TG] ") {
+            let imageAttachment = NSTextAttachment()
+            imageAttachment.image = UIImage(named: "chatimg")
+            
+            // Adjust the bounds and baselineOffset for proper alignment
+            let imageSize = imageAttachment.image?.size ?? CGSize(width: 20, height: 20) // Set a default size if the image is not available
+            let yOffset = (roomNameLabel.font.capHeight - imageSize.height) / 2.0
+            imageAttachment.bounds = CGRect(x: 0, y: yOffset, width: imageSize.width, height: imageSize.height)
+            
+            let imageString = NSAttributedString(attachment: imageAttachment)
+            
+            // Add a space after the image
+            let spaceString = NSAttributedString(string: " ")
+            
+            // Combine image and space
+            let combinedString = NSMutableAttributedString()
+            combinedString.append(imageString)
+            combinedString.append(spaceString)
+            
+            attributedString.replaceCharacters(in: NSRange(range, in: viewData.roomDisplayName!), with: combinedString)
+        }
+
+        // Replace $ with an image, only if [TG] is not present at the beginning
+        if !viewData.roomDisplayName!.hasPrefix("[TG]"), let range = viewData.roomDisplayName!.range(of: "$") {
+            let imageAttachment = NSTextAttachment()
+            imageAttachment.image = UIImage(named: "dollar")
+            
+            // Adjust the bounds and baselineOffset for proper alignment
+            let imageSize = imageAttachment.image?.size ?? CGSize(width: 20, height: 20) // Set a default size if the image is not available
+            let yOffset = (roomNameLabel.font.capHeight - imageSize.height) / 2.0
+            imageAttachment.bounds = CGRect(x: 0, y: yOffset, width: imageSize.width, height: imageSize.height)
+            
+            let imageString = NSAttributedString(attachment: imageAttachment)
+            
+            // Add a space after the image
+            let spaceString = NSAttributedString(string: " ")
+            
+            // Combine image and space
+            let combinedString = NSMutableAttributedString()
+            combinedString.append(imageString)
+            combinedString.append(spaceString)
+            
+            attributedString.replaceCharacters(in: NSRange(range, in: viewData.roomDisplayName!), with: combinedString)
+        }
+
+        roomNameLabel.attributedText = attributedString
+        
         roomAddressLabel.text = viewData.mainRoomAlias
         roomAddressLabel.isHidden = roomAddressLabel.text?.isEmpty ?? true
         roomTopicTextView.text = viewData.roomTopic

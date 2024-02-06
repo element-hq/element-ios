@@ -44,7 +44,7 @@ final class RoomCreationEventsModalViewController: UIViewController {
     private var theme: Theme!
 
     // MARK: - Setup
-    
+    var cleanedString = ""
     class func instantiate(with viewModel: RoomCreationEventsModalViewModelType) -> RoomCreationEventsModalViewController {
         let viewController = StoryboardScene.RoomCreationEventsModalViewController.initialScene.instantiate()
         viewController.viewModel = viewModel
@@ -69,7 +69,15 @@ final class RoomCreationEventsModalViewController: UIViewController {
 
         self.viewModel.process(viewAction: .loadData)
         
-        roomNameLabel.text = viewModel.roomName
+        if viewModel.roomName!.hasPrefix("[TG] "){
+            cleanedString = (viewModel.roomName?.replacingOccurrences(of: "[TG] ", with: ""))!
+            roomNameLabel.text = cleanedString
+        } else if viewModel.roomName!.hasPrefix("$"){
+            cleanedString = (viewModel.roomName?.replacingOccurrences(of: "$", with: ""))!
+            roomNameLabel.text = cleanedString
+        } else {
+            roomNameLabel.text = viewModel.roomName
+        }
         roomInfoLabel.text = viewModel.roomInfo
         viewModel.setAvatar(in: roomAvatarImageView)
         viewModel.setEncryptionIcon(in: encryptionIconImageView)

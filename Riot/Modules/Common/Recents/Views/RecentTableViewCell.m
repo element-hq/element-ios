@@ -26,6 +26,7 @@
 #import "GeneratedInterface-Swift.h"
 
 #import "MXRoomSummary+Riot.h"
+#import "UIKit/UIKit.h"
 
 @implementation RecentTableViewCell
 
@@ -63,6 +64,14 @@
     _roomAvatar.clipsToBounds = YES;
 }
 
+- (UIImage *)resizeImage:(UIImage *)image toSize:(CGSize)size {
+    UIGraphicsBeginImageContextWithOptions(size, NO, [UIScreen mainScreen].scale);
+    [image drawInRect:CGRectMake(0, 0, size.width, size.height)];
+    UIImage *resizedImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return resizedImage;
+}
+
 - (void)render:(MXKCellData *)cellData
 {
     // Hide by default missed notifications and unread widgets
@@ -74,8 +83,102 @@
     roomCellData = (id<MXKRecentCellDataStoring>)cellData;
     if (roomCellData)
     {
+        NSString *text = roomCellData.roomDisplayname;
+        NSString *placeholder = @"[TG]";
+        NSString *dollarPlaceHolder = @"$";
+
+        if ([text containsString:placeholder]) {
+            // Replace "[TG]" with a placeholder character (e.g., a space) to maintain spacing
+            text = [text stringByReplacingOccurrencesOfString:placeholder withString:@""];
+
+            // Assuming image is a UIImage you want to set along with the text
+            UIImage *originalImage = [UIImage imageNamed:@"chatimg"];
+
+            // Adjust the size of the image
+            CGSize imageSize = CGSizeMake(originalImage.size.width * 0.8, originalImage.size.height * 0.8); // Adjust the scaling factor as needed
+            UIImage *scaledImage = [self resizeImage:originalImage toSize:imageSize];
+
+            // Create an NSMutableAttributedString
+            NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] init];
+
+            UIImageView *imageView = [[UIImageView alloc] initWithImage:scaledImage];
+            imageView.tintColor = [UIColor blueColor];
+
+            // Create an NSTextAttachment with baseline alignment
+            NSTextAttachment *imageAttachment = [[NSTextAttachment alloc] init];
+            imageAttachment.image = scaledImage;
+
+            // Get the font of the label to determine the baseline offset
+            UIFont *font = self.roomTitle.font;
+            CGFloat baselineOffset = (font.capHeight - scaledImage.size.height) / 2;
+
+            // Set the baseline offset for proper alignment
+            imageAttachment.bounds = CGRectMake(0, baselineOffset, scaledImage.size.width, scaledImage.size.height );
+
+            NSAttributedString *imageAttributedString = [NSAttributedString attributedStringWithAttachment:imageAttachment];
+            [attributedString appendAttributedString:imageAttributedString];
+
+            // Append a space between image and text (adjust as needed)
+            NSAttributedString *space = [[NSAttributedString alloc] initWithString:@""];
+            [attributedString appendAttributedString:space];
+
+            // Append the text to the attributed string
+            NSAttributedString *textAttributedString = [[NSAttributedString alloc] initWithString:text];
+            [attributedString appendAttributedString:textAttributedString];
+
+            // Set the attributed string to the UILabel
+            self.roomTitle.attributedText = attributedString;
+        } else if ([text containsString:dollarPlaceHolder]) {
+            // Replace "[TG]" with a placeholder character (e.g., a space) to maintain spacing
+            text = [text stringByReplacingOccurrencesOfString:dollarPlaceHolder withString:@" "];
+
+            // Assuming image is a UIImage you want to set along with the text
+            UIImage *originalImage = [UIImage imageNamed:@"dollar"];
+
+            // Adjust the size of the image
+            CGSize imageSize = CGSizeMake(originalImage.size.width * 0.8, originalImage.size.height * 0.8); // Adjust the scaling factor as needed
+            UIImage *scaledImage = [self resizeImage:originalImage toSize:imageSize];
+
+            // Create an NSMutableAttributedString
+            NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] init];
+
+            UIImageView *imageView = [[UIImageView alloc] initWithImage:scaledImage];
+            imageView.tintColor = [UIColor blueColor];
+
+            // Create an NSTextAttachment with baseline alignment
+            NSTextAttachment *imageAttachment = [[NSTextAttachment alloc] init];
+            imageAttachment.image = scaledImage;
+
+            // Get the font of the label to determine the baseline offset
+            UIFont *font = self.roomTitle.font;
+            CGFloat baselineOffset = (font.capHeight - scaledImage.size.height) / 2 - 2;
+
+            // Set the baseline offset for proper alignment
+            imageAttachment.bounds = CGRectMake(0, baselineOffset, scaledImage.size.width, scaledImage.size.height );
+
+            NSAttributedString *imageAttributedString = [NSAttributedString attributedStringWithAttachment:imageAttachment];
+            [attributedString appendAttributedString:imageAttributedString];
+
+            // Append a space between image and text (adjust as needed)
+            NSAttributedString *space = [[NSAttributedString alloc] initWithString:@""];
+            [attributedString appendAttributedString:space];
+
+            // Append the text to the attributed string
+            NSAttributedString *textAttributedString = [[NSAttributedString alloc] initWithString:text];
+            [attributedString appendAttributedString:textAttributedString];
+
+            // Set the attributed string to the UILabel
+            self.roomTitle.attributedText = attributedString;
+        } else {
+            self.roomTitle.text = text;
+        }
+
+      
+
+
+
         // Report computed values as is
-        self.roomTitle.text = roomCellData.roomDisplayname;
+//        self.roomTitle.text = roomCellData.roomDisplayname;
         self.lastEventDate.text = roomCellData.lastEventDate;
         
         // Manage lastEventAttributedTextMessage optional property

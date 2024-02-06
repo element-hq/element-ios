@@ -23,6 +23,7 @@
  */
 @interface RecentTableViewCell : MXKRecentTableViewCell
 
+- (UIImage *)resizeImage:(UIImage *)image toSize:(CGSize)size;
 @property (weak, nonatomic) IBOutlet UIView *missedNotifAndUnreadIndicator;
 @property (weak, nonatomic) IBOutlet MXKImageView *roomAvatar;
 @property (weak, nonatomic) IBOutlet UIImageView *encryptedRoomIcon;

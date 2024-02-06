@@ -105,7 +105,58 @@
     // Consider in priority the preview data (if any)
     if (self.roomPreviewData)
     {
-        self.displayNameTextField.text = self.roomPreviewData.roomName;
+        
+//        self.displayNameTextField.text = self.roomPreviewData.roomName;
+        // Assuming displayNameTextField is a UITextField
+        NSString *roomName = self.roomPreviewData.roomName;
+
+        // Replace [TG] with an image
+        NSString *replacementText = @"[TG] ";
+        UIImage *image = [UIImage imageNamed:@"chatimg"];
+        NSTextAttachment *textAttachment = [[NSTextAttachment alloc] init];
+        textAttachment.image = image;
+        NSAttributedString *imageString = [NSAttributedString attributedStringWithAttachment:textAttachment];
+
+        // Replace $ with an image
+        NSString *dollarReplacementText = @"$";
+        UIImage *dollarImage = [UIImage imageNamed:@"dollar"];
+        NSTextAttachment *dollarTextAttachment = [[NSTextAttachment alloc] init];
+        dollarTextAttachment.image = dollarImage;
+        NSAttributedString *dollarImageString = [NSAttributedString attributedStringWithAttachment:dollarTextAttachment];
+
+        NSString *modifiedRoomName = roomName;
+
+        // Check if the string starts with [TG] and replace with the first image
+        if ([roomName hasPrefix:replacementText]) {
+            modifiedRoomName = [modifiedRoomName substringFromIndex:replacementText.length];
+            // Append the first image to the modifiedRoomName
+            NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:modifiedRoomName];
+            [attributedString insertAttributedString:imageString atIndex:0];
+            self.displayNameTextField.text = modifiedRoomName;
+            [self.displayNameTextField setAttributedText:attributedString];
+        } else if ([roomName containsString:replacementText]) {
+            // If [TG] is not at the beginning, just remove it
+            modifiedRoomName = [modifiedRoomName stringByReplacingOccurrencesOfString:replacementText withString:@""];
+        }
+
+        // Check if the string starts with $ and replace with the second image
+        if ([roomName hasPrefix:dollarReplacementText]) {
+            modifiedRoomName = [modifiedRoomName substringFromIndex:dollarReplacementText.length];
+            // Append the second image to the modifiedRoomName
+            NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:modifiedRoomName];
+            [attributedString insertAttributedString:dollarImageString atIndex:0];
+            self.displayNameTextField.text = modifiedRoomName;
+            [self.displayNameTextField setAttributedText:attributedString];
+        } else if ([roomName containsString:dollarReplacementText]) {
+            // If $ is not at the beginning, just remove it
+            modifiedRoomName = [modifiedRoomName stringByReplacingOccurrencesOfString:dollarReplacementText withString:@""];
+        }
+
+        // If neither [TG] nor $ is found, display the original string
+        if (![roomName hasPrefix:replacementText] && ![roomName hasPrefix:dollarReplacementText]) {
+            self.displayNameTextField.text = roomName;
+        }
+
     }
     else if (self.mxRoom)
     {
@@ -121,7 +172,54 @@
             [self.presenceIndicatorView stopListeningPresenceUpdates];
         }
         
-        self.displayNameTextField.text = self.mxRoom.summary.displayName;
+        NSString *roomName = self.mxRoom.summary.displayName;
+
+        // Replace [TG] with an image
+        NSString *replacementText = @"[TG] ";
+        UIImage *image = [UIImage imageNamed:@"chatimg"];
+        NSTextAttachment *textAttachment = [[NSTextAttachment alloc] init];
+        textAttachment.image = image;
+        NSAttributedString *imageString = [NSAttributedString attributedStringWithAttachment:textAttachment];
+
+        // Replace $ with an image
+        NSString *dollarReplacementText = @"$";
+        UIImage *dollarImage = [UIImage imageNamed:@"dollar"];
+        NSTextAttachment *dollarTextAttachment = [[NSTextAttachment alloc] init];
+        dollarTextAttachment.image = dollarImage;
+        NSAttributedString *dollarImageString = [NSAttributedString attributedStringWithAttachment:dollarTextAttachment];
+
+        NSString *modifiedRoomName = roomName;
+
+        // Check if the string starts with [TG] and replace with the first image
+        if ([roomName hasPrefix:replacementText]) {
+            modifiedRoomName = [modifiedRoomName substringFromIndex:replacementText.length];
+            // Append the first image to the modifiedRoomName
+            NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:modifiedRoomName];
+            [attributedString insertAttributedString:imageString atIndex:0];
+            self.displayNameTextField.text = modifiedRoomName;
+            [self.displayNameTextField setAttributedText:attributedString];
+        } else if ([roomName containsString:replacementText]) {
+            // If [TG] is not at the beginning, just remove it
+            modifiedRoomName = [modifiedRoomName stringByReplacingOccurrencesOfString:replacementText withString:@""];
+        }
+
+        // Check if the string starts with $ and replace with the second image
+        if ([roomName hasPrefix:dollarReplacementText]) {
+            modifiedRoomName = [modifiedRoomName substringFromIndex:dollarReplacementText.length];
+            // Append the second image to the modifiedRoomName
+            NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:modifiedRoomName];
+            [attributedString insertAttributedString:dollarImageString atIndex:0];
+            self.displayNameTextField.text = modifiedRoomName;
+            [self.displayNameTextField setAttributedText:attributedString];
+        } else if ([roomName containsString:dollarReplacementText]) {
+            // If $ is not at the beginning, just remove it
+            modifiedRoomName = [modifiedRoomName stringByReplacingOccurrencesOfString:dollarReplacementText withString:@""];
+        }
+
+        // If neither [TG] nor $ is found, display the original string
+        if (![roomName hasPrefix:replacementText] && ![roomName hasPrefix:dollarReplacementText]) {
+            self.displayNameTextField.text = roomName;
+        }
         if (!self.displayNameTextField.text.length)
         {
             self.displayNameTextField.text = [VectorL10n roomDisplaynameEmptyRoom];

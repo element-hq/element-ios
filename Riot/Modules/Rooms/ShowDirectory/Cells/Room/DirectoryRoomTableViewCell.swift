@@ -51,7 +51,42 @@ class DirectoryRoomTableViewCell: UITableViewCell {
         //  keep viewModel
         self.viewModel = viewModel
         
-        displaynameLabel.text = viewModel.title
+        let attributedString = NSMutableAttributedString(string: viewModel.title!)
+
+        if let range = viewModel.title!.range(of: "[TG]") {
+            if range.lowerBound == viewModel.title!.startIndex {
+                let imageAttachment = NSTextAttachment()
+                imageAttachment.image = UIImage(named: "chatimg")?.resize(targetSize: CGSize(width: 15, height: 15))
+                
+                // Adjust the bounds and baselineOffset for proper alignment
+                let imageSize = imageAttachment.image?.size ?? CGSize(width: 20, height: 20) // Set a default size if image is not available
+                let yOffset = (displaynameLabel.font.capHeight - imageSize.height) / 2.0
+                imageAttachment.bounds = CGRect(x: 0, y: yOffset, width: imageSize.width, height: imageSize.height)
+                
+                let imageString = NSAttributedString(attachment: imageAttachment)
+                attributedString.replaceCharacters(in: NSRange(range, in: viewModel.title!), with: imageString)
+            }
+        }
+        if let range = viewModel.title!.range(of: "$") {
+            if range.lowerBound == viewModel.title!.startIndex {
+                let imageAttachment = NSTextAttachment()
+                imageAttachment.image = UIImage(named: "dollar")?.resize(targetSize: CGSize(width: 15, height: 15))
+                
+                // Adjust the bounds and baselineOffset for proper alignment
+                let imageSize = imageAttachment.image?.size ?? CGSize(width: 20, height: 20) // Set a default size if image is not available
+                let yOffset = (displaynameLabel.font.capHeight - imageSize.height) / 2.0
+                imageAttachment.bounds = CGRect(x: 0, y: yOffset, width: imageSize.width, height: imageSize.height)
+                let spaceString = NSAttributedString(string: " ", attributes: [NSAttributedString.Key.kern: 2.0])
+                let combinedString = NSMutableAttributedString()
+                let imageString = NSAttributedString(attachment: imageAttachment)
+                combinedString.append(imageString)
+                combinedString.append(spaceString)
+                combinedString.append(NSAttributedString(string: viewModel.title?.replacingOccurrences(of: "$", with: "") ?? ""))
+                attributedString.replaceCharacters(in: NSRange(range, in: viewModel.title!), with: combinedString)
+            }
+        }
+        displaynameLabel.attributedText = attributedString
+
         
         let canShowNumberOfUsers = viewModel.numberOfUsers > 0
         

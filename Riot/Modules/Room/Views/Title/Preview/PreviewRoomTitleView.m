@@ -95,6 +95,7 @@
     // Consider in priority the preview data (if any)
     if (self.roomPreviewData)
     {
+        
         if (self.roomAvatarURL)
         {
             [self.roomAvatar setImageURI:self.roomAvatarURL
@@ -110,9 +111,10 @@
         {
             self.roomAvatar.image = self.roomAvatarPlaceholder;
         }
-        
+//        
         // Room topic
         self.roomTopic.text = self.roomPreviewData.roomTopic;
+
 
         [UIView setAnimationsEnabled:NO];
         [self.roomTopic scrollRangeToVisible:NSMakeRange(0, 0)];
@@ -156,6 +158,17 @@
         {
             // This is a room opened from a room link, or from the room search.
             NSString *roomName = self.roomPreviewData.roomName;
+            if (roomName && ([roomName hasPrefix:@"[TG] "])) {
+                // Remove [TG] or $ prefix
+                _iconImage.image = [UIImage imageNamed:@"chatimg"];
+                roomName = [roomName substringFromIndex:4];
+            }
+                
+            if (roomName && ([roomName hasPrefix:@"$"])) {
+                _iconImage.image = [UIImage imageNamed:@"dollar"];
+                roomName = [roomName substringToIndex:1];
+            }
+            
             if (!roomName)
             {
                 roomName = [VectorL10n roomPreviewTryJoinAnUnknownRoomDefault];
@@ -165,6 +178,7 @@
                 // Would have been nice to get the cropped string displayed by
                 // self.displayNameTextField but the value is not accessible.
                 // Cut it off by hand
+                
                 roomName = [NSString stringWithFormat:@"%@…",[roomName substringToIndex:20]];
             }
 
@@ -201,23 +215,6 @@
             
             // FIXME: Display members status when it will be available
             self.roomMembers.text = nil;
-            //                    if (memberCount)
-            //                    {
-            //                        if (activeCount > 1)
-            //                        {
-            //                            self.roomMembers.text = [VectorL10n roomTitleMultipleActiveMembers:@(activeCount).stringValue :@(memberCount).stringValue];
-            //                        }
-            //                        else
-            //                        {
-            //                            self.roomMembers.text = [VectorL10n roomTitleOneActiveMember:@(activeCount).stringValue :@(memberCount).stringValue];
-            //                        }
-            //                    }
-            //                    else
-            //                    {
-            //                        // Should not happen
-            //                        self.roomMembers.text = nil;
-            //                    }
-
             NSString *displayName = [inviter isEqualToString:inviterUserId] ? inviter : [NSString stringWithFormat:@"%@ (%@)", inviter, inviterUserId];
             self.previewLabel.text = [VectorL10n roomPreviewInvitationFormat:displayName];
         };

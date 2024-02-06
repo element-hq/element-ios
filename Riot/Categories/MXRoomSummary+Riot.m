@@ -25,9 +25,18 @@
 
 - (void)setRoomAvatarImageIn:(MXKImageView*)mxkImageView
 {
+    NSString *cleanedDisplayName = self.displayName;
+
+       // Check if cleanedDisplayName is not nil and starts with [TG]
+       if (cleanedDisplayName && [cleanedDisplayName hasPrefix:@"[TG] "]) {
+           // Remove [TG] prefix
+           cleanedDisplayName = [cleanedDisplayName substringFromIndex:5];
+       }
+    
+    
     [mxkImageView vc_setRoomAvatarImageWith:self.avatar
                                      roomId:self.roomId
-                                displayName:self.displayName
+                                displayName:cleanedDisplayName
                                mediaManager:self.mxSession.mediaManager];
 }
 

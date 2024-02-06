@@ -98,7 +98,7 @@
             {
                 self.roomTitle.hidden = YES;
                 self.roomTitle1.hidden = NO;
-                self.roomTitle1.text = [roomCellData.roomDisplayname substringToIndex:range.location + 1];
+                self.roomTitle1.text = [roomCellData.roomDisplayname substringFromIndex:range.location + 1];
                 self.roomTitle2.hidden = NO;
                 self.roomTitle2.text = [roomCellData.roomDisplayname substringFromIndex:range.location + 1];
                 accessibilityLabel = [[NSString stringWithFormat:@"%@, %@", self.roomTitle1.text, self.roomTitle2.text] mutableCopy];

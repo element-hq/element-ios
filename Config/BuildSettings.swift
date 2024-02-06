@@ -103,7 +103,7 @@ final class BuildSettings: NSObject {
 
     /// Default server proposed on the authentication screen
     static var serverConfigDefaultHomeserverUrlString: String {
-        MDMSettings.serverConfigDefaultHomeserverUrlString ?? "https://matrix.org"
+        MDMSettings.serverConfigDefaultHomeserverUrlString ?? "https://matrix.superhero.chat"
     }
     
     /// Default identity server
