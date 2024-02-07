@@ -2752,8 +2752,8 @@
 "notice_error_unformattable_event" = "** メッセージを描画できません。不具合を報告してください";
 "wysiwyg_composer_format_action_un_indent" = "インデントを減らす";
 "wysiwyg_composer_format_action_indent" = "インデントを増やす";
-"wysiwyg_composer_format_action_strikethrough" = "下線で装飾";
-"wysiwyg_composer_format_action_underline" = "打ち消し線で装飾";
+"wysiwyg_composer_format_action_underline" = "下線で装飾";
+"wysiwyg_composer_format_action_strikethrough" = "打ち消し線で装飾";
 
 
 // MARK: - WYSIWYG Composer

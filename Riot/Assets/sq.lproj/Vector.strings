@@ -127,8 +127,8 @@
 "contacts_user_directory_offline_section" = "DREJTORI PËRDORUESISH (jashtë linje)";
 // Chat participants
 "room_participants_title" = "Pjesëmarrës";
-"room_participants_add_participant" = "Shtoni pjesmarrës";
-"room_participants_one_participant" = "1 pjesmarrës";
+"room_participants_add_participant" = "Shtoni pjesëmarrës";
+"room_participants_one_participant" = "1 pjesëmarrës";
 "room_participants_multi_participants" = "%d pjesëmarrës";
 "room_participants_leave_prompt_title" = "Dilni nga dhomë";
 "room_participants_leave_prompt_msg" = "Jeni i sigurt se doni të ikni nga dhoma?";
@@ -317,7 +317,7 @@
 "group_home_one_room_format" = "1 dhomë";
 "group_invitation_format" = "%@ ju ftoi të bëheni pjesë e kësaj bashkësie";
 // Group participants
-"group_participants_add_participant" = "Shtoni pjesmarrës";
+"group_participants_add_participant" = "Shtoni pjesëmarrës";
 "group_participants_leave_prompt_title" = "Braktiseni grupin";
 "group_participants_leave_prompt_msg" = "Jeni i sigurt se doni ta braktisni grupin?";
 "group_participants_remove_prompt_title" = "Ripohim";
@@ -398,7 +398,7 @@
 "auth_add_email_and_phone_warning" = "Regjistrimi me email dhe me numër telefoni njëherazi nuk mbulohet ende, deri sa të ketë API. Do të merret parasysh vetëm numri i telefonit. Email-in tuaj mund ta shtoni te profili juaj, te rregullimet.";
 "room_creation_appearance_picture" = "Foto fjalosjeje (në daçi)";
 "room_creation_invite_another_user" = "ID Përdoruesi, emër ose email";
-"room_recents_favourites_section" = "TË PARAPALQYERA";
+"room_recents_favourites_section" = "TË PARAPËLQYERA";
 "room_recents_server_notice_section" = "SINJALIZIME SISTEMI";
 "room_recents_join_room_title" = "Hyni në një dhomë";
 "room_participants_invite_another_user" = "Kërkoni / ftoni sipas ID-je Përdoruesi, Emri ose email-i";
@@ -507,7 +507,7 @@
 "room_details_history_section_members_only" = "Vetëm anëtarët (që nga çasti i përzgjedhjes së kësaj mundësie)";
 "room_details_history_section_prompt_msg" = "Ndryshime se cilët mund të lexojnë historikun do të vlejnë vetëm për mesazhe të ardhshëm në këtë dhomë. Dukshmëria e historikut ekzistues nuk do të ndryshohet.";
 "room_details_addresses_disable_main_address_prompt_msg" = "S’do të keni adresë kryesore të specifikuar. Adresa kryesore parazgjedhje për këtë dhomë do të zgjidhet në tym";
-"room_details_advanced_enable_e2e_encryption" = "Aktivizo fshehtëzim (kujdes: s’mund të çaktizohet më!)";
+"room_details_advanced_enable_e2e_encryption" = "Aktivizo fshehtëzim (kujdes: s’mund të çaktivizohet më!)";
 "room_details_advanced_e2e_encryption_prompt_message" = "Fshehtëzimi skaj-më-skaj është eksperimental dhe mund të mos jetë i qëndrueshëm.\n\nS’duhet t’i zini ende besë për sigurim të dhënash.\n\nPajisjet s’do të jenë ende në gjendje të shfshehtëzojnë historik nga periudha përpara se të merrnin pjesë te dhomë.\n\nPasi të jetë aktivizuar fshehtëzimi për një dhomë, s’mund të çaktivizohet më (hëpërhë).\n\nMesazhet e fshehtëzuar s’do të jenë të dukshëm në klientë që nuk sendërtojnë ende fshehtëzimin.";
 "room_details_fail_to_update_room_guest_access" = "S’arrihet të përditësohet mundësia e hyrjes në dhomë të vizitorëve";
 "group_participants_invite_malformed_id" = "ID e keqformuar. Duhet të jetë një ID Matrix, si '@localpart:domain'";
@@ -619,7 +619,7 @@
 "key_backup_setup_intro_setup_action_without_existing_backup" = "Fillo të përdorësh Kopjeruajtje Kyçesh";
 "key_backup_setup_intro_setup_action_with_existing_backup" = "Përdor Kopjeruajtje Kyçesh";
 "key_backup_setup_passphrase_title" = "Sigurojeni kopjeruajtjen tuaj me një Frazë Sigurie";
-"key_backup_setup_passphrase_setup_recovery_key_info" = "Ose, sigurojeni kopjeruajtjen tuaj me një Kyç Sigurie, duke e ruajtur këtë diku të parrezikuar.";
+"key_backup_setup_passphrase_setup_recovery_key_info" = "Ose, sigurojeni kopjeruajtjen tuaj me një Kyç Sigurie, duke e ruajtur këtë diku të parrezik.";
 "key_backup_setup_passphrase_setup_recovery_key_action" = "(Të mëtejshme) Rregullojeni me një Kyç Sigurie";
 "key_backup_setup_success_title" = "Sukses!";
 // Success from passphrase
@@ -627,7 +627,7 @@
 "key_backup_setup_success_from_passphrase_save_recovery_key_action" = "Ruani Kyç Sigurie";
 "key_backup_setup_success_from_passphrase_done_action" = "U krye";
 // Success from recovery key
-"key_backup_setup_success_from_recovery_key_info" = "Po bëhet kopjeruajtja për kyçet tuaj.\n\nBëni një kopje të këtij Kyçi Sigurie dhe mbajeni të parrezikuar.";
+"key_backup_setup_success_from_recovery_key_info" = "Po bëhet kopjeruajtja për kyçet tuaj.\n\nBëni një kopje të këtij Kyçi Sigurie dhe mbajeni të parrezik.";
 "key_backup_setup_success_from_recovery_key_recovery_key_title" = "Kyç Sigurie";
 "key_backup_setup_success_from_recovery_key_make_copy_action" = "Bëni një Kopje";
 "key_backup_setup_success_from_recovery_key_made_copy_action" = "Kam bërë një kopje";
@@ -1129,7 +1129,7 @@
 "secure_key_backup_setup_existing_backup_error_info" = "Shkyçeni, që ta ripërdorni te kopjeruajtja e sigurt ose për ta fshirë që të krijoni një kopjeruajtje të re mesazhesh te kopjeruajtja e sigurt.";
 "secure_key_backup_setup_existing_backup_error_unlock_it" = "Shkyçe";
 "secure_key_backup_setup_existing_backup_error_delete_it" = "Fshije";
-"sign_out_non_existing_key_backup_alert_setup_secure_backup_action" = "Fillo të përdorësh Kojperuajtje të Sigurt";
+"sign_out_non_existing_key_backup_alert_setup_secure_backup_action" = "Fillo të përdorësh Kopjeruajtje të Sigurt";
 "security_settings_crypto_sessions_description_2" = "Nëse nuk njihni një palë kredenciale, ndryshoni fjalëkalimin tuaj Matrix dhe riujdisni Kopjeruajtjen e Sigurt.";
 "cross_signing_setup_banner_title" = "Ujdisni fshehtëzim";
 "cross_signing_setup_banner_subtitle" = "Verifikoni më me lehtësi pajisje të tjera";
@@ -1517,7 +1517,7 @@
 "poll_timeline_vote_not_registered_action" = "OK";
 "poll_timeline_vote_not_registered_subtitle" = "Na ndjeni, vota juaj s’u regjistrua, ju lutemi, riprovoni";
 "poll_timeline_vote_not_registered_title" = "Votë e paregjistruar";
-"poll_timeline_total_final_results" = "Rezultati përfundimtar, bazua në %lu votë";
+"poll_timeline_total_final_results" = "Rezultati përfundimtar, bazua në %lu vota";
 "poll_timeline_total_final_results_one_vote" = "Rezultati përfundimtar, bazua në 1 votë";
 "poll_timeline_total_votes_not_voted" = "%lu vota të hedhura. Që të shihni përfundimet, votoni";
 "poll_timeline_total_one_vote_not_voted" = "1 votë e hedhur. Që të shihni përfundimet, votoni";
@@ -1975,9 +1975,9 @@
 // Room members
 "room_member_ignore_prompt" = "Doni të fshihen krejt mesazhet nga ky përdorues?";
 "room_member_power_level_prompt" = "S’do të jeni në gjendje ta zhbëni këtë ndryshim, ngaqë po e promovoni përdoruesin të ketë të njëjtën shkallë pushteti si ju vetë.\nJeni i sigurt?";
-"attachment_e2e_keys_file_prompt" = "Kjo kartelë përmban kyçe fshehtëzimi të eksportur nga një klient Matrix.\nDoni të shihni lëndën e kartelës apo të importoni kyçet që ajo përmban?";
+"attachment_e2e_keys_file_prompt" = "Kjo kartelë përmban kyçe fshehtëzimi të eksportuar nga një klient Matrix.\nDoni të shihni lëndën e kartelës apo të importoni kyçet që ajo përmban?";
 "e2e_import_prompt" = "Ky proces ju lejon të importoni kyçe fshehtëzimi që keni eksportuar më parë nga një tjetër klient Matrix. Mandej do të jeni në gjendje të shfshehtëzoni çfarëdo mesazhesh që mund të shfshehtëzojë ai klient tjetër.\nKartela e eksportit është e mbrojtur me një frazëkalim. Që të shfshehtëzoni kartelën, duhet ta jepni frazëkalimin këtu.";
-"e2e_export_prompt" = "Ky proces ju lejon të eksportoni te një kartelë vendore kyçet për mesazhe që keni marrë në dhoma të fshehtëzuara. Mandej do të jeni në gjendje ta importoni kartelën te një tjetër klient Matrix në të ardhmen, që kështu ai klient të jetë në gjendje t’i fshehtëzojë këto mesazhe.\nKartela e eksportuar do t’i lejojë, cilitdo që mund ta lexojë, të shfshehtëzojë çfarëdo mesazhesh të fshehtëzuar që mund të shihni ju, ndaj duhet të bëni kujdes ta mbani të parrezikuar.";
+"e2e_export_prompt" = "Ky proces ju lejon të eksportoni te një kartelë vendore kyçet për mesazhe që keni marrë në dhoma të fshehtëzuara. Mandej do të jeni në gjendje ta importoni kartelën te një tjetër klient Matrix në të ardhmen, që kështu ai klient të jetë në gjendje t’i fshehtëzojë këto mesazhe.\nKartela e eksportuar do t’i lejojë, cilitdo që mund ta lexojë, të shfshehtëzojë çfarëdo mesazhesh të fshehtëzuar që mund të shihni ju, ndaj duhet të bëni kujdes ta mbani të parrezik.";
 "error_common_message" = "Ndodhi një gabim. Ju lutemi, riprovoni më vonë.";
 // Permissions
 "camera_access_not_granted_for_call" = "Thirrjet video lypin përdorim të Kamerës, por %@ s’ka leje për ta përdorur";
@@ -1988,7 +1988,7 @@
 "redact" = "Hiqe";
 // contacts list screen 
 "invitation_message" = "Do të doja të bisedoja me ju me Matrix. Për të pasur më tepër itë dhëna, ju lutem, vizitoni sajtin http://matrix.org.";
-"notification_settings_global_info" = "Rregullimet mbi njoftimet ruhen te llogaria juaj e përdoruesit dhe ndahen me krejt klientët që i mbulojnë ato (përfshi njoftimet në desktop).\n\nRregullat zbatohen sipas një radhe; rregulli i parë që ka përputhje përcakton lëndën për mesazhin.\nKështu: njoftimet sipas fjalësh janë më të rëndësishme se njoftimet sipas dhomash të cilat janë më të rëndësishme se njoftimet sipas dërguesish.\nFor multiple rules of the same kind, the first one in the list that matches takes priority.";
+"notification_settings_global_info" = "Rregullimet mbi njoftimet ruhen te llogaria juaj e përdoruesit dhe ndahen me krejt klientët që i mbulojnë ato (përfshi njoftimet në desktop).\n\nRregullat zbatohen sipas një radhe; rregulli i parë që ka përputhje përcakton lëndën për mesazhin.\nKështu: njoftimet sipas fjalësh janë më të rëndësishme se njoftimet sipas dhomash të cilat janë më të rëndësishme se njoftimet sipas dërguesish.\nPër rregulla të shumta të të njëjtit lloj, i pari në listë që ka përputhje ka përparësinë.";
 "notification_settings_per_word_notifications" = "Njoftime sipas fjale";
 "notification_settings_per_word_info" = "Për fjalët përputhjet gjenden pa marrë parasysh shkrimin me të madhe apo të vogël, dhe mund të përfshijnë një shenjë të gjithëpushtetshme *. Kështu:\nkot përputhet me vargun kot të rrethuar nga përkufizues fjalësh (p.sh. shenja pikësimi apo hapësira, ose fillim/fund rreshti).\nkot* përputhet me çfarëdo fjale që fillon me kot.\n*kot* përputhet me çfarëdo fjale që përfshin 3 shkronjat kot.";
 "notification_settings_per_room_notifications" = "Njoftime sipas dhome";
@@ -2420,9 +2420,9 @@
 "all_chats_edit_layout_add_section_message" = "Fiksoni ndarje te kreu, për hyrje të lehtë në ta";
 "room_event_encryption_info_key_authenticity_not_guaranteed" = "S’mund të garantohet mirëfilltësia e këtij mesazhi të fshehtëzuar në këtë pajisje.";
 "deselect_all" = "Shpërzgjidhi Krejt";
-"wysiwyg_composer_format_action_strikethrough" = "Apliko format me të nënvizuara";
-"wysiwyg_composer_format_action_underline" = "Apliko format me të hequravije";
-"wysiwyg_composer_format_action_italic" = "Apliko format me të pjerrta";
+"wysiwyg_composer_format_action_underline" = "Apliko format me të nënvizuara";
+"wysiwyg_composer_format_action_strikethrough" = "Apliko format me të hequravije";
+"wysiwyg_composer_format_action_italic" = "Apliko format me të pjerrëta";
 
 // Formatting Actions
 "wysiwyg_composer_format_action_bold" = "Apliko format me të trasha";
@@ -2448,7 +2448,7 @@
 "user_session_details_device_os" = "Sistem Operativ";
 "user_session_details_device_browser" = "Shfletues";
 "user_session_details_device_model" = "Model";
-"user_session_details_device_ip_location" = "Venndodhje IP-je";
+"user_session_details_device_ip_location" = "Vendndodhje IP-je";
 "user_session_details_device_ip_address" = "Adresë IP";
 "user_session_details_last_activity" = "Veprimtaria e fundit";
 "user_session_details_session_section_footer" = "Kopjoni çfarëdo të dhëne duke prekur mbi të dhe duke e mbajtur të shtypur.";
@@ -2660,7 +2660,7 @@
 "wysiwyg_composer_format_action_link" = "Apliko formatim lidhjeje";
 "notice_voice_broadcast_ended_by_you" = "Përfunduar një transmetim zanor.";
 "notice_voice_broadcast_ended" = "%@ përfundoi një transmetim zanor.";
-"notice_voice_broadcast_live" = "Transmetim i drejtëpërdrejtë";
+"notice_voice_broadcast_live" = "Transmetim i drejtpërdrejtë";
 "user_other_session_security_recommendation_title" = "Sesione të tjerë";
 "poll_timeline_ended_text" = "Përfundoi pyetësori";
 "poll_timeline_decryption_error" = "Për shkak gabimesh shfshehtëzimi, mund të mos jenë numëruar disa vota";

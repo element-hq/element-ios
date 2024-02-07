@@ -2485,8 +2485,8 @@
 "wysiwyg_composer_format_action_unordered_list" = "Växla punktlista";
 "wysiwyg_composer_format_action_inline_code" = "Tillämpa inline-kodstil";
 "wysiwyg_composer_format_action_link" = "Tillämpa länkformat";
-"wysiwyg_composer_format_action_strikethrough" = "Tillämpa understruken stil";
-"wysiwyg_composer_format_action_underline" = "Tillämpa genomstruken stil";
+"wysiwyg_composer_format_action_underline" = "Tillämpa understruken stil";
+"wysiwyg_composer_format_action_strikethrough" = "Tillämpa genomstruken stil";
 "wysiwyg_composer_format_action_italic" = "Tillämpa kursiv stil";
 
 // Formatting Actions

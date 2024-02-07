@@ -2556,8 +2556,8 @@
 "authentication_qr_login_start_subtitle" = "Use a câmera neste dispositivo para scannar o QR code mostrado em seu outro dispositivo:";
 "authentication_qr_login_start_title" = "Scannar QR code";
 "authentication_login_with_qr" = "Fazer signin com QR code";
-"wysiwyg_composer_format_action_strikethrough" = "Aplicar formato sublinhar";
-"wysiwyg_composer_format_action_underline" = "Aplicar formato tachar";
+"wysiwyg_composer_format_action_underline" = "Aplicar formato sublinhar";
+"wysiwyg_composer_format_action_strikethrough" = "Aplicar formato tachar";
 "wysiwyg_composer_format_action_italic" = "Aplicar formato itálico";
 
 // Formatting Actions
