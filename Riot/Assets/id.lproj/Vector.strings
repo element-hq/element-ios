@@ -2782,8 +2782,8 @@
 "authentication_qr_login_start_subtitle" = "Gunakan kamera pada perangkat ini untuk memindai kode QR yang ditampilkan di perangkat Anda yang lain:";
 "authentication_qr_login_start_title" = "Pindai kode QR";
 "authentication_login_with_qr" = "Masuk dengan kode QR";
-"wysiwyg_composer_format_action_strikethrough" = "Terapkan format garis bawah";
-"wysiwyg_composer_format_action_underline" = "Terapkan format coret";
+"wysiwyg_composer_format_action_underline" = "Terapkan format garis bawah";
+"wysiwyg_composer_format_action_strikethrough" = "Terapkan format coret";
 "wysiwyg_composer_format_action_italic" = "Terapkan format miring";
 
 // Formatting Actions

@@ -928,7 +928,7 @@
 // MARK: Emoji picker
 "emoji_picker_title" = "反应";
 "emoji_picker_people_category" = "表情和人物";
-"emoji_picker_nature_category" = "动物和自热";
+"emoji_picker_nature_category" = "动物和自然";
 "emoji_picker_foods_category" = "食物和饮料";
 "emoji_picker_activity_category" = "活动";
 "emoji_picker_places_category" = "旅游和景点";
@@ -952,7 +952,7 @@
 "key_verification_tile_request_incoming_approval_decline" = "拒绝";
 "key_verification_tile_conclusion_done_title" = "已验证";
 "key_verification_tile_conclusion_warning_title" = "不被信任的登录";
-"key_verification_incoming_request_incoming_alert_message" = "%@想要验证";
+"key_verification_incoming_request_incoming_alert_message" = "%@ 想要进行验证";
 "user_verification_start_verify_action" = "开始验证";
 "user_verification_start_information_part1" = "为了额外的安全性，请验证： ";
 "user_verification_start_information_part2" = " 检查在你的两个设备上的一次性代码。";
@@ -2405,3 +2405,24 @@
 "room_access_space_chooser_known_spaces_section" = "您知道的包含 %@ 的空间";
 "room_access_space_chooser_other_spaces_section_info" = "这些很可能是 %@ 的管理员参与。";
 "room_access_space_chooser_other_spaces_section" = "其他空间或房间";
+"event_formatter_message_deleted" = "消息已删除";
+"network_offline_title" = "您已离线";
+
+// MARK: Sign out warning
+
+"sign_out" = "登出";
+
+// Unverified sessions
+"key_verification_alert_title" = "您有未验证的会话";
+"pill_message_in" = "在 %@ 里的消息";
+
+// Legacy to Rust security upgrade
+
+"key_verification_self_verify_security_upgrade_alert_title" = "应用已更新";
+"sign_out_confirmation_message" = "您确定要登出吗？";
+"device_verification_self_verify_open_on_other_device_title" = "在您的另一台设备上打开 %@";
+"device_verification_self_verify_open_on_other_device_information" = "您需要先验证此会话才能读取加密信息。\n\n在您的其他设备上打开 Element 并按照说明进行操作。";
+"device_verification_self_verify_wait_recover_secrets_additional_help" = "已无法访问 %@ 会话？";
+"network_offline_message" = "您已离线，请检查您的网络链接。";
+"key_verification_alert_body" = "重新检查以确保您的账户安全。";
+"key_verification_scan_qr_code_title" = "扫描 QR Code";

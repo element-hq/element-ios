@@ -2694,8 +2694,8 @@
 "wysiwyg_composer_format_action_unordered_list" = "Przełącz listę punktorów";
 "wysiwyg_composer_format_action_inline_code" = "Zastosuj kod w tekście";
 "wysiwyg_composer_format_action_link" = "Zastosuj link";
-"wysiwyg_composer_format_action_strikethrough" = "Zastosuj podkreślenie";
-"wysiwyg_composer_format_action_underline" = "Zastosuj przekreślenie";
+"wysiwyg_composer_format_action_underline" = "Zastosuj podkreślenie";
+"wysiwyg_composer_format_action_strikethrough" = "Zastosuj przekreślenie";
 "wysiwyg_composer_format_action_italic" = "Zastosuj kursywę";
 
 // Formatting Actions
