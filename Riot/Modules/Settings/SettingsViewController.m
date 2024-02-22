@@ -3947,7 +3947,7 @@ SSOAuthenticationPresenterDelegate>
 {
     __weak typeof(self) weakSelf = self;
 
-    __block UIAlertAction *autoAction, *lightAction, *darkAction, *blackAction;
+    __block UIAlertAction *autoAction, *autoBlackAction, *lightAction, *darkAction, *blackAction;
     NSString *themePickerMessage;
 
     void (^actionBlock)(UIAlertAction *action) = ^(UIAlertAction * action) {
@@ -3973,6 +3973,10 @@ SSOAuthenticationPresenterDelegate>
             {
                 newTheme = @"black";
             }
+            else if (action == autoBlackAction)
+            {
+                newTheme = @"autoblack";
+            }
 
             NSString *theme = RiotSettings.shared.userInterfaceTheme;
             if (newTheme && ![newTheme isEqualToString:theme])
@@ -3997,6 +4001,11 @@ SSOAuthenticationPresenterDelegate>
     autoAction = [UIAlertAction actionWithTitle:[VectorL10n settingsUiThemeAuto]
                                           style:UIAlertActionStyleDefault
                                         handler:actionBlock];
+
+    autoBlackAction = [UIAlertAction actionWithTitle:[VectorL10n settingsUiThemeAutoBlack]
+                                          style:UIAlertActionStyleDefault
+                                        handler:actionBlock];
+
 
     // Explain what is "auto"
     if (@available(iOS 13, *))
@@ -4029,6 +4038,10 @@ SSOAuthenticationPresenterDelegate>
     if (autoAction)
     {
         [themePicker addAction:autoAction];
+    }
+    if (autoBlackAction)
+    {
+        [themePicker addAction:autoBlackAction];
     }
     [themePicker addAction:lightAction];
     [themePicker addAction:darkAction];
