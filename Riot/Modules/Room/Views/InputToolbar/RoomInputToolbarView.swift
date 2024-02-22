@@ -20,8 +20,9 @@ import GBDeviceInfo
 
 extension RoomInputToolbarView {
     open override func sendCurrentMessage() {
-        // Triggers auto-correct if needed.
-        if self.isFirstResponder {
+        // Triggers auto-correct if needed and if it is not a command.
+        let isCommand = self.textMessage.hasPrefix("/")
+        if self.isFirstResponder && !isCommand {
             let temp = UITextField(frame: .zero)
             temp.isHidden = true
             self.addSubview(temp)
