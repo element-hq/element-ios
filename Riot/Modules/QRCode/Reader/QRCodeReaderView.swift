@@ -113,7 +113,6 @@ final class QRCodeReaderView: UIView {
     }
 
     private func applyOrientation() {
-        
         let orientation = UIApplication.shared.statusBarOrientation
         let captureRotation: Double
         let scanRectRotation: Double
@@ -136,58 +135,12 @@ final class QRCodeReaderView: UIView {
             scanRectRotation = 90
         }
         
-        applyRectOfInterest(orientation: orientation)
-        
         let angleRadius = captureRotation / 180.0 * Double.pi
-        let captureTranform = CGAffineTransform(rotationAngle: CGFloat(angleRadius))
+        let captureTransform = CGAffineTransform(rotationAngle: CGFloat(angleRadius))
         
-        zxCapture.transform = captureTranform
+        zxCapture.transform = captureTransform
         zxCapture.rotation = CGFloat(scanRectRotation)
         zxCapture.layer.frame = self.bounds
-    }
-    
-    private func applyRectOfInterest(orientation: UIInterfaceOrientation) {
-        var transformedVideoRect = self.frame
-        let cameraSessionPreset = zxCapture.sessionPreset
-        
-        var scaleVideoX, scaleVideoY: CGFloat
-        var videoHeight, videoWidth: CGFloat
-        
-        // Currently support only for 1920x1080 || 1280x720
-        if cameraSessionPreset == AVCaptureSession.Preset.hd1920x1080.rawValue {
-            videoHeight = 1080.0
-            videoWidth = 1920.0
-        } else {
-            videoHeight = 720.0
-            videoWidth = 1280.0
-        }
-        
-        if orientation == UIInterfaceOrientation.portrait {
-            scaleVideoX = self.frame.width / videoHeight
-            scaleVideoY = self.frame.height / videoWidth
-            
-            // Convert CGPoint under portrait mode to map with orientation of image
-            // because the image will be cropped before rotate
-            // reference: https://github.com/TheLevelUp/ZXingObjC/issues/222
-            let realX = transformedVideoRect.origin.y
-            let realY = self.frame.size.width - transformedVideoRect.size.width - transformedVideoRect.origin.x
-            let realWidth = transformedVideoRect.size.height
-            let realHeight = transformedVideoRect.size.width
-            transformedVideoRect = CGRect(x: realX, y: realY, width: realWidth, height: realHeight)
-            
-        } else {
-            scaleVideoX = self.frame.width / videoWidth
-            scaleVideoY = self.frame.height / videoHeight
-        }
-        
-        captureSizeTransform = CGAffineTransform(scaleX: 1.0/scaleVideoX, y: 1.0/scaleVideoY)
-        
-        guard let _captureSizeTransform = captureSizeTransform else {
-            return
-        }
-        
-        let transformRect = transformedVideoRect.applying(_captureSizeTransform)
-        zxCapture.scanRect = transformRect
     }
 }
 
