@@ -137,7 +137,7 @@ struct Composer: View {
                         placeholder: viewModel.viewState.placeholder ?? "",
                         viewModel: wysiwygViewModel,
                         itemProviderHelper: nil,
-                        keyCommandHandler: handleKeyCommand,
+                        keyCommands: keyCommands,
                         pasteHandler: nil
                     )
                     .clipped()
@@ -228,15 +228,13 @@ struct Composer: View {
         }
     }
     
-    func handleKeyCommand(_ keyCommand: WysiwygKeyCommand) -> Bool {
-        switch keyCommand {
-        case .enter:
-            sendMessageAction(wysiwygViewModel.content)
-            wysiwygViewModel.clearContent()
-            return true
-        case .shiftEnter:
-            return false
-        }
+    var keyCommands: [WysiwygKeyCommand] {
+        [
+            .enter {
+                sendMessageAction(wysiwygViewModel.content)
+                wysiwygViewModel.clearContent()
+            }
+        ]
     }
     
     /// Computes the total height of the composer (excluding the RTE formatting bar).

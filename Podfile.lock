@@ -87,9 +87,9 @@ PODS:
   - UICollectionViewRightAlignedLayout (0.0.3)
   - WeakDictionary (2.0.2)
   - zxcvbn-ios (1.0.4)
-  - ZXingObjC (3.6.5):
-    - ZXingObjC/All (= 3.6.5)
-  - ZXingObjC/All (3.6.5)
+  - ZXingObjC (3.6.9):
+    - ZXingObjC/All (= 3.6.9)
+  - ZXingObjC/All (3.6.9)
 
 DEPENDENCIES:
   - Down (~> 0.11.0)
@@ -119,7 +119,7 @@ DEPENDENCIES:
   - UICollectionViewRightAlignedLayout (~> 0.0.3)
   - WeakDictionary (~> 2.0)
   - zxcvbn-ios
-  - ZXingObjC (~> 3.6.5)
+  - ZXingObjC (~> 3.6.9)
 
 SPEC REPOS:
   trunk:
@@ -206,8 +206,8 @@ SPEC CHECKSUMS:
   UICollectionViewRightAlignedLayout: 823eef8c567eba4a44c21bc2ffcb0d0d5f361e2d
   WeakDictionary: 8cd038acd77e5d54ca4ebaec3d20853d732b45e0
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
-  ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
+  ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-PODFILE CHECKSUM: 9245f34ec35d24a0993d1a16faa145cf3094a1b2
+PODFILE CHECKSUM: c87b532985dd755b373732f841e3bcfe616f4e4f
 
 COCOAPODS: 1.14.3

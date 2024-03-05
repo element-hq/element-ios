@@ -1,3 +1,15 @@
+## Changes in 1.11.8 (2024-03-05)
+
+🙌 Improvements
+
+- Disable the mark as unread feature to avoid it clashing with the new MSC2876 based one ([#7758](https://github.com/element-hq/element-ios/pull/7758))
+
+🐛 Bugfixes
+
+- Fix a bug where QR codes aren't detected if the camera is too close. ([#7762](https://github.com/element-hq/element-ios/pull/7762))
+- Fix dictation when using the Rich Text Editor ([#7752](https://github.com/element-hq/element-ios/issues/7752))
+
+
 ## Changes in 1.11.7 (2024-02-07)
 
 🙌 Improvements
