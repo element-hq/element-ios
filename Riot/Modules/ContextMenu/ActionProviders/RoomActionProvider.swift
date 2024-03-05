@@ -34,7 +34,7 @@ class RoomActionProvider: RoomActionProviderProtocol {
     
     var menu: UIMenu {
         if service.isRoomJoined {
-            var children = service.hasUnread ? [self.markAsReadAction] : [self.markAsUnreadAction]
+            var children = service.hasUnread ? [self.markAsReadAction] : []
             children.append(contentsOf: [
                 self.directChatAction,
                 self.notificationsAction,
