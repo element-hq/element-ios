@@ -67,7 +67,7 @@ class UserSessionOverviewUITests: MockScreenTestCase {
         let navTitle = VectorL10n.userSessionOverviewSessionTitle
         let barButton = app.navigationBars[navTitle].buttons["Menu"]
         XCTAssertTrue(barButton.exists)
-        barButton.tap()
+        barButton.forceTap()
         XCTAssertTrue(app.buttons[VectorL10n.signOut].exists)
         XCTAssertTrue(app.buttons[VectorL10n.manageSessionRename].exists)
     }
