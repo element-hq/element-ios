@@ -17,7 +17,7 @@ jobs:
     if: contains(github.event.pull_request.labels.*.name, 'Trigger-PR-Build')
 
     name: Release
-    runs-on: macos-12
+    runs-on: macos-14
     
     concurrency:
       # Only allow a single run of this workflow on each branch, automatically cancelling older runs.
