@@ -197,7 +197,7 @@ platform :ios do
     run_tests(
       workspace: "Riot.xcworkspace",
       scheme: "RiotSwiftUITests",
-      device: "iPhone 14",
+      device: "iPhone 15",
       code_coverage: true,
       # Test result configuration
       result_bundle: true,

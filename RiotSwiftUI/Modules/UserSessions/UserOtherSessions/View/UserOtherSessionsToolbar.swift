@@ -80,35 +80,33 @@ struct UserOtherSessionsToolbar: ToolbarContent {
     }
     
     private func optionsMenu() -> some View {
-        Button { } label: {
-            Menu {
-                if showDeviceLogout { // As you can only sign out the selected sessions, we don't allow selection when you're unable to sign out devices.
-                    Button {
-                        isEditModeEnabled = true
-                    } label: {
-                        Label(VectorL10n.userOtherSessionMenuSelectSessions, systemImage: "checkmark.circle")
-                    }
-                    .disabled(sessionCount == 0)
-                }
-                
+        Menu {
+            if showDeviceLogout { // As you can only sign out the selected sessions, we don't allow selection when you're unable to sign out devices.
                 Button {
-                    isShowLocationEnabled.toggle()
+                    isEditModeEnabled = true
                 } label: {
-                    Label(showLocationInfo: isShowLocationEnabled)
+                    Label(VectorL10n.userOtherSessionMenuSelectSessions, systemImage: "checkmark.circle")
                 }
-                
-                if sessionCount > 0, showDeviceLogout {
-                    DestructiveButton {
-                        onSignOut()
-                    } label: {
-                        Label(VectorL10n.userOtherSessionMenuSignOutSessions(String(sessionCount)), systemImage: "rectangle.portrait.and.arrow.forward.fill")
-                    }
-                }
-            } label: {
-                Image(systemName: "ellipsis")
-                    .padding(.horizontal, 4)
-                    .padding(.vertical, 12)
+                .disabled(sessionCount == 0)
             }
+            
+            Button {
+                isShowLocationEnabled.toggle()
+            } label: {
+                Label(showLocationInfo: isShowLocationEnabled)
+            }
+            
+            if sessionCount > 0, showDeviceLogout {
+                DestructiveButton {
+                    onSignOut()
+                } label: {
+                    Label(VectorL10n.userOtherSessionMenuSignOutSessions(String(sessionCount)), systemImage: "rectangle.portrait.and.arrow.forward.fill")
+                }
+            }
+        } label: {
+            Image(systemName: "ellipsis")
+                .padding(.horizontal, 4)
+                .padding(.vertical, 12)
         }
         .accessibilityIdentifier("More")
     }
