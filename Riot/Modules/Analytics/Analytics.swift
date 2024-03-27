@@ -275,8 +275,16 @@ extension Analytics {
         let event = AnalyticsEvent.Error(
             context: context,
             cryptoModule: .Rust,
+            cryptoSDK: AnalyticsEvent.Error.CryptoSDK.Rust,
             domain: .E2EE,
-            name: reason.errorName
+            // XXX not yet supported.
+            eventLocalAgeMillis: nil,
+            isFederated: nil,
+            isMatrixDotOrg: nil,
+            name: reason.errorName,
+            timeToDecryptMillis: nil,
+            userTrustsOwnIdentity: nil,
+            wasVisibleToUser: nil
         )
         capture(event: event)
     }
@@ -355,7 +363,8 @@ extension Analytics: MXAnalyticsDelegate {
     
     func trackCallError(with reason: __MXCallHangupReason, video isVideo: Bool, numberOfParticipants: Int, incoming isIncoming: Bool) {
         let callEvent = AnalyticsEvent.CallError(isVideo: isVideo, numParticipants: numberOfParticipants, placed: !isIncoming)
-        let event = AnalyticsEvent.Error(context: nil, cryptoModule: nil, domain: .VOIP, name: reason.errorName)
+        let event = AnalyticsEvent.Error(context: nil, cryptoModule: nil, cryptoSDK: nil, domain: .VOIP, eventLocalAgeMillis: nil,
+                                         isFederated: nil, isMatrixDotOrg: nil, name: reason.errorName, timeToDecryptMillis: nil, userTrustsOwnIdentity: nil, wasVisibleToUser: nil)
         capture(event: callEvent)
         capture(event: event)
     }
@@ -386,6 +395,7 @@ extension Analytics: MXAnalyticsDelegate {
         let event = AnalyticsEvent.Composer(inThread: inThread,
                                             isEditing: isEditing,
                                             isReply: isReply,
+                                            messageType: AnalyticsEvent.Composer.MessageType.Text,
                                             startsThread: startsThread)
         capture(event: event)
     }
