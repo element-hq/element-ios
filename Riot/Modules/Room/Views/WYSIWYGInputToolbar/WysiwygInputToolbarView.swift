@@ -263,12 +263,13 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
             completionSuggestionSharedContext: toolbarViewDelegate.completionSuggestionContext().context,
             resizeAnimationDuration: Double(kResizeComposerAnimationDuration),
             sendMessageAction: { [weak self] content in
-            guard let self = self else { return }
-            self.sendWysiwygMessage(content: content)
-        }, showSendMediaActions: { [weak self]  in
-            guard let self = self else { return }
-            self.showSendMediaActions()
-        })
+                guard let self = self else { return }
+                self.sendWysiwygMessage(content: content)
+            },
+            showSendMediaActions: { [weak self]  in
+                guard let self = self else { return }
+                self.showSendMediaActions()
+            })
             .introspectTextView { [weak self] textView in
                 guard let self = self else { return }
                 textView.inputAccessoryView = self.inputAccessoryViewForKeyboard
@@ -437,6 +438,8 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
             toolbarViewDelegate?.didSendLinkAction(LinkActionWrapper(linkAction))
         case let .suggestion(pattern):
             toolbarViewDelegate?.didDetectTextPattern(SuggestionPatternWrapper(pattern))
+        case let .messageFormatted(formatType):
+            Analytics.shared.trackFormattedMessageEvent(formatAction: formatType.analyticsAction)
         }
     }
     

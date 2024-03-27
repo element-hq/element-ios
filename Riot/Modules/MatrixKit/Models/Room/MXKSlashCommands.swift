@@ -14,6 +14,8 @@
 // limitations under the License.
 //
 
+import AnalyticsEvents
+
 @objc final class MXKSlashCommandsHelper: NSObject {
     @objc static func commandNameFor(_ slashCommand: MXKSlashCommand) -> String {
         slashCommand.cmd
@@ -96,6 +98,17 @@
             return "<topic>"
         case .discardSession:
             return ""
+        }
+    }
+    
+    var analyticsCommand: AnalyticsEvent.SlashCommand.Command? {
+        switch self {
+        case .inviteUser:
+            return .Invite
+        case .partRoom:
+            return .Part
+        default:
+            return nil
         }
     }
 }
