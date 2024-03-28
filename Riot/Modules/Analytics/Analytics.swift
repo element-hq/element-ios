@@ -275,7 +275,7 @@ extension Analytics {
         let event = AnalyticsEvent.Error(
             context: context,
             cryptoModule: .Rust,
-            cryptoSDK: AnalyticsEvent.Error.CryptoSDK.Rust,
+            cryptoSDK: .Rust,
             domain: .E2EE,
             // XXX not yet supported.
             eventLocalAgeMillis: nil,
@@ -395,7 +395,7 @@ extension Analytics: MXAnalyticsDelegate {
         let event = AnalyticsEvent.Composer(inThread: inThread,
                                             isEditing: isEditing,
                                             isReply: isReply,
-                                            messageType: AnalyticsEvent.Composer.MessageType.Text,
+                                            messageType: .Text,
                                             startsThread: startsThread)
         capture(event: event)
     }
