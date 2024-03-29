@@ -290,6 +290,11 @@ class DecryptionFailureTrackerTests: XCTestCase {
         XCTAssertEqual(testDelegate.reportedFailure?.reason, DecryptionFailureReason.olmKeysNotSent);
         XCTAssertEqual(testDelegate.reportedFailure?.timeToDecrypt, TimeInterval(20));
         
+        // Assert that it's converted to millis for reporting
+        let analyticsError = testDelegate.reportedFailure!.toAnalyticsEvent()
+        
+        XCTAssertEqual(analyticsError.timeToDecryptMillis, 20000)
+        
     }
     
     
@@ -324,6 +329,12 @@ class DecryptionFailureTrackerTests: XCTestCase {
         // Event should have been reported as a late decrypt
         XCTAssertEqual(testDelegate.reportedFailure?.reason, DecryptionFailureReason.olmKeysNotSent);
         XCTAssertNil(testDelegate.reportedFailure?.timeToDecrypt);
+        
+        
+        // Assert that it's converted to -1 for reporting
+        let analyticsError = testDelegate.reportedFailure!.toAnalyticsEvent()
+        
+        XCTAssertEqual(analyticsError.timeToDecryptMillis, -1)
         
     }
 }
