@@ -32,10 +32,9 @@ class DecryptionFailureTrackerTests: XCTestCase {
     }
     
     class AnalyticsDelegate : E2EAnalytics {
-        var reportedFailure: Element.DecryptionFailureReason?;
+        var reportedFailure: Element.DecryptionFailure?;
         
-        func trackE2EEError(_ reason: Element.DecryptionFailureReason, context: String) {
-            print("Error Tracked: ", reason)
+        func trackE2EEError(_ reason: Element.DecryptionFailure) {
             reportedFailure = reason
         }
         
@@ -66,6 +65,9 @@ class DecryptionFailureTrackerTests: XCTestCase {
        
         timeShifter.timestamp = TimeInterval(2)
         
+        // simulate decrypted in the grace period
+        NotificationCenter.default.post(name: .mxEventDidDecrypt, object: fakeEvent)
+        
         decryptionFailureTracker.checkFailures();
         
         XCTAssertNil(testDelegate.reportedFailure);
@@ -74,9 +76,69 @@ class DecryptionFailureTrackerTests: XCTestCase {
         timeShifter.timestamp = TimeInterval(5)
         
         decryptionFailureTracker.checkFailures();
+        XCTAssertNil(testDelegate.reportedFailure);
         
-        XCTAssertEqual(testDelegate.reportedFailure, DecryptionFailureReason.olmKeysNotSent);
     }
+    
+    func test_report_ratcheted_key_utd() {
+        
+        let myUser = "test@example.com";
+        
+        let decryptionFailureTracker = DecryptionFailureTracker();
+        decryptionFailureTracker.timeProvider = timeShifter;
+        
+        let testDelegate = AnalyticsDelegate();
+        
+        decryptionFailureTracker.delegate = testDelegate;
+        
+        timeShifter.timestamp = TimeInterval(0)
+        
+        let fakeEvent = FakeEvent(id: "$0000");
+        fakeEvent.decryptionError = NSError(domain: MXDecryptingErrorDomain, code: Int(MXDecryptingErrorOlmCode.rawValue))
+        
+        
+        let fakeRoomState = FakeRoomState();
+        fakeRoomState.mockMembers = FakeRoomMembers(joined: [myUser])
+        decryptionFailureTracker.reportUnableToDecryptError(forEvent: fakeEvent, withRoomState: fakeRoomState, myUser: myUser);
+        
+        // Pass the max period
+        timeShifter.timestamp = TimeInterval(70)
+        
+        decryptionFailureTracker.checkFailures();
+        
+        XCTAssertEqual(testDelegate.reportedFailure?.reason, DecryptionFailureReason.olmIndexError);
+    }
+    
+    func test_report_unspecified_error() {
+        
+        let myUser = "test@example.com";
+        
+        let decryptionFailureTracker = DecryptionFailureTracker();
+        decryptionFailureTracker.timeProvider = timeShifter;
+        
+        let testDelegate = AnalyticsDelegate();
+        
+        decryptionFailureTracker.delegate = testDelegate;
+        
+        timeShifter.timestamp = TimeInterval(0)
+        
+        let fakeEvent = FakeEvent(id: "$0000");
+        fakeEvent.decryptionError = NSError(domain: MXDecryptingErrorDomain, code: Int(MXDecryptingErrorBadRoomCode.rawValue))
+        
+        
+        let fakeRoomState = FakeRoomState();
+        fakeRoomState.mockMembers = FakeRoomMembers(joined: [myUser])
+        decryptionFailureTracker.reportUnableToDecryptError(forEvent: fakeEvent, withRoomState: fakeRoomState, myUser: myUser);
+        
+        // Pass the max period
+        timeShifter.timestamp = TimeInterval(70)
+        
+        decryptionFailureTracker.checkFailures();
+        
+        XCTAssertEqual(testDelegate.reportedFailure?.reason, DecryptionFailureReason.unspecified);
+    }
+    
+    
     
     func test_do_not_double_report() {
         
@@ -100,12 +162,12 @@ class DecryptionFailureTrackerTests: XCTestCase {
         
         decryptionFailureTracker.reportUnableToDecryptError(forEvent: fakeEvent, withRoomState: fakeRoomState, myUser: myUser);
         
-        // Pass the grace period
-        timeShifter.timestamp = TimeInterval(5)
+        // Pass the max period
+        timeShifter.timestamp = TimeInterval(70)
         
         decryptionFailureTracker.checkFailures();
         
-        XCTAssertEqual(testDelegate.reportedFailure, DecryptionFailureReason.olmKeysNotSent);
+        XCTAssertEqual(testDelegate.reportedFailure?.reason, DecryptionFailureReason.olmKeysNotSent);
         
         // Try to report again the same event
         testDelegate.reportedFailure = nil
@@ -192,5 +254,77 @@ class DecryptionFailureTrackerTests: XCTestCase {
         XCTAssertNil(testDelegate.reportedFailure);
     }
     
+    
+    func test_should_report_late_decrypt() {
+        
+        let myUser = "test@example.com";
+        
+        let decryptionFailureTracker = DecryptionFailureTracker();
+        decryptionFailureTracker.timeProvider = timeShifter;
+        
+        let testDelegate = AnalyticsDelegate();
+        
+        decryptionFailureTracker.delegate = testDelegate;
+        
+        timeShifter.timestamp = TimeInterval(0)
+        
+        let fakeEvent = FakeEvent(id: "$0000");
+        fakeEvent.decryptionError = NSError(domain: MXDecryptingErrorDomain, code: Int(MXDecryptingErrorUnknownInboundSessionIdCode.rawValue))
+        
+        
+        let fakeRoomState = FakeRoomState();
+        fakeRoomState.mockMembers = FakeRoomMembers(joined: [myUser])
+        
+        decryptionFailureTracker.reportUnableToDecryptError(forEvent: fakeEvent, withRoomState: fakeRoomState, myUser: myUser);
+        
+        // Simulate succesful decryption after grace period but before max wait
+        timeShifter.timestamp = TimeInterval(20)
+        
+        // Simulate event gets decrypted
+        NotificationCenter.default.post(name: .mxEventDidDecrypt, object: fakeEvent)
+        
+        
+        decryptionFailureTracker.checkFailures();
+      
+        // Event should have been reported as a late decrypt
+        XCTAssertEqual(testDelegate.reportedFailure?.reason, DecryptionFailureReason.olmKeysNotSent);
+        XCTAssertEqual(testDelegate.reportedFailure?.timeToDecrypt, TimeInterval(20));
+        
+    }
+    
+    
+    
+    func test_should_report_permanent_decryption_error() {
+        
+        let myUser = "test@example.com";
+        
+        let decryptionFailureTracker = DecryptionFailureTracker();
+        decryptionFailureTracker.timeProvider = timeShifter;
+        
+        let testDelegate = AnalyticsDelegate();
+        
+        decryptionFailureTracker.delegate = testDelegate;
+        
+        timeShifter.timestamp = TimeInterval(0)
+        
+        let fakeEvent = FakeEvent(id: "$0000");
+        fakeEvent.decryptionError = NSError(domain: MXDecryptingErrorDomain, code: Int(MXDecryptingErrorUnknownInboundSessionIdCode.rawValue))
+        
+        
+        let fakeRoomState = FakeRoomState();
+        fakeRoomState.mockMembers = FakeRoomMembers(joined: [myUser])
+        
+        decryptionFailureTracker.reportUnableToDecryptError(forEvent: fakeEvent, withRoomState: fakeRoomState, myUser: myUser);
+        
+        // Simulate succesful decryption after max wait
+        timeShifter.timestamp = TimeInterval(70)
+        
+        decryptionFailureTracker.checkFailures();
+      
+        // Event should have been reported as a late decrypt
+        XCTAssertEqual(testDelegate.reportedFailure?.reason, DecryptionFailureReason.olmKeysNotSent);
+        XCTAssertNil(testDelegate.reportedFailure?.timeToDecrypt);
+        
+    }
 }
     

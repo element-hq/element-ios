@@ -36,7 +36,10 @@ class DecryptionFailureTracker: NSObject {
     
     let GRACE_PERIOD: TimeInterval = 4
     // Call `checkFailures` every `CHECK_INTERVAL`
-    let CHECK_INTERVAL: TimeInterval = 2
+    let CHECK_INTERVAL: TimeInterval = 15
+    
+    // The maximum time to wait for a late decryption before reporting as permanent UTD
+    let MAX_WAIT_FOR_LATE_DECRYPTION: TimeInterval = 60
     
     @objc weak var delegate: E2EAnalytics?
     
@@ -60,9 +63,6 @@ class DecryptionFailureTracker: NSObject {
                                                name: .mxEventDidDecrypt,
                                                object: nil)
         
-        Timer.scheduledTimer(withTimeInterval: CHECK_INTERVAL, repeats: true) { [weak self] _ in
-            self?.checkFailures()
-        }
     }
     
     @objc
@@ -93,6 +93,14 @@ class DecryptionFailureTracker: NSObject {
         let context = String(format: "code: %ld, description: %@", error.code, event.decryptionError.localizedDescription)
 
         reportedFailures[failedEventId] = DecryptionFailure(failedEventId: failedEventId, reason: reason, context: context, ts: self.timeProvider.nowTs())
+        
+        // Start the ticker if needed. There is no need to have a ticker if no failures are tracked
+        if checkFailuresTimer == nil {
+            self.checkFailuresTimer = Timer.scheduledTimer(withTimeInterval: CHECK_INTERVAL, repeats: true) { [weak self] _ in
+                self?.checkFailures()
+            }
+        }
+        
     }
     
     @objc
@@ -104,8 +112,30 @@ class DecryptionFailureTracker: NSObject {
     func eventDidDecrypt(_ notification: Notification) {
         guard let event = notification.object as? MXEvent else { return }
 
-        // Could be an event in the reportedFailures, remove it
+        guard let reportedFailure = self.reportedFailures[event.eventId] else { return }
+        
+        let now = self.timeProvider.nowTs()
+        let ellapsedTime = now - reportedFailure.ts
+        
+        if ellapsedTime < 4 {
+            // event is graced
+            reportedFailures.removeValue(forKey: event.eventId)
+        } else {
+            // It's a late decrypt must be reported as a late decrypt
+            reportedFailure.timeToDecrypt = ellapsedTime
+            self.delegate?.trackE2EEError(reportedFailure)
+        }
+        // Remove from reported failures
+        self.trackedEvents.insert(event.eventId)
         reportedFailures.removeValue(forKey: event.eventId)
+        
+        // Check if we still need the ticker timer
+        if reportedFailures.isEmpty {
+            // Invalidate the current timer, nothing to check for
+            self.checkFailuresTimer?.invalidate()
+            self.checkFailuresTimer = nil
+        }
+        
     }
     
     /**
@@ -116,23 +146,29 @@ class DecryptionFailureTracker: NSObject {
     func checkFailures() {
         guard let delegate = self.delegate else {return}
         
-        
         let tsNow = self.timeProvider.nowTs()
         var failuresToCheck = [DecryptionFailure]()
         
         for reportedFailure in self.reportedFailures.values {
             let ellapsed = tsNow - reportedFailure.ts
-            if ellapsed > GRACE_PERIOD {
+            if ellapsed > MAX_WAIT_FOR_LATE_DECRYPTION {
                 failuresToCheck.append(reportedFailure)
+                reportedFailure.timeToDecrypt = nil
                 reportedFailures.removeValue(forKey: reportedFailure.failedEventId)
                 trackedEvents.insert(reportedFailure.failedEventId)
             }
         }
         
         for failure in failuresToCheck {
-            delegate.trackE2EEError(failure.reason, context: failure.context)
+            delegate.trackE2EEError(failure)
         }
         
+        // Check if we still need the ticker timer
+        if reportedFailures.isEmpty {
+            // Invalidate the current timer, nothing to check for
+            self.checkFailuresTimer?.invalidate()
+            self.checkFailuresTimer = nil
+        }
     }
     
 }

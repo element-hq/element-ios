@@ -44,6 +44,9 @@ import AnalyticsEvents
     /// Additional context of failure
     let context: String
     
+    /// UTDs can be permanent or temporary. If temporary, this field will contain the time it took to decrypt the message in milliseconds. If permanent should be nil
+    var timeToDecrypt: TimeInterval?
+    
     init(failedEventId: String, reason: DecryptionFailureReason, context: String, ts: TimeInterval) {
         self.failedEventId = failedEventId
         self.reason = reason
