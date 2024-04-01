@@ -1889,8 +1889,8 @@
 "notice_conference_call_started" = "VoIP rühmakõne algas";
 "notice_conference_call_finished" = "VoIP rühmakõne lõppes";
 // Notice Events with "You"
-"notice_room_invite_by_you" = "Sina kutsusid kasutajat %@";
-"notice_room_invite_you" = "%@ kutsus sind";
+"notice_room_invite_by_you" = "Sina saatsid kutse kasutajale %@";
+"notice_room_invite_you" = "%@ saatis sulle kutse";
 "notice_room_third_party_invite_by_you" = "Sina saatsid kasutajale %@ kutse jututoaga liitumiseks";
 "notice_room_third_party_registered_invite_by_you" = "Sina võtsid vastu kutse %@ nimel";
 "notice_room_third_party_revoked_invite_by_you" = "Sina võtsid tagasi jututoaga liitumise kutse kasutajalt %@";
@@ -2025,7 +2025,7 @@
 "notice_room_third_party_invite_for_dm" = "%@ saatis kutse kasutajale %@";
 "notice_room_third_party_revoked_invite_for_dm" = "%@ võttis tagasi kasutaja %@ kutse";
 "notice_room_name_changed_for_dm" = "%@ muutis jututoa uueks nimeks %@.";
-"notice_room_third_party_invite_by_you_for_dm" = "Sina kutsusid kasutajat %@";
+"notice_room_third_party_invite_by_you_for_dm" = "Sina saatsid kutse kasutajale %@";
 "notice_room_third_party_revoked_invite_by_you_for_dm" = "Sina võtsid tagasi kasutaja %@ kutse";
 "notice_room_name_changed_by_you_for_dm" = "Sa muutsid jututoa uueks nimeks %@.";
 "notice_room_name_removed_by_you_for_dm" = "Sa eemaldasid jututoa nime";
