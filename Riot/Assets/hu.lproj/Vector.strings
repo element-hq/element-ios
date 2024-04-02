@@ -2740,3 +2740,4 @@
 
 "key_verification_self_verify_security_upgrade_alert_title" = "Alkalmazás frissítve";
 "settings_acceptable_use" = "Elfogadható felhasználói feltételek";
+"room_creation_user_not_found_prompt_title" = "Megerősítés";
