@@ -1,3 +1,12 @@
+## Changes in 1.11.9 (2024-04-02)
+
+Others
+
+- Update matrix-analytics-events to version 0.15.0 ([#7768](https://github.com/element-hq/element-ios/pull/7768))
+- Upgrade to build with Xcode 15.2
+- Add a privacy manifest
+
+
 ## Changes in 1.11.8 (2024-03-05)
 
 🙌 Improvements
