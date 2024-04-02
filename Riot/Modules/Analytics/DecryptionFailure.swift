@@ -38,15 +38,19 @@ import AnalyticsEvents
     /// The id of the event that was unabled to decrypt.
     let failedEventId: String
     /// The time the failure has been reported.
-    let ts: TimeInterval = Date().timeIntervalSince1970
+    let ts: TimeInterval
     /// Decryption failure reason.
     let reason: DecryptionFailureReason
     /// Additional context of failure
     let context: String
     
-    init(failedEventId: String, reason: DecryptionFailureReason, context: String) {
+    /// UTDs can be permanent or temporary. If temporary, this field will contain the time it took to decrypt the message in milliseconds. If permanent should be nil
+    var timeToDecrypt: TimeInterval?
+    
+    init(failedEventId: String, reason: DecryptionFailureReason, context: String, ts: TimeInterval) {
         self.failedEventId = failedEventId
         self.reason = reason
         self.context = context
+        self.ts = ts
     }
 }

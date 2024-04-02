@@ -213,6 +213,25 @@ import AnalyticsEvents
     }
 }
 
+@objc
+protocol E2EAnalytics {
+    func trackE2EEError(_ failure: DecryptionFailure)
+}
+
+
+@objc extension Analytics: E2EAnalytics {
+    
+    /// Track an E2EE error that occurred
+    /// - Parameters:
+    ///   - reason: The error that occurred.
+    ///   - context: Additional context of the error that occured
+    func trackE2EEError(_ failure: DecryptionFailure) {
+        let event = failure.toAnalyticsEvent()
+        capture(event: event)
+    }
+    
+}
+
 // MARK: - Public tracking methods
 // The following methods are exposed for compatibility with Objective-C as
 // the `capture` method and the generated events cannot be bridged from Swift.
@@ -266,28 +285,7 @@ extension Analytics {
     func trackInteraction(_ uiElement: AnalyticsUIElement) {
         trackInteraction(uiElement, interactionType: .Touch, index: nil)
     }
-    
-    /// Track an E2EE error that occurred
-    /// - Parameters:
-    ///   - reason: The error that occurred.
-    ///   - context: Additional context of the error that occured
-    func trackE2EEError(_ reason: DecryptionFailureReason, context: String) {
-        let event = AnalyticsEvent.Error(
-            context: context,
-            cryptoModule: .Rust,
-            cryptoSDK: .Rust,
-            domain: .E2EE,
-            // XXX not yet supported.
-            eventLocalAgeMillis: nil,
-            isFederated: nil,
-            isMatrixDotOrg: nil,
-            name: reason.errorName,
-            timeToDecryptMillis: nil,
-            userTrustsOwnIdentity: nil,
-            wasVisibleToUser: nil
-        )
-        capture(event: event)
-    }
+
     
     /// Track when a user becomes unauthenticated without pressing the `sign out` button.
     /// - Parameters:
