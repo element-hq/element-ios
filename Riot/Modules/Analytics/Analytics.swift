@@ -215,7 +215,7 @@ import AnalyticsEvents
 
 @objc
 protocol E2EAnalytics {
-    func trackE2EEError(_ reason: DecryptionFailureReason, context: String)
+    func trackE2EEError(_ failure: DecryptionFailure)
 }
 
 
@@ -225,21 +225,8 @@ protocol E2EAnalytics {
     /// - Parameters:
     ///   - reason: The error that occurred.
     ///   - context: Additional context of the error that occured
-    func trackE2EEError(_ reason: DecryptionFailureReason, context: String) {
-        let event = AnalyticsEvent.Error(
-            context: context,
-            cryptoModule: .Rust,
-            cryptoSDK: AnalyticsEvent.Error.CryptoSDK.Rust,
-            domain: .E2EE,
-            // XXX not yet supported.
-            eventLocalAgeMillis: nil,
-            isFederated: nil,
-            isMatrixDotOrg: nil,
-            name: reason.errorName,
-            timeToDecryptMillis: nil,
-            userTrustsOwnIdentity: nil,
-            wasVisibleToUser: nil
-        )
+    func trackE2EEError(_ failure: DecryptionFailure) {
+        let event = failure.toAnalyticsEvent()
         capture(event: event)
     }
     
