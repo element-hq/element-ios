@@ -33,7 +33,6 @@
 #import "ContactDetailsViewController.h"
 
 #import "BugReportViewController.h"
-#import "DecryptionFailureTracker.h"
 
 #import "Tools.h"
 #import "WidgetManager.h"

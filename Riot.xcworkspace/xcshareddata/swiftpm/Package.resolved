@@ -41,8 +41,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/matrix-org/matrix-analytics-events",
       "state" : {
-        "revision" : "2f5fa5f1e2f6c6ae1a47c33d953a3ce289167eb0",
-        "version" : "0.5.0"
+        "revision" : "44d5a0e898a71f8abbbe12afe9d73e82d370a9a1",
+        "version" : "0.15.0"
       }
     },
     {

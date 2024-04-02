@@ -23,7 +23,6 @@
 #import "WidgetManager.h"
 
 #import "MXDecryptionResult.h"
-#import "DecryptionFailureTracker.h"
 
 #import <MatrixSDK/MatrixSDK.h>
 

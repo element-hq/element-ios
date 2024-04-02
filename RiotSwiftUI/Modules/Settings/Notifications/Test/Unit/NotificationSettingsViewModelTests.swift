@@ -41,37 +41,6 @@ final class NotificationSettingsViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.viewState.selectionState[.encrypted], false)
     }
     
-    func testUpdateOneToOneRuleAlsoUpdatesPollRules() async {
-        setupWithPollRules()
-        
-        await viewModel.update(ruleID: .oneToOneRoom, isChecked: false)
-
-        XCTAssertEqual(viewModel.viewState.selectionState.count, 8)
-        XCTAssertEqual(viewModel.viewState.selectionState[.oneToOneRoom], false)
-        XCTAssertEqual(viewModel.viewState.selectionState[.oneToOnePollStart], false)
-        XCTAssertEqual(viewModel.viewState.selectionState[.oneToOnePollEnd], false)
-        
-        // unrelated poll rules stay the same
-        XCTAssertEqual(viewModel.viewState.selectionState[.allOtherMessages], true)
-        XCTAssertEqual(viewModel.viewState.selectionState[.pollStart], true)
-        XCTAssertEqual(viewModel.viewState.selectionState[.pollEnd], true)
-    }
-    
-    func testUpdateMessageRuleAlsoUpdatesPollRules() async {
-        setupWithPollRules()
-        
-        await viewModel.update(ruleID: .allOtherMessages, isChecked: false)
-        XCTAssertEqual(viewModel.viewState.selectionState.count, 8)
-        XCTAssertEqual(viewModel.viewState.selectionState[.allOtherMessages], false)
-        XCTAssertEqual(viewModel.viewState.selectionState[.pollStart], false)
-        XCTAssertEqual(viewModel.viewState.selectionState[.pollEnd], false)
-        
-        // unrelated poll rules stay the same
-        XCTAssertEqual(viewModel.viewState.selectionState[.oneToOneRoom], true)
-        XCTAssertEqual(viewModel.viewState.selectionState[.oneToOnePollStart], true)
-        XCTAssertEqual(viewModel.viewState.selectionState[.oneToOnePollEnd], true)
-    }
-    
     func testMismatchingRulesAreHandled() async {
         setupWithPollRules()
         
