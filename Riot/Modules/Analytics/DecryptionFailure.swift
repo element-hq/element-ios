@@ -47,6 +47,11 @@ import AnalyticsEvents
     /// UTDs can be permanent or temporary. If temporary, this field will contain the time it took to decrypt the message in milliseconds. If permanent should be nil
     var timeToDecrypt: TimeInterval?
     
+    /// Was the current cross-signing identity trusted at the time of decryption
+    var trustOwnIdentityAtTimeOfFailure: Bool?
+    
+    var eventLocalAgeMillis: Int?
+    
     init(failedEventId: String, reason: DecryptionFailureReason, context: String, ts: TimeInterval) {
         self.failedEventId = failedEventId
         self.reason = reason
