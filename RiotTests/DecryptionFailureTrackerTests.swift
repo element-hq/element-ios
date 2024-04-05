@@ -56,7 +56,7 @@ class DecryptionFailureTrackerTests: XCTestCase {
     
     func test_grace_period() {
         
-        let myUser = "test@example.com";
+        let myUser = "@test:example.com";
         fakeSession.mockUserId = myUser;
         
         let decryptionFailureTracker = DecryptionFailureTracker();
@@ -95,7 +95,7 @@ class DecryptionFailureTrackerTests: XCTestCase {
     
     func test_report_ratcheted_key_utd() {
         
-        let myUser = "test@example.com";
+        let myUser = "@test:example.com";
         fakeSession.mockUserId = myUser;
         
         let decryptionFailureTracker = DecryptionFailureTracker();
@@ -125,7 +125,7 @@ class DecryptionFailureTrackerTests: XCTestCase {
     
     func test_report_unspecified_error() {
         
-        let myUser = "test@example.com";
+        let myUser = "@test:example.com";
         fakeSession.mockUserId = myUser;
         
         let decryptionFailureTracker = DecryptionFailureTracker();
@@ -157,7 +157,7 @@ class DecryptionFailureTrackerTests: XCTestCase {
     
     func test_do_not_double_report() {
         
-        let myUser = "test@example.com";
+        let myUser = "@test:example.com";
         fakeSession.mockUserId = myUser;
         
         let decryptionFailureTracker = DecryptionFailureTracker();
@@ -199,7 +199,7 @@ class DecryptionFailureTrackerTests: XCTestCase {
     
     func test_ignore_not_member() {
         
-        let myUser = "test@example.com";
+        let myUser = "@test:example.com";
         fakeSession.mockUserId = myUser;
         
         let decryptionFailureTracker = DecryptionFailureTracker();
@@ -234,7 +234,7 @@ class DecryptionFailureTrackerTests: XCTestCase {
     
     func test_notification_center() {
         
-        let myUser = "test@example.com";
+        let myUser = "@test:example.com";
         fakeSession.mockUserId = myUser;
         
         let decryptionFailureTracker = DecryptionFailureTracker();
@@ -275,7 +275,7 @@ class DecryptionFailureTrackerTests: XCTestCase {
     
     func test_should_report_late_decrypt() {
         
-        let myUser = "test@example.com";
+        let myUser = "@test:example.com";
         fakeSession.mockUserId = myUser;
         
         let decryptionFailureTracker = DecryptionFailureTracker();
@@ -320,7 +320,7 @@ class DecryptionFailureTrackerTests: XCTestCase {
     
     func test_should_report_permanent_decryption_error() {
         
-        let myUser = "test@example.com";
+        let myUser = "@test:example.com";
         fakeSession.mockUserId = myUser;
         
         let decryptionFailureTracker = DecryptionFailureTracker();
@@ -361,7 +361,7 @@ class DecryptionFailureTrackerTests: XCTestCase {
     
     func test_should_report_trust_status_at_decryption_time() {
         
-        let myUser = "test@example.com";
+        let myUser = "@test:example.com";
         fakeSession.mockUserId = myUser;
         
         let decryptionFailureTracker = DecryptionFailureTracker();
@@ -425,7 +425,7 @@ class DecryptionFailureTrackerTests: XCTestCase {
     
     func test_should_report_event_age() {
         
-        let myUser = "test@example.com";
+        let myUser = "@test:example.com";
         fakeSession.mockUserId = myUser;
         
         let format = DateFormatter()
@@ -477,7 +477,7 @@ class DecryptionFailureTrackerTests: XCTestCase {
     
     func test_should_report_expected_utds() {
         
-        let myUser = "test@example.com";
+        let myUser = "@test:example.com";
         fakeSession.mockUserId = myUser;
         
         let format = DateFormatter()
@@ -528,6 +528,75 @@ class DecryptionFailureTrackerTests: XCTestCase {
         XCTAssertEqual(analyticsError.name, .HistoricalMessage)
         
     }
+    
+    
+    func test_should_report_is_matrix_org_and_is_federated() {
+        
+        let myUser = "@test:example.com";
+        fakeSession.mockUserId = myUser;
+        
+        let decryptionFailureTracker = DecryptionFailureTracker();
+        decryptionFailureTracker.timeProvider = timeShifter;
+        
+        let testDelegate = AnalyticsDelegate();
+        
+        decryptionFailureTracker.delegate = testDelegate;
+        
+        timeShifter.timestamp = TimeInterval(0)
+        
+        let fakeEvent = FakeEvent(id: "$0000");
+        fakeEvent.sender = "@bob:example.com"
+        fakeEvent.decryptionError = NSError(domain: MXDecryptingErrorDomain, code: Int(MXDecryptingErrorUnknownInboundSessionIdCode.rawValue))
+        
+        // set session as not yet verified
+        fakeCrossSigning.canTrustCrossSigning = false
+        
+        let fakeRoomState = FakeRoomState();
+        fakeRoomState.mockMembers = FakeRoomMembers(joined: [myUser])
+        
+        decryptionFailureTracker.reportUnableToDecryptError(forEvent: fakeEvent, withRoomState: fakeRoomState, mySession: fakeSession);
+        
+        // Simulate succesful decryption after max wait
+        timeShifter.timestamp = TimeInterval(70)
+        
+        decryptionFailureTracker.checkFailures();
+      
+        XCTAssertEqual(testDelegate.reportedFailure?.isMatrixOrg, false);
+        XCTAssertEqual(testDelegate.reportedFailure?.isFederated, false);
+
+        
+        let analyticsError = testDelegate.reportedFailure!.toAnalyticsEvent()
+        
+        XCTAssertEqual(analyticsError.isMatrixDotOrg, false)
+        XCTAssertEqual(analyticsError.isFederated, false)
+        
+        // Report a new error now that session is verified
+        
+        let fakeEvent2 = FakeEvent(id: "$0001");
+        fakeEvent2.sender = "@bob:example.com"
+        fakeEvent2.decryptionError = NSError(domain: MXDecryptingErrorDomain, code: Int(MXDecryptingErrorUnknownInboundSessionIdCode.rawValue))
+        
+        fakeSession.mockUserId = "@test:matrix.org";
+        fakeRoomState.mockMembers = FakeRoomMembers(joined: [fakeSession.mockUserId])
+    
+        decryptionFailureTracker.reportUnableToDecryptError(forEvent: fakeEvent2, withRoomState: fakeRoomState, mySession: fakeSession);
+        
+        // Simulate permanent UTD
+        timeShifter.timestamp = TimeInterval(140)
+        
+        decryptionFailureTracker.checkFailures();
+      
+        XCTAssertEqual(testDelegate.reportedFailure?.failedEventId, "$0001");
+        XCTAssertEqual(testDelegate.reportedFailure?.isMatrixOrg, true);
+        XCTAssertEqual(testDelegate.reportedFailure?.isFederated, true);
+        
+        let analyticsError2 = testDelegate.reportedFailure!.toAnalyticsEvent()
+        
+        XCTAssertEqual(analyticsError2.isMatrixDotOrg, true)
+        XCTAssertEqual(analyticsError2.isFederated, true)
+        
+    }
+    
     
 }
     
