@@ -103,12 +103,12 @@ class DecryptionFailureTracker: NSObject {
         failure.eventLocalAgeMillis = Int(exactly: eventRelativeAgeMillis)
         failure.trustOwnIdentityAtTimeOfFailure = isSessionVerified
         
-        let myDomain = userId.components(separatedBy: ":")[1]
+        let myDomain = userId.components(separatedBy: ":").last
         failure.isMatrixOrg = myDomain == "matrix.org"
         
         if MXTools.isMatrixUserIdentifier(event.sender) {
-            let senderDomain = event.sender.components(separatedBy: ":")[1]
-            failure.isFederated = senderDomain != myDomain
+            let senderDomain = event.sender.components(separatedBy: ":").last
+            failure.isFederated = senderDomain != nil && senderDomain != myDomain
         }
         
         /// XXX for future work, as for now only the event formatter reports UTDs. That means that it's only UTD ~visible to users
