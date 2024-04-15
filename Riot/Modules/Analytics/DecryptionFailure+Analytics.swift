@@ -42,14 +42,13 @@ extension DecryptionFailure {
             cryptoModule: .Rust,
             cryptoSDK: .Rust,
             domain: .E2EE,
-            
             eventLocalAgeMillis: self.eventLocalAgeMillis,
-            isFederated: nil,
-            isMatrixDotOrg: nil,
+            isFederated: self.isFederated,
+            isMatrixDotOrg: self.isMatrixOrg,
             name: errorName,
             timeToDecryptMillis: timeToDecryptMillis,
             userTrustsOwnIdentity: self.trustOwnIdentityAtTimeOfFailure,
-            wasVisibleToUser: nil
+            wasVisibleToUser: self.wasVisibleToUser
         )
     }
 }

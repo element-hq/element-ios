@@ -52,6 +52,14 @@ import AnalyticsEvents
     
     var eventLocalAgeMillis: Int?
     
+    /// Is the current user on matrix org
+    var isMatrixOrg: Bool?
+    /// Are the sender and recipient on the same homeserver
+    var isFederated: Bool?
+    
+    /// As for now the ios App only reports UTDs visible to user (error are reported from EventFormatter
+    var wasVisibleToUser: Bool = true
+    
     init(failedEventId: String, reason: DecryptionFailureReason, context: String, ts: TimeInterval) {
         self.failedEventId = failedEventId
         self.reason = reason
