@@ -7721,6 +7721,15 @@ static CGSize kThreadListBarButtonItemImageSize;
 {
     self.documentPickerPresenter = nil;
     
+    // Check maxUploadSize accepted by the home server before trying to upload.
+    NSUInteger maxUploadFileSize = self.roomDataSource.mxSession.maxUploadSize;
+    NSDictionary *fileAttributes = [NSFileManager.defaultManager attributesOfItemAtPath:url.path error:nil];
+    if (fileAttributes && fileAttributes.fileSize > maxUploadFileSize) {
+        [self showAlertWithTitle:@"The file you want to upload is too big."
+                         message:[NSString stringWithFormat:@"\nThe file you want to upload is too big.\n\nIt mustn't weight more than %ldMB", maxUploadFileSize/(1024*1024)]];
+        return;
+    }
+    
     MXKUTI *fileUTI = [[MXKUTI alloc] initWithLocalFileURL:url];
     NSString *mimeType = fileUTI.mimeType;
     
