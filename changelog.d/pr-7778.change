@@ -1,0 +1,1 @@
+Check filesize before uploading file to server and display alert if file is too big.
