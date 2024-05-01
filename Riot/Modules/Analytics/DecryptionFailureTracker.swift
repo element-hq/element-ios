@@ -62,14 +62,14 @@ class DecryptionFailureTracker: NSObject {
                                                selector: #selector(eventDidDecrypt(_:)),
                                                name: .mxEventDidDecrypt,
                                                object: nil)
-        
     }
     
     @objc
-    func reportUnableToDecryptError(forEvent event: MXEvent, withRoomState roomState: MXRoomState, myUser userId: String) {
+    func reportUnableToDecryptError(forEvent event: MXEvent, withRoomState roomState: MXRoomState, mySession: MXSession) {
         if reportedFailures[event.eventId] != nil || trackedEvents.contains(event.eventId) {
             return
         }
+        guard let userId = mySession.myUserId else { return }
         
         // Filter out "expected" UTDs
         // We cannot decrypt messages sent before the user joined the room
@@ -82,6 +82,12 @@ class DecryptionFailureTracker: NSObject {
         
         guard let error = event.decryptionError as? NSError else { return }
         
+        let eventOrigin = event.originServerTs
+        let deviceTimestamp = mySession.crypto.deviceCreationTs
+        // If negative it's an historical event relative to the current session
+        let eventRelativeAgeMillis = Int(eventOrigin) - Int(deviceTimestamp)
+        let isSessionVerified = mySession.crypto.crossSigning.canTrustCrossSigning
+        
         var reason = DecryptionFailureReason.unspecified
         
         if error.code == MXDecryptingErrorUnknownInboundSessionIdCode.rawValue {
@@ -92,7 +98,24 @@ class DecryptionFailureTracker: NSObject {
         
         let context = String(format: "code: %ld, description: %@", error.code, event.decryptionError.localizedDescription)
 
-        reportedFailures[failedEventId] = DecryptionFailure(failedEventId: failedEventId, reason: reason, context: context, ts: self.timeProvider.nowTs())
+        let failure = DecryptionFailure(failedEventId: failedEventId, reason: reason, context: context, ts: self.timeProvider.nowTs())
+        
+        failure.eventLocalAgeMillis = Int(exactly: eventRelativeAgeMillis)
+        failure.trustOwnIdentityAtTimeOfFailure = isSessionVerified
+        
+        let myDomain = userId.components(separatedBy: ":").last
+        failure.isMatrixOrg = myDomain == "matrix.org"
+        
+        if MXTools.isMatrixUserIdentifier(event.sender) {
+            let senderDomain = event.sender.components(separatedBy: ":").last
+            failure.isFederated = senderDomain != nil && senderDomain != myDomain
+        }
+        
+        /// XXX for future work, as for now only the event formatter reports UTDs. That means that it's only UTD ~visible to users
+        failure.wasVisibleToUser = true
+        
+        reportedFailures[failedEventId] = failure
+        
         
         // Start the ticker if needed. There is no need to have a ticker if no failures are tracked
         if checkFailuresTimer == nil {
