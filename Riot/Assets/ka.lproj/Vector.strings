@@ -1,1 +1,77 @@
 
+
+// String for App Store
+"store_short_description" = "უსაფრთხო დეცენტრალიზებული ჩატი/ვოიპი";
+
+// Titles
+"title_home" = "მთავარი";
+"title_favourites" = "ფავორიტები";
+"title_people" = "ხალხი";
+"title_rooms" = "ოთახები";
+"title_groups" = "თემები";
+"warning" = "გაფრთხილება";
+
+// Actions
+"view" = "ხედი";
+"next" = "შემდეგი";
+"back" = "უკან";
+"continue" = "გაგრძელება";
+"create" = "შექმნა";
+"start" = "აწყება";
+"leave" = "დატოვება";
+"remove" = "წაშლა";
+"retry" = "გამეორება";
+"on" = "ჩართული";
+"off" = "გამორთული";
+"enable" = "ჩართვა";
+"save" = "შენახვა";
+"join" = "შეუერთდება";
+"decline" = "უარყოფა";
+"accept" = "მიღება";
+"camera" = "კამერა";
+"voice" = "ხმა";
+"video" = "ვიდეო";
+"active_call" = "აქტიური ზარი";
+"later" = "შემდეგ";
+"rename" = "გადარქმევა";
+"collapse" = "ჩაკეცვა";
+"send_to" = "გაგზავნა %@-ს";
+"close" = "დახურვა";
+"skip" = "გამოტოვება";
+"joined" = "შეუერთდა";
+"switch" = "გადართვა";
+"more" = "მეტი";
+"less" = "ნაკლები";
+"open" = "გახსნა";
+"private" = "ირადი";
+"public" = "საჯარო";
+"stop" = "შეჩერება";
+"new_word" = "ახალი";
+"existing" = "არსებული";
+"add" = "დამატება";
+"ok" = "კარგი";
+"error" = "შეცდომა";
+"suggest" = "შესთავაზება";
+"confirm" = "დადასტურება";
+"invite_to" = "მიწვევა %@-ში";
+
+// Activities
+"loading" = "ჩატვირთვა";
+"sending" = "გაგზავნა";
+"callbar_active_and_single_paused" = "1 აქტიური ზარი (%@) · 1 შეჩერებული ზარი";
+"callbar_active_and_multiple_paused" = "1 აქტიური ზარი (%@) · %@ შეჩერებული ზარები";
+"callbar_only_single_paused" = "შეჩერებული ზარი";
+"callbar_return" = "დაბრუნება";
+"store_promotional_text" = "კონფიდენციალობის დაცვით ჩატისა და თანამშრომლობის აპლიკაცია, ღია ქსელზე. დეცენტრალიზებული, რათა მართვა გადაგიცემათ. არაა დათამაინინგი, არაა უკანა კარები და არაა მესამე მხარის წვდომა.";
+"invite" = "მიწვევა";
+"cancel" = "გაუქმება";
+"preview" = "წინასწარი ხილვა";
+"active_call_details" = "აქტიური ზარი (%@)";
+"joining" = "შეერთება";
+"done" = "დასრულებული";
+"edit" = "რედაქტირება";
+"saving" = "შენახვა";
+
+// Call Bar
+"callbar_only_single_active" = "შეეხეთ, რომ დაბრუნდეთ ზარში (%@)";
+"callbar_only_multiple_paused" = "%@ შეჩერებული ზარები";
