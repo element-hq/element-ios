@@ -2740,3 +2740,18 @@
 
 "key_verification_self_verify_security_upgrade_alert_title" = "Alkalmazás frissítve";
 "settings_acceptable_use" = "Elfogadható felhasználói feltételek";
+"room_creation_user_not_found_prompt_title" = "Megerősítés";
+"room_creation_user_not_found_prompt_message" = "Nem található profil ehhez a Matrix-azonosítóhoz. Mindenképp elindítja a privát csevegést?";
+"room_creation_user_not_found_prompt_invite_action" = "Privát csevegés mindenképp";
+"room_participants_invite_unknown_participant_prompt_to_msg" = "Nem található profil ehhez a Matrix-azonosítóhoz. Mindenképp meghívja %@ felhasználót a(z) %@ szobába?";
+"room_participants_invite_anyway" = "Meghívás mindenképp";
+
+// Room commands descriptions
+"room_command_change_display_name_description" = "Megváltoztatja a megjelenítendő becenevét";
+"room_command_emote_description" = "Megjeleníti a műveletet";
+"room_command_join_room_description" = "Csatlakozik a megadott című szobához";
+"room_command_part_room_description" = "Elhagyja a szobát";
+"room_command_invite_user_description" = "Meghívja az adott azonosítójú felhasználót a jelenlegi szobába";
+"room_command_kick_user_description" = "Eltávolítja az adott azonosítójú felhasználót ebből a szobából";
+"room_command_ban_user_description" = "Kitiltja az adott azonosítójú felhasználót";
+"room_command_unban_user_description" = "Feloldja az adott azonosítójú felhasználó kitiltását";
