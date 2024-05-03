@@ -2603,6 +2603,8 @@ To enable access, tap Settings> Location and select Always";
 
 
 // MARK: - WYSIWYG Composer
+"wysiwyg_composer_action_minimise_action" = "Shrink composer";
+"wysiwyg_composer_action_maximise_action" = "Expand composer";
 
 // Send Media Actions
 "wysiwyg_composer_start_action_media_picker" = "Photo Library";

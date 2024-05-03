@@ -9567,6 +9567,14 @@ public class VectorL10n: NSObject {
   public static var widgetStickerPickerNoStickerpacksAlertAddNow: String { 
     return VectorL10n.tr("Vector", "widget_sticker_picker_no_stickerpacks_alert_add_now") 
   }
+  /// Expand composer
+  public static var wysiwygComposerActionMaximiseAction: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_action_maximise_action") 
+  }
+  /// Shrink composer
+  public static var wysiwygComposerActionMinimiseAction: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_action_minimise_action") 
+  }
   /// Apply bold format
   public static var wysiwygComposerFormatActionBold: String { 
     return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_bold") 
