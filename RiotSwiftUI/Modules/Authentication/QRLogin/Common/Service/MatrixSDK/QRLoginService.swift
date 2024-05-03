@@ -23,6 +23,9 @@ import ZXingObjC
 
 // MARK: - QRLoginService
 
+// n.b MSC3886/MSC3903/MSC3906 that this is based on are now closed.
+// However, we want to keep this implementation around for some time.
+// TODO: define an end-of-life date for this implementation.
 class QRLoginService: NSObject, QRLoginServiceProtocol {
     private let client: AuthenticationRestClient
     private let sessionCreator: SessionCreatorProtocol
