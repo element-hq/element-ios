@@ -1226,7 +1226,7 @@
 "secrets_recovery_reset_action_part_2" = "Resettar tudo";
 "secrets_setup_recovery_passphrase_summary_information" = "Lembre-se de sua Frase de Segurança. Ela pode ser usada para destrancar suas mensagens & dados encriptados.";
 "secrets_setup_recovery_passphrase_summary_title" = "Salvar sua Frase de Segurança";
-"home_empty_view_information" = "O app de chat seguro tudo-em-um para equipes, amigas(os) e organizações. Toque no botão + abaixo para adicionar pessoas e salas.";
+"home_empty_view_information" = "O app de chat seguro tudo-em-um para equipes, amigos e organizações. Toque no botão + abaixo para adicionar pessoas e salas.";
 
 // MARK: - Home
 
@@ -1244,7 +1244,7 @@
 
 // MARK: - Invite friends
 
-"invite_friends_action" = "Convidar amigas(os) para %@";
+"invite_friends_action" = "Convidar amigos para %@";
 "pin_protection_settings_change_pin" = "Mudar PIN";
 "pin_protection_confirm_pin_to_change" = "Confirme PIN para mudar PIN";
 "bug_report_background_mode" = "Continuar em background";
@@ -1348,7 +1348,7 @@
 "side_menu_action_feedback" = "Feedback";
 "side_menu_action_help" = "Ajuda";
 "side_menu_action_settings" = "Ajustes";
-"side_menu_action_invite_friends" = "Convidar amigas(os)";
+"side_menu_action_invite_friends" = "Convidar amigos";
 
 // Mark: - Side menu
 
@@ -1632,7 +1632,7 @@
 "onboarding_use_case_not_sure_yet" = "Não tem certeza ainda? %@";
 "onboarding_use_case_community_messaging" = "Comunidades";
 "onboarding_use_case_work_messaging" = "Times";
-"onboarding_use_case_personal_messaging" = "Amigas(os) e família";
+"onboarding_use_case_personal_messaging" = "Amigos e família";
 "onboarding_use_case_message" = "Nós vamos ajudá-la(o) a ficar conectada(o)";
 "onboarding_use_case_title" = "Com quem você vai fazer chat mais?";
 
@@ -2654,3 +2654,20 @@
 "user_other_session_security_recommendation_title" = "Outras sessões";
 "room_creation_only_one_email_invite" = "Você só pode convidar um e-mail de cada vez";
 "accessibility_selected" = "selecionado";
+"room_creation_user_not_found_prompt_title" = "Confirmação";
+"room_creation_user_not_found_prompt_message" = "Não foi possível encontrar perfis para este ID do Matrix. Quer começar uma conversa mesmo assim?";
+"room_creation_user_not_found_prompt_invite_action" = "Começar conversa mesmo assim";
+"room_participants_invite_anyway" = "Convidar mesmo assim";
+"room_command_part_room_description" = "Sair da sala";
+"room_command_kick_user_description" = "Remove o usuário com o ID fornecido desta sala";
+"room_command_unban_user_description" = "Desbane o usuário com o ID fornecido";
+"room_command_set_user_power_level_description" = "Define o nível de poder de um usuário";
+"room_participants_invite_unknown_participant_prompt_to_msg" = "Não foi possível encontrar perfis para este ID do Matrix. Tem certeza que deseja convidar %@ para %@?";
+"room_command_ban_user_description" = "Bane o usuário com o ID fornecido";
+
+// Room commands descriptions
+"room_command_change_display_name_description" = "Altera o seu nome de exibição";
+"room_command_emote_description" = "Exibe ação";
+"room_command_join_room_description" = "Entra na sala com o endereço fornecido";
+"room_command_invite_user_description" = "Convida o usuário com o ID fornecido para a sala atual";
+"authentication_qr_login_failure_device_not_supported" = "Vincular com este dispositivo não é suportado.";
