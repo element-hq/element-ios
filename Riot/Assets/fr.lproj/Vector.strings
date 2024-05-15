@@ -778,6 +778,9 @@
 // MARK: File upload
 "file_upload_error_title" = "Envoi de fichier";
 "file_upload_error_unsupported_file_type_message" = "Type de fichier non pris en charge.";
+"file_upload_error_too_large_title" = "Fichier trop lourd";
+"file_upload_error_too_large_message" = "La taille maximum autorisée est %@Mo";
+
 "auth_softlogout_signed_out" = "Vous êtes déconnecté";
 "auth_softlogout_sign_in" = "Se connecter";
 "auth_softlogout_reason" = "L’administrateur de votre serveur d’accueil (%1$@) vous a déconnecté de votre compte %2$@ (%3$@).";
