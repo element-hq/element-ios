@@ -7773,8 +7773,8 @@ static CGSize kThreadListBarButtonItemImageSize;
     NSUInteger maxUploadFileSize = self.roomDataSource.mxSession.maxUploadSize;
     NSDictionary *fileAttributes = [NSFileManager.defaultManager attributesOfItemAtPath:url.path error:nil];
     if (fileAttributes && fileAttributes.fileSize > maxUploadFileSize) {
-        [self showAlertWithTitle:@"The file you want to upload is too big."
-                         message:[NSString stringWithFormat:@"\nThe file you want to upload is too big.\n\nIt mustn't weight more than %ldMB", maxUploadFileSize/(1024*1024)]];
+        [self showAlertWithTitle:[VectorL10n fileUploadErrorTooLargeTitle]
+                         message:[VectorL10n fileUploadErrorTooLargeMessage:[NSByteCountFormatter stringFromByteCount:maxUploadFileSize countStyle:NSByteCountFormatterCountStyleFile]]];
         return;
     }
     

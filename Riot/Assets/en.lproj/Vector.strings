@@ -1717,6 +1717,8 @@ Tap the + to start adding people.";
 // MARK: File upload
 "file_upload_error_title" = "File upload";
 "file_upload_error_unsupported_file_type_message" = "File type not supported.";
+"file_upload_error_too_large_title" = "File too large";
+"file_upload_error_too_large_message" = "Maximum supported file size is %@MB";
 
 // MARK: Emoji picker
 "emoji_picker_title" = "Reactions";
