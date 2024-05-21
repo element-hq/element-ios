@@ -35,6 +35,7 @@ targets:
     - package: AnalyticsEvents
     - package: DeviceKit
     - package: DTCoreText
+    - package: PostHog
 
     configFiles:
       Debug: Debug.xcconfig

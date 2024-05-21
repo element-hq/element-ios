@@ -14,7 +14,6 @@
 // limitations under the License.
 //
 
-import PostHog
 import AnalyticsEvents
 
 /// A class responsible for managing a variety of analytics clients
