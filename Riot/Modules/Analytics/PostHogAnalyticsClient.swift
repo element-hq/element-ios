@@ -27,7 +27,7 @@ class PostHogAnalyticsClient: AnalyticsClientProtocol {
     
     static let shared = PostHogAnalyticsClient()
     
-    var isRunning: Bool { postHog != nil }
+    var isRunning: Bool { postHog != nil && !postHog!.isOptOut() }
     
     func start() {
         // Only start if analytics have been configured in BuildSettings
