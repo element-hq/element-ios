@@ -260,6 +260,9 @@ class FakeCrypto: NSObject, MXCrypto {
         
     }
     
+    func invalidateCache(_ done: @escaping () -> Void) {
+        
+    }
 }
 
 
