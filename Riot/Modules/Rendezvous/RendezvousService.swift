@@ -40,6 +40,10 @@ enum RendezvousFlow: String {
     case SETUP_ADDITIONAL_DEVICE_V2 = "org.matrix.msc3906.setup.additional_device.v2"
 }
 
+// n.b MSC3886/MSC3903/MSC3906 that this is based on are now closed.
+// However, we want to keep this implementation around for some time.
+// TODO: define an end-of-life date for this implementation.
+
 /// Allows communication through a secure channel. Based on MSC3886 and MSC3903
 @MainActor
 class RendezvousService {

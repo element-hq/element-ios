@@ -58,8 +58,8 @@ packages:
     url: https://github.com/element-hq/swift-ogg
     branch: 0.0.1
   WysiwygComposer:
-    url: https://github.com/matrix-org/matrix-wysiwyg-composer-swift
-    version: 2.29.0
+    url: https://github.com/matrix-org/matrix-rich-text-editor-swift
+    version: 2.37.3
   DeviceKit:
     url: https://github.com/devicekit/DeviceKit
     majorVersion: 4.7.0
