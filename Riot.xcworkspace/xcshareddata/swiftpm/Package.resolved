@@ -46,12 +46,12 @@
       }
     },
     {
-      "identity" : "matrix-wysiwyg-composer-swift",
+      "identity" : "matrix-rich-text-editor-swift",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/matrix-org/matrix-wysiwyg-composer-swift",
+      "location" : "https://github.com/matrix-org/matrix-rich-text-editor-swift",
       "state" : {
-        "revision" : "f788fe2482c0b89019f679a1f43dccf9c25a0782",
-        "version" : "2.29.0"
+        "revision" : "21c0dd6e9c0b38d19d97af8e3e99fe01df56825d",
+        "version" : "2.37.3"
       }
     },
     {
