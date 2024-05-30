@@ -1,3 +1,10 @@
+## Changes in 1.11.12 (2024-05-30)
+
+🐛 Bugfixes
+
+- Fix a crash when the user taps play multiple times and the video download fails. ([#7791](https://github.com/element-hq/element-ios/issues/7791))
+
+
 ## Changes in 1.11.11 (2024-05-29)
 
 No significant changes.
