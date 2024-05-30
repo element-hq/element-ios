@@ -107,6 +107,8 @@
 
 @property (nonatomic) BOOL customAnimationsEnabled;
 
+@property (nonatomic) BOOL isLoadingVideo;
+
 @end
 
 @implementation MXKAttachmentsViewController
@@ -969,8 +971,10 @@
                         navigationBarDisplayTimer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(hideNavigationBar) userInfo:self repeats:NO];
                     }
                 }
-                else
+                else if (!self.isLoadingVideo)
                 {
+                    self.isLoadingVideo = YES;
+                    
                     MXKPieChartView *pieChartView = [[MXKPieChartView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
                     pieChartView.progress = 0;
                     pieChartView.progressColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.25];
@@ -1020,6 +1024,7 @@
                             [selectedCell.moviePlayer.player play];
                             
                             [pieChartView removeFromSuperview];
+                            self.isLoadingVideo = NO;
                             
                             [self hideNavigationBar];
                         }
@@ -1035,6 +1040,7 @@
                         MXLogDebug(@"[MXKAttachmentsVC] video download failed");
                         
                         [pieChartView removeFromSuperview];
+                        self.isLoadingVideo = NO;
                         
                         // Display the navigation bar so that the user can leave this screen
                         self.navigationBarContainer.hidden = NO;
