@@ -127,7 +127,8 @@ class AnalyticsTests: XCTestCase {
         XCTAssertEqual(client.pendingUserProperties?.ftueUseCaseSelection, .PersonalMessaging, "The use case selection should match.")
         
         // When sending an event (tests run under Debug configuration so this is sent to the development instance)
-        client.screen(AnalyticsEvent.MobileScreen(durationMs: nil, screenName: .Home))
+        let event = AnalyticsEvent.Signup(authenticationType: .Other)
+        client.capture(event)
         
         // Then the properties should be cleared
         XCTAssertNil(client.pendingUserProperties, "The user properties should be cleared.")

@@ -69,8 +69,6 @@ abstract_target 'RiotPods' do
   pod 'KeychainAccess', '~> 4.2.2'
   pod 'WeakDictionary', '~> 2.0'
 
-  # PostHog for analytics
-  pod 'PostHog', '~> 2.0.0'
   pod 'Sentry', '~> 7.15.0'
 
   pod 'OLMKit'
