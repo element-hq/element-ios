@@ -19,23 +19,39 @@ import AnalyticsEvents
 
 /// An analytics client that reports events to a PostHog server.
 class PostHogAnalyticsClient: AnalyticsClientProtocol {
+    
+    private var posthogFactory: PostHogFactory = DefaultPostHogFactory()
+    
+    init(posthogFactory: PostHogFactory? = nil) {
+        if let factory = posthogFactory {
+            self.posthogFactory = factory
+        }
+    }
+    
     /// The PHGPostHog object used to report events.
-    private var postHog: PostHogSDK?
+    private var postHog: PostHogProtocol?
     
     /// Any user properties to be included with the next captured event.
     private(set) var pendingUserProperties: AnalyticsEvent.UserProperties?
     
+    /// Super Properties are properties associated with events that are set once and then sent with every capture call, be it a $screen, an autocaptured button click, or anything else.
+    /// It is different from user properties that will be attached to the user and not events.
+    /// Not persisted for now, should be set on start.
+    private var superProperties: AnalyticsEvent.SuperProperties?
+    
     static let shared = PostHogAnalyticsClient()
     
-    var isRunning: Bool { postHog != nil && !postHog!.isOptOut() }
+    var isRunning: Bool {
+        guard let postHog else { return false }
+        return !postHog.isOptOut()
+    }
     
     func start() {
         // Only start if analytics have been configured in BuildSettings
         guard let configuration = PostHogConfig.standard else { return }
         
         if postHog == nil {
-            PostHogSDK.shared.setup(configuration)
-            postHog = PostHogSDK.shared
+            postHog = posthogFactory.createPostHog(config: configuration)
         }
         
         postHog?.optIn()
@@ -67,13 +83,13 @@ class PostHogAnalyticsClient: AnalyticsClientProtocol {
     }
     
     func capture(_ event: AnalyticsEventProtocol) {
-        postHog?.capture(event.eventName, properties: event.properties, userProperties: pendingUserProperties?.properties.compactMapValues { $0 })
+        postHog?.capture(event.eventName, properties: attachSuperProperties(to: event.properties), userProperties: pendingUserProperties?.properties.compactMapValues { $0 })
         // Pending user properties have been added
         self.pendingUserProperties = nil
     }
     
     func screen(_ event: AnalyticsScreenProtocol) {
-        postHog?.screen(event.screenName.rawValue, properties: event.properties)
+        postHog?.screen(event.screenName.rawValue, properties: attachSuperProperties(to: event.properties))
     }
     
     func updateUserProperties(_ userProperties: AnalyticsEvent.UserProperties) {
@@ -86,8 +102,34 @@ class PostHogAnalyticsClient: AnalyticsClientProtocol {
         self.pendingUserProperties = AnalyticsEvent.UserProperties(allChatsActiveFilter: userProperties.allChatsActiveFilter ?? pendingUserProperties.allChatsActiveFilter,
                                                                    ftueUseCaseSelection: userProperties.ftueUseCaseSelection ?? pendingUserProperties.ftueUseCaseSelection,
                                                                    numFavouriteRooms: userProperties.numFavouriteRooms ?? pendingUserProperties.numFavouriteRooms,
-                                                                   numSpaces: userProperties.numSpaces ?? pendingUserProperties.numSpaces)
+                                                                   numSpaces: userProperties.numSpaces ?? pendingUserProperties.numSpaces,
+                                                                   // Not yet supported
+                                                                   recoveryState: nil, verificationState: nil)
     }
+    
+    func updateSuperProperties(_ updatedProperties: AnalyticsEvent.SuperProperties) {
+        self.superProperties = AnalyticsEvent.SuperProperties(
+            appPlatform: updatedProperties.appPlatform ?? superProperties?.appPlatform,
+            cryptoSDK: updatedProperties.cryptoSDK ?? superProperties?.cryptoSDK,
+            cryptoSDKVersion: updatedProperties.cryptoSDKVersion ?? superProperties?.cryptoSDKVersion
+        )
+    }
+    
+    /// Attach super properties to events.
+    /// If the property is already set on the event, the already set value will be kept.
+    private func attachSuperProperties(to properties: [String: Any]) -> [String: Any] {
+        guard isRunning, let superProperties else { return properties }
+        
+        var properties = properties
+        
+        superProperties.properties.forEach { (key: String, value: Any) in
+            if properties[key] == nil {
+                properties[key] = value
+            }
+        }
+        return properties
+    }
+    
     
 }
 
