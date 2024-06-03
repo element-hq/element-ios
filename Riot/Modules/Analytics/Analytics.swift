@@ -94,13 +94,9 @@ import AnalyticsEvents
         
         guard let session = session else { return }
         useAnalyticsSettings(from: session)
-        self.client.updateSuperProperties(
-            AnalyticsEvent.SuperProperties(
-                appPlatform: .EI,
-                cryptoSDK: .Rust,
-                cryptoSDKVersion: session.crypto.version
-            )
-        )
+        client.updateSuperProperties(.init(appPlatform: .EI,
+                                           cryptoSDK: .Rust,
+                                           cryptoSDKVersion: session.crypto.version))
     }
     
     /// Stops analytics tracking and calls `reset` to clear any IDs and event queues.
