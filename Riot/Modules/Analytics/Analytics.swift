@@ -253,7 +253,8 @@ extension Analytics {
                                                            ftueUseCaseSelection: ftueUseCase?.analyticsName,
                                                            numFavouriteRooms: numFavouriteRooms,
                                                            numSpaces: numSpaces,
-        recoveryState: nil, verificationState: nil)
+                                                           recoveryState: nil,
+                                                           verificationState: nil)
         client.updateUserProperties(userProperties)
     }
     
