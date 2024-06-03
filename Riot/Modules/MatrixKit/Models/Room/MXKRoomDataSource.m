@@ -46,11 +46,12 @@ NSString *const kMXKRoomDataSourceTimelineErrorErrorKey = @"kMXKRoomDataSourceTi
 
 NSString * const MXKRoomDataSourceErrorDomain = @"kMXKRoomDataSourceErrorDomain";
 
-typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
-    MXKRoomDataSourceErrorResendGeneric = 10001,
-    MXKRoomDataSourceErrorResendInvalidMessageType = 10002,
-    MXKRoomDataSourceErrorResendInvalidLocalFilePath = 10003,
-};
+// Check filesize before sending: make RoomDataSource errors public
+//typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
+//    MXKRoomDataSourceErrorResendGeneric = 10001,
+//    MXKRoomDataSourceErrorResendInvalidMessageType = 10002,
+//    MXKRoomDataSourceErrorResendInvalidLocalFilePath = 10003,
+//};
 
 
 @interface MXKRoomDataSource ()
@@ -1923,6 +1924,67 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     return [self.room canReplyToEvent:eventToReply];
 }
 
+// Check filesize before sending: check file size before sending
+- (BOOL)_isFilesizeOkToBeSent:(NSUInteger)filesize
+{
+    // Check maxUploadSize accepted by the home server before trying to upload.
+    NSUInteger maxUploadFileSize = self.mxSession.maxUploadSize;
+    if (filesize > maxUploadFileSize)
+    {
+        return NO;
+    }
+    else
+    {
+        return YES;
+    }
+}
+
+- (BOOL)isFilesizeOkToBeSentForData:(NSData *)fileData
+{
+    return [self _isFilesizeOkToBeSent:fileData.length];
+}
+
+- (BOOL)isFilesizeOkToBeSentForLocalFileUrl:(NSURL *)localFileUrl
+{
+    NSDictionary *fileAttributes = [NSFileManager.defaultManager attributesOfItemAtPath:localFileUrl.path error:nil];
+    if (fileAttributes)
+    {
+        return [self _isFilesizeOkToBeSent:fileAttributes.fileSize];
+    }
+    else
+    {
+        return NO;
+    }
+}
+
+- (BOOL)isFilesizeOkToBeSentForLocalAVAsset:(AVAsset *)asset
+{
+    // Check if asset points to a local file
+    if( ![asset isKindOfClass:AVURLAsset.class] )
+    {
+        // If asset doesn't point to a local asset, we can't check size.
+        // Return YES to let the upload happens and get the result of the backend.
+        return YES;
+    }
+    
+    AVURLAsset *urlAsset = (AVURLAsset *)asset;
+    NSNumber *assetFilesize;
+    NSError *error;
+    
+    // Try to get asset filesize.
+    [urlAsset.URL getResourceValue:&assetFilesize forKey:NSURLFileSizeKey error:&error];
+   
+    // If we can't check size,
+    if( error != NULL || assetFilesize == NULL )
+    {
+        // return YES to let the upload happens and get the result of the backend.
+        return YES;
+    }
+    
+    return [self _isFilesizeOkToBeSent:assetFilesize.unsignedLongValue];
+}
+
+
 - (void)sendImage:(NSData *)imageData mimeType:(NSString *)mimetype success:(void (^)(NSString *))success failure:(void (^)(NSError *))failure
 {
     UIImage *image = [UIImage imageWithData:imageData];
@@ -1944,6 +2006,13 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 
 - (void)sendImageData:(NSData*)imageData withImageSize:(CGSize)imageSize mimeType:(NSString*)mimetype andThumbnail:(UIImage*)thumbnail success:(void (^)(NSString *eventId))success failure:(void (^)(NSError *error))failure
 {
+    // Check filesize before sending: check fielsize before trying to send file
+     if( ![self isFilesizeOkToBeSentForData:imageData] )
+     {
+         failure([NSError errorWithDomain:MXKRoomDataSourceErrorDomain code:MXKRoomDataSourceErrorCantSendFileToBig userInfo:nil]);
+         return;
+     }
+
     __block MXEvent *localEchoEvent = nil;
     
     [_room sendImage:imageData withImageSize:imageSize mimeType:mimetype andThumbnail:thumbnail threadId:self.threadId localEcho:&localEchoEvent success:success failure:failure];
@@ -1964,6 +2033,13 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 
 - (void)sendVideoAsset:(AVAsset *)videoAsset withThumbnail:(UIImage *)videoThumbnail success:(void (^)(NSString *))success failure:(void (^)(NSError *))failure
 {
+    // Check filesize before sending: check fielsize before trying to send file
+     if( ![self isFilesizeOkToBeSentForLocalAVAsset:videoAsset] )
+     {
+         failure([NSError errorWithDomain:MXKRoomDataSourceErrorDomain code:MXKRoomDataSourceErrorCantSendFileToBig userInfo:nil]);
+         return;
+     }
+
     __block MXEvent *localEchoEvent = nil;
     
     [_room sendVideoAsset:videoAsset withThumbnail:videoThumbnail threadId:self.threadId localEcho:&localEchoEvent success:success failure:failure];
@@ -2013,6 +2089,13 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 
 - (void)sendFile:(NSURL *)fileLocalURL mimeType:(NSString*)mimeType success:(void (^)(NSString *))success failure:(void (^)(NSError *))failure
 {
+    // Check filesize before sending: check fielsize before trying to send file
+    if( ![self isFilesizeOkToBeSentForLocalFileUrl:fileLocalURL] )
+    {
+        failure([NSError errorWithDomain:MXKRoomDataSourceErrorDomain code:MXKRoomDataSourceErrorCantSendFileToBig userInfo:nil]);
+        return;
+    }
+
     __block MXEvent *localEchoEvent = nil;
     
     [_room sendFile:fileLocalURL mimeType:mimeType threadId:self.threadId localEcho:&localEchoEvent success:success failure:failure];
