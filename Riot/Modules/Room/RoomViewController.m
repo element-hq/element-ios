@@ -7721,15 +7721,6 @@ static CGSize kThreadListBarButtonItemImageSize;
 {
     self.documentPickerPresenter = nil;
     
-    // Check maxUploadSize accepted by the home server before trying to upload.
-    NSUInteger maxUploadFileSize = self.roomDataSource.mxSession.maxUploadSize;
-    NSDictionary *fileAttributes = [NSFileManager.defaultManager attributesOfItemAtPath:url.path error:nil];
-    if (fileAttributes && fileAttributes.fileSize > maxUploadFileSize) {
-        [self showAlertWithTitle:[VectorL10n fileUploadErrorTooLargeTitle]
-                         message:[VectorL10n fileUploadErrorTooLargeMessage:[NSByteCountFormatter stringFromByteCount:maxUploadFileSize countStyle:NSByteCountFormatterCountStyleFile]]];
-        return;
-    }
-    
     MXKUTI *fileUTI = [[MXKUTI alloc] initWithLocalFileURL:url];
     NSString *mimeType = fileUTI.mimeType;
     
@@ -7756,6 +7747,17 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
 }
 
+// Check filesize before sending: if send file error is "File too big", display alert box to user
+- (void)displayAlertIfErrorIsFileIsTooBig:(NSError *)error
+{
+    if( error.code == MXKRoomDataSourceErrorCantSendFileToBig )
+    {
+        NSUInteger maxUploadFileSize = self.roomDataSource.mxSession.maxUploadSize;
+        [self showAlertWithTitle:[VectorL10n fileUploadErrorTooLargeTitle]
+                         message:[VectorL10n fileUploadErrorTooLargeMessage:[NSByteCountFormatter stringFromByteCount:maxUploadFileSize countStyle:NSByteCountFormatterCountStyleFile]]];
+    }
+}
+
 - (void)sendImage:(NSData *)imageData mimeType:(NSString *)mimeType {
     // Create before sending the message in case of a discussion (direct chat)
     MXWeakify(self);
@@ -7767,7 +7769,9 @@ static CGSize kThreadListBarButtonItemImageSize;
             [self.roomDataSource sendImage:imageData mimeType:mimeType success:nil failure:^(NSError *error) {
                 // Nothing to do. The image is marked as unsent in the room history by the datasource
                 MXLogDebug(@"[MXKRoomViewController] sendImage failed.");
-            }];
+                // Check filesize before sending: if error is "FileTooBig", display alert box.
+                [self displayAlertIfErrorIsFileIsTooBig:error];
+             }];
         }
         // Errors are handled at the request level. This should be improved in case of code rewriting.
     }];
@@ -7784,6 +7788,8 @@ static CGSize kThreadListBarButtonItemImageSize;
             [(RoomDataSource*)self.roomDataSource sendVideo:url success:nil failure:^(NSError *error) {
                 // Nothing to do. The video is marked as unsent in the room history by the datasource
                 MXLogDebug(@"[MXKRoomViewController] sendVideo failed.");
+                // Check filesize before sending: if error is "FileTooBig", display alert box.
+                [self displayAlertIfErrorIsFileIsTooBig:error];
             }];
         }
         // Errors are handled at the request level. This should be improved in case of code rewriting.
@@ -7801,6 +7807,8 @@ static CGSize kThreadListBarButtonItemImageSize;
             [self.roomDataSource sendFile:url mimeType:mimeType success:nil failure:^(NSError *error) {
                 // Nothing to do. The file is marked as unsent in the room history by the datasource
                 MXLogDebug(@"[MXKRoomViewController] sendFile failed.");
+                // Check filesize before sending: if error is "FileTooBig", display alert box.
+                [self displayAlertIfErrorIsFileIsTooBig:error];
             }];
         }
         // Errors are handled at the request level. This should be improved in case of code rewriting.
