@@ -361,9 +361,7 @@ class MockPostHog: PostHogProtocol {
         enabled = false
     }
     
-    func reset() {
-        
-    }
+    func reset() { }
     
     func flush() {
         
