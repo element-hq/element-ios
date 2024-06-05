@@ -53,4 +53,11 @@ protocol AnalyticsClientProtocol {
     /// be a delay when updating user properties as these are cached to be included
     /// as part of the next event that gets captured.
     func updateUserProperties(_ userProperties: AnalyticsEvent.UserProperties)
+    
+    
+    /// Updates the super properties.
+    /// Super properties added to all captured events and screen.
+    /// - Parameter superProperties: The properties event to capture.
+    func updateSuperProperties(_ event: AnalyticsEvent.SuperProperties)
+    
 }
