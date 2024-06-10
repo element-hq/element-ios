@@ -155,16 +155,6 @@ static NSString *const kNSFWKeyword = @"nsfw";
     }
 }
 
-- (void)setShowNSFWRooms:(BOOL)showNSFWRooms
-{
-    if (showNSFWRooms != _showNSFWRooms)
-    {
-        _showNSFWRooms = showNSFWRooms;
-        
-        [self resetPagination];
-    }
-}
-
 - (NSUInteger)roomsCount
 {
     return rooms.count;
@@ -254,14 +244,7 @@ static NSString *const kNSFWKeyword = @"nsfw";
             
             NSArray<MXPublicRoom*> *publicRooms;
             
-            if (self.showNSFWRooms)
-            {
-                publicRooms = publicRoomsResponse.chunk;
-            }
-            else
-            {
-                publicRooms = [self filterPublicRooms:publicRoomsResponse.chunk containingKeyword:kNSFWKeyword];
-            }
+            publicRooms = [self filterPublicRooms:publicRoomsResponse.chunk containingKeyword:kNSFWKeyword];
 
             [self->rooms addObjectsFromArray:publicRooms];
             self->nextBatch = publicRoomsResponse.nextBatch;
