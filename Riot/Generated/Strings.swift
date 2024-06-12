@@ -5207,6 +5207,14 @@ public class VectorL10n: NSObject {
   public static var roomActionReply: String { 
     return VectorL10n.tr("Vector", "room_action_reply") 
   }
+  /// Report room
+  public static var roomActionReport: String { 
+    return VectorL10n.tr("Vector", "room_action_report") 
+  }
+  /// Reason for reporting this room
+  public static var roomActionReportPromptReason: String { 
+    return VectorL10n.tr("Vector", "room_action_report_prompt_reason") 
+  }
   /// Send file
   public static var roomActionSendFile: String { 
     return VectorL10n.tr("Vector", "room_action_send_file") 

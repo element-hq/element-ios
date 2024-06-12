@@ -48,4 +48,5 @@ enum RoomInfoListViewAction {
     case navigate(target: RoomInfoListTarget)
     case leave
     case cancel
+    case report
 }

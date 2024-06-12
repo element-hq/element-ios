@@ -51,8 +51,8 @@
     [self.rightButton setTitle:[VectorL10n join] forState:UIControlStateNormal];
     [self.rightButton setTitle:[VectorL10n join] forState:UIControlStateHighlighted];
     
-    [self.reportButton setTitle:[VectorL10n roomEventActionReport] forState:UIControlStateNormal];
-    [self.reportButton setTitle:[VectorL10n roomEventActionReport] forState:UIControlStateHighlighted];
+    [self.reportButton setTitle:[VectorL10n roomActionReport] forState:UIControlStateNormal];
+    [self.reportButton setTitle:[VectorL10n roomActionReport] forState:UIControlStateHighlighted];
     
     tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(reportTapGesture:)];
     [tap setNumberOfTouchesRequired:1];

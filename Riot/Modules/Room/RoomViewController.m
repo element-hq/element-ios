@@ -5372,10 +5372,10 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
 }
 
-- (void)handleReportRoomButtonPress 
+- (void)handleReportRoom 
 {
     // Prompt user to enter a description of the problem content.
-    UIAlertController *reportReasonAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomEventActionReportPromptReason]
+    UIAlertController *reportReasonAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomActionReportPromptReason]
                                                                                message:nil
                                                                         preferredStyle:UIAlertControllerStyleAlert];
     
@@ -5663,7 +5663,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
     else if (tappedView == previewHeader.reportButton)
     {
-        [self handleReportRoomButtonPress];
+        [self handleReportRoom];
     }
 }
 
@@ -8030,6 +8030,11 @@ static CGSize kThreadListBarButtonItemImageSize;
 {
     [self.navigationController popToViewController:self animated:true];
     [self reloadRoomWihtEventId:event.eventId threadId:event.threadId forceUpdateRoomMarker:NO];
+}
+
+- (void)roomInfoCoordinatorBridgePresenterDidRequestReportRoom:(RoomInfoCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [self handleReportRoom];
 }
 
 -(void)reloadRoomWihtEventId:(NSString *)eventId
