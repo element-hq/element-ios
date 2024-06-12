@@ -25,6 +25,7 @@ import MatrixSDK
     func roomInfoCoordinatorBridgePresenterDelegateDidLeaveRoom(_ coordinatorBridgePresenter: RoomInfoCoordinatorBridgePresenter)
     func roomInfoCoordinatorBridgePresenter(_ coordinatorBridgePresenter: RoomInfoCoordinatorBridgePresenter, didReplaceRoomWithReplacementId roomId: String)
     func roomInfoCoordinatorBridgePresenter(_ coordinator: RoomInfoCoordinatorBridgePresenter, viewEventInTimeline event: MXEvent)
+    func roomInfoCoordinatorBridgePresenterDidRequestReportRoom(_ coordinatorBridgePresenter: RoomInfoCoordinatorBridgePresenter)
 }
 
 /// RoomInfoCoordinatorBridgePresenter enables to start RoomInfoCoordinator from a view controller.
@@ -131,8 +132,13 @@ extension RoomInfoCoordinatorBridgePresenter: RoomInfoCoordinatorDelegate {
     func roomInfoCoordinator(_ coordinator: RoomInfoCoordinatorType, didReplaceRoomWithReplacementId roomId: String) {
         self.delegate?.roomInfoCoordinatorBridgePresenter(self, didReplaceRoomWithReplacementId: roomId)
     }
+    
     func roomInfoCoordinator(_ coordinator: RoomInfoCoordinatorType, viewEventInTimeline event: MXEvent) {
         self.delegate?.roomInfoCoordinatorBridgePresenter(self, viewEventInTimeline: event)
+    }
+    
+    func roomInfoCoordinatorDidRequestReportRoom(_ coordinator: RoomInfoCoordinatorType) {
+        self.delegate?.roomInfoCoordinatorBridgePresenterDidRequestReportRoom(self)
     }
 }
 

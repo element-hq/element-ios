@@ -5372,6 +5372,50 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
 }
 
+- (void)handleReportRoom 
+{
+    // Prompt user to enter a description of the problem content.
+    UIAlertController *reportReasonAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomActionReportPromptReason]
+                                                                               message:nil
+                                                                        preferredStyle:UIAlertControllerStyleAlert];
+    
+    [reportReasonAlert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        textField.secureTextEntry = NO;
+        textField.placeholder = nil;
+        textField.keyboardType = UIKeyboardTypeDefault;
+    }];
+    
+    MXWeakify(self);
+    [reportReasonAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        MXStrongifyAndReturnIfNil(self);
+        
+        NSString *text = [self->currentAlert textFields].firstObject.text;
+        self->currentAlert = nil;
+        
+        [self startActivityIndicator];
+        
+        [self.roomDataSource.mxSession.matrixRestClient reportRoom:self.roomDataSource.roomId reason:text success:^{
+            MXStrongifyAndReturnIfNil(self);
+            [self stopActivityIndicator];
+        } failure:^(NSError *error) {
+            MXStrongifyAndReturnIfNil(self);
+            [self stopActivityIndicator];
+            
+            MXLogDebug(@"[RoomVC] Report room (%@) failed", self.roomDataSource.roomId);
+            //Alert user
+            [self showError:error];
+        }];
+    }]];
+    
+    [reportReasonAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel] style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+        MXStrongifyAndReturnIfNil(self);
+        self->currentAlert = nil;
+    }]];
+    
+    [self presentViewController:reportReasonAlert animated:YES completion:nil];
+    self->currentAlert = reportReasonAlert;
+}
+
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -5616,6 +5660,10 @@ static CGSize kThreadListBarButtonItemImageSize;
     else if (tappedView == previewHeader.leftButton)
     {
         [self presentDeclineOptionsFromView:tappedView];
+    }
+    else if (tappedView == previewHeader.reportButton)
+    {
+        [self handleReportRoom];
     }
 }
 
@@ -7982,6 +8030,11 @@ static CGSize kThreadListBarButtonItemImageSize;
 {
     [self.navigationController popToViewController:self animated:true];
     [self reloadRoomWihtEventId:event.eventId threadId:event.threadId forceUpdateRoomMarker:NO];
+}
+
+- (void)roomInfoCoordinatorBridgePresenterDidRequestReportRoom:(RoomInfoCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [self handleReportRoom];
 }
 
 -(void)reloadRoomWihtEventId:(NSString *)eventId

@@ -75,4 +75,7 @@ extension RoomInfoListCoordinator: RoomInfoListViewModelCoordinatorDelegate {
         self.delegate?.roomInfoListCoordinatorDidLeaveRoom(self)
     }
 
+    func roomInfoListViewModelDidRequestReportRoom(_ viewModel: RoomInfoListViewModelType) {
+        self.delegate?.roomInfoListCoordinatorDidRequestReportRoom(self)
+    }
 }
