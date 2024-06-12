@@ -67,3 +67,16 @@
 "callbar_active_and_multiple_paused" = "1 aktiv samtale (%@) · %@ samtalar sett på pause";
 "confirm" = "Stadfest";
 "onboarding_splash_login_button_title" = "Eg har allereie ein konto";
+"authentication_forgot_password_text_field_placeholder" = "E-postadresse";
+"next" = "Neste";
+"back" = "Tilbake";
+"continue" = "Fortset";
+"create" = "Lag";
+"remove" = "Fjern";
+"invite" = "Inviter";
+"retry" = "Prøv på nytt";
+"on" = "På";
+"off" = "Av";
+"authentication_login_username" = "Brukarnamn / e-postadresse / telefonnummer";
+"onboarding_display_name_placeholder" = "Visingsnamn";
+"authentication_login_with_qr" = "Logg inn med QR-kode";
