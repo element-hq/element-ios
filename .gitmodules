@@ -1,0 +1,3 @@
+[submodule "matrix-ios-sdk"]
+	path = matrix-ios-sdk
+	url = git@github.com:matrix-org/matrix-ios-sdk.git

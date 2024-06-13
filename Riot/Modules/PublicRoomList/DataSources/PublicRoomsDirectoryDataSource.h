@@ -46,11 +46,6 @@
 @property (nonatomic) BOOL includeAllNetworks;
 
 /**
- Flag to indicate to show Not Safe For Work rooms in the public room list.
- */
-@property (nonatomic) BOOL showNSFWRooms;
-
-/**
  List public rooms from a third party protocol.
  Default is nil.
  */

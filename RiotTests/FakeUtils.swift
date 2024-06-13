@@ -15,6 +15,8 @@
 //
 
 import Foundation
+import PostHog
+@testable import Element
 
 
 class FakeEvent: MXEvent {
@@ -346,3 +348,132 @@ class FakeKeyVerificationManager: NSObject, MXKeyVerificationManager {
     }
     
 }
+
+class MockPostHog: PostHogProtocol {
+    
+    private var enabled = false
+    
+    func optIn() {
+        enabled = true
+    }
+    
+    func optOut() {
+        enabled = false
+    }
+    
+    func reset() { }
+    
+    func flush() {
+        
+    }
+    
+    var capturePropertiesUserPropertiesUnderlyingCallsCount = 0
+    var capturePropertiesUserPropertiesCallsCount: Int {
+        get {
+            if Thread.isMainThread {
+                return capturePropertiesUserPropertiesUnderlyingCallsCount
+            } else {
+                var returnValue: Int? = nil
+                DispatchQueue.main.sync {
+                    returnValue = capturePropertiesUserPropertiesUnderlyingCallsCount
+                }
+
+                return returnValue!
+            }
+        }
+        set {
+            if Thread.isMainThread {
+                capturePropertiesUserPropertiesUnderlyingCallsCount = newValue
+            } else {
+                DispatchQueue.main.sync {
+                    capturePropertiesUserPropertiesUnderlyingCallsCount = newValue
+                }
+            }
+        }
+    }
+    var capturePropertiesUserPropertiesCalled: Bool {
+        return capturePropertiesUserPropertiesCallsCount > 0
+    }
+    var capturePropertiesUserPropertiesReceivedArguments: (event: String, properties: [String: Any]?, userProperties: [String: Any]?)?
+    var capturePropertiesUserPropertiesReceivedInvocations: [(event: String, properties: [String: Any]?, userProperties: [String: Any]?)] = []
+    var capturePropertiesUserPropertiesClosure: ((String, [String: Any]?, [String: Any]?) -> Void)?
+
+    func capture(_ event: String, properties: [String: Any]?, userProperties: [String: Any]?) {
+        if !enabled { return }
+        capturePropertiesUserPropertiesCallsCount += 1
+        capturePropertiesUserPropertiesReceivedArguments = (event: event, properties: properties, userProperties: userProperties)
+        capturePropertiesUserPropertiesReceivedInvocations.append((event: event, properties: properties, userProperties: userProperties))
+        capturePropertiesUserPropertiesClosure?(event, properties, userProperties)
+    }
+    
+    var screenPropertiesUnderlyingCallsCount = 0
+    var screenPropertiesCallsCount: Int {
+        get {
+            if Thread.isMainThread {
+                return screenPropertiesUnderlyingCallsCount
+            } else {
+                var returnValue: Int? = nil
+                DispatchQueue.main.sync {
+                    returnValue = screenPropertiesUnderlyingCallsCount
+                }
+
+                return returnValue!
+            }
+        }
+        set {
+            if Thread.isMainThread {
+                screenPropertiesUnderlyingCallsCount = newValue
+            } else {
+                DispatchQueue.main.sync {
+                    screenPropertiesUnderlyingCallsCount = newValue
+                }
+            }
+        }
+    }
+    
+    var screenPropertiesCalled: Bool {
+        return screenPropertiesCallsCount > 0
+    }
+    var screenPropertiesReceivedArguments: (screenTitle: String, properties: [String: Any]?)?
+    var screenPropertiesReceivedInvocations: [(screenTitle: String, properties: [String: Any]?)] = []
+    var screenPropertiesClosure: ((String, [String: Any]?) -> Void)?
+
+    func screen(_ screenTitle: String, properties: [String: Any]?) {
+        if !enabled { return }
+        screenPropertiesCallsCount += 1
+        screenPropertiesReceivedArguments = (screenTitle: screenTitle, properties: properties)
+        screenPropertiesReceivedInvocations.append((screenTitle: screenTitle, properties: properties))
+        screenPropertiesClosure?(screenTitle, properties)
+    }
+    
+    func isFeatureEnabled(_ feature: String) -> Bool {
+        return true
+    }
+    
+    func identify(_ distinctId: String) {
+        
+    }
+    
+    func identify(_ distinctId: String, userProperties: [String : Any]?) {
+        
+    }
+    
+    func isOptOut() -> Bool {
+        !enabled
+    }
+    
+    
+}
+
+class MockPostHogFactory: PostHogFactory {
+    var mock: PostHogProtocol!
+    
+    init(mock: PostHogProtocol) {
+        self.mock = mock
+    }
+    
+    func createPostHog(config: PostHogConfig) -> PostHogProtocol {
+        mock
+    }
+}
+

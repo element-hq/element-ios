@@ -103,27 +103,6 @@ platform :ios do
   end
 
 
-  desc "Point MatrixSDK to the related branches if such ones exist"
-  lane :point_dependencies_to_related_branches do
-    current_branch = mx_git_branch
-    UI.message("Current branch: #{current_branch}")
-    if current_branch.start_with?("release/")
-        point_dependencies_to_pending_releases
-    else
-        point_dependencies_to_same_feature
-    end
-  end
-
-  desc "Point MatrixSDK to release/*/release branch if it exists, master otherwise"
-  lane :point_dependencies_to_pending_releases do
-    edit_podfile(branch_pattern: "release/*/release", default_branch: "master")
-  end
-
-  desc "Point MatrixSDK to the branch with the same name as the current branch if such one exist, develop otherwise"
-  lane :point_dependencies_to_same_feature do
-    edit_podfile(branch_pattern: mx_git_branch) unless mx_git_branch.to_s.empty?
-  end
-
   desc "Use an app variant. An app variant overwrite default project configuration or ressource files with custom values"
   lane :setup_app_variant do |options|
     appVariantScript = "../Variants/setup_app_variant.sh"    
@@ -471,25 +450,6 @@ platform :ios do
     end
 
     preprocessor_definitions
-  end
-
-  desc "Edit the Podfile in order to point MatrixSDK to the appropriate branches."
-  private_lane :edit_podfile do |options|
-    require 'net/http'
-
-    branch_pattern = options[:branch_pattern]
-    sdk_slug = "matrix-org/matrix-ios-sdk"
-
-    default_branch = options[:default_branch] || 'develop'    
-    sdk_branch = find_branch(sdk_slug, branch_pattern) || default_branch
-    
-    sdk_spec = { git: 'https://github.com/matrix-org/matrix-ios-sdk.git', branch: sdk_branch }    
-
-    UI.message "✏️ Modify Podfile to point `MatrixSDK/*` to \`#{sdk_branch}\` branch..."
-    podfile_content = File.read('../Podfile') # current dir is 'fastlane/' hence the '../'
-    podfile_content.gsub!(%r{^\$matrixSDKVersion\s*=\s*.*$}, "$matrixSDKVersion = { :specHash => #{sdk_spec} }")
-    File.write('../Podfile', podfile_content)
-    UI.command_output("Content of modified Podfile:\n" + podfile_content)
   end
 
   desc "Upload dsym files to Sentry to symbolicate crashes"
