@@ -1,3 +1,10 @@
+## Changes in 1.11.13 (2024-06-12)
+
+Others
+
+- Analytics | Add support for super properties and appPlatform ([#7801](https://github.com/element-hq/element-ios/issues/7801))
+
+
 ## Changes in 1.11.12 (2024-05-30)
 
 🐛 Bugfixes

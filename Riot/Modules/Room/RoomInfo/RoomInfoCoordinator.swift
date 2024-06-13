@@ -224,6 +224,9 @@ extension RoomInfoCoordinator: RoomInfoListCoordinatorDelegate {
         self.delegate?.roomInfoCoordinatorDidLeaveRoom(self)
     }
 
+    func roomInfoListCoordinatorDidRequestReportRoom(_ coordinator: RoomInfoListCoordinatorType) {
+        self.delegate?.roomInfoCoordinatorDidRequestReportRoom(self)
+    }
 }
 
 extension RoomInfoCoordinator: RoomParticipantsViewControllerDelegate {

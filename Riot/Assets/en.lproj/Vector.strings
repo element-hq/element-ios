@@ -592,6 +592,8 @@ Tap the + to start adding people.";
 "room_action_send_sticker" = "Send sticker";
 "room_action_send_file" = "Send file";
 "room_action_reply" = "Reply";
+"room_action_report" = "Report room";
+"room_action_report_prompt_reason" = "Reason for reporting this room";
 "room_replacement_information" = "This room has been replaced and is no longer active.";
 "room_replacement_link" = "The conversation continues here.";
 "room_predecessor_information" = "This room is a continuation of another conversation.";
