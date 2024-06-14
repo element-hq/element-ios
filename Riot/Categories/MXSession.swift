@@ -25,12 +25,9 @@ extension MXSession {
                            matrixItemId: userId,
                            displayName: user?.displayname)
     }
-}
-
-@objc extension MXSession {
-
+    
     /// Clean the storage of a session by removing the expired contents.
-    func removeExpiredMessages() {
+    @objc func removeExpiredMessages() {
         var hasStoreChanged = false
         for room in self.rooms {
             hasStoreChanged = hasStoreChanged || room.summary.removeExpiredRoomContentsFromStore()

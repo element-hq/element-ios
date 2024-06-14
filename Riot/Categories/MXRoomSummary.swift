@@ -20,8 +20,9 @@ extension Notification.Name {
     static let roomSummaryDidRemoveExpiredDataFromStore = Notification.Name(MXRoomSummary.roomSummaryDidRemoveExpiredDataFromStore)
 }
 
-@objc extension MXRoomSummary {
-    static let roomSummaryDidRemoveExpiredDataFromStore = "roomSummaryDidRemoveExpiredDataFromStore"
+extension MXRoomSummary {
+    @objc static let roomSummaryDidRemoveExpiredDataFromStore = "roomSummaryDidRemoveExpiredDataFromStore"
+    @objc static let roomRetentionStateEventType = "m.room.retention"
     
     private enum Constants {
         static let roomRetentionInDaysKey = "roomRetentionInDays"
@@ -36,7 +37,7 @@ extension Notification.Name {
     }
     
     /// Get the timestamp below which the received messages must be removed from the store, and the display
-    func mininumTimestamp() -> UInt64 {
+    @objc func minimumTimestamp() -> UInt64 {
         let periodInMs = Tools.durationInMs(fromDays: self.roomRetentionPeriodInDays())
         let currentTs = (UInt64)(Date().timeIntervalSince1970 * 1000)
         return (currentTs - periodInMs)
@@ -47,8 +48,8 @@ extension Notification.Name {
     /// This operation does not commit the potential change. We let the caller trigger the commit when this is the more suitable.
     ///
     /// Provide a boolean telling whether some data have been removed.
-    func removeExpiredRoomContentsFromStore() -> Bool {
-        let ret = self.mxSession.store.removeAllMessagesSent(before: self.mininumTimestamp(), inRoom: roomId)
+    @objc func removeExpiredRoomContentsFromStore() -> Bool {
+        let ret = self.mxSession.store.removeAllMessagesSent(before: self.minimumTimestamp(), inRoom: roomId)
         if ret {
             NotificationCenter.default.post(name: .roomSummaryDidRemoveExpiredDataFromStore, object: self)
         }

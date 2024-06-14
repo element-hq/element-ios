@@ -33,6 +33,9 @@ const CGFloat kTypingCellHeight = 24;
 {
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     id kThemeServiceDidChangeThemeNotificationObserver;
+    
+    // The listener to the room retention changes.
+    id retentionListener;
 }
 
 // Observe key verification request changes
@@ -167,6 +170,31 @@ const CGFloat kTypingCellHeight = 24;
     self.eventFormatter.eventTypesFilterForMessages = [MXKAppSettings standardAppSettings].eventsFilterForMessages;
 }
 
+- (void)setDelegate:(id<MXKDataSourceDelegate>)delegate
+{
+    [self unregisterRoomSummaryDidRemoveExpiredDataFromStoreNotifications];
+    [self removeRoomRetentionEventListener];
+
+    if (delegate && self.isLive)
+    {
+        if (self.room)
+        {
+            // Remove the potential expired messages from the store
+            if ([self.room.summary removeExpiredRoomContentsFromStore])
+            {
+                [self.mxSession.store commit];
+            }
+            [self addRoomRetentionEventListener];
+        }
+
+        // Observe room history flush (expired content data)
+        [self registerRoomSummaryDidRemoveExpiredDataFromStoreNotifications];
+        [self roomSummaryDidRemoveExpiredDataFromStore];
+    }
+
+    [super setDelegate:delegate];
+}
+
 - (void)destroy
 {
     if (kThemeServiceDidChangeThemeNotificationObserver)
@@ -196,6 +224,9 @@ const CGFloat kTypingCellHeight = 24;
     {
         [self.mxSession.aggregations.beaconAggregations removeListener:self.beaconInfoSummaryDeletionListener];
     }
+    
+    [self unregisterRoomSummaryDidRemoveExpiredDataFromStoreNotifications];
+    [self removeRoomRetentionEventListener];
     
     [super destroy];
 }
@@ -1239,6 +1270,81 @@ const CGFloat kTypingCellHeight = 24;
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.roomDataSourceDelegate roomDataSourceDidUpdateCurrentUserSharingLocationStatus:self];
         });
+    }
+}
+
+#pragma mark - roomSummaryDidRemoveExpiredDataFromStore notifications
+
+- (void)registerRoomSummaryDidRemoveExpiredDataFromStoreNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(roomSummaryDidRemoveExpiredDataFromStore:) name:MXRoomSummary.roomSummaryDidRemoveExpiredDataFromStore object:nil];
+}
+
+- (void)unregisterRoomSummaryDidRemoveExpiredDataFromStoreNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:MXRoomSummary.roomSummaryDidRemoveExpiredDataFromStore object:nil];
+}
+
+- (void)roomSummaryDidRemoveExpiredDataFromStore:(NSNotification*)notification
+{
+    MXRoomSummary *roomSummary = notification.object;
+    if (self.mxSession == roomSummary.mxSession && [self.roomId isEqualToString:roomSummary.roomId])
+    {
+        [self roomSummaryDidRemoveExpiredDataFromStore];
+    }
+}
+
+- (void)roomSummaryDidRemoveExpiredDataFromStore
+{
+    // Check whether the first cell data refers to an expired event (this may be a state event
+    MXEvent *firstMessageEvent;
+    for (id<MXKRoomBubbleCellDataStoring> cellData in bubbles)
+    {
+        for (MXEvent *event in cellData.events)
+        {
+            if (!event.isState) {
+                firstMessageEvent = event;
+                break;
+            }
+        }
+
+        if (firstMessageEvent)
+        {
+            break;
+        }
+    }
+
+    if (firstMessageEvent && firstMessageEvent.originServerTs < self.room.summary.minimumTimestamp)
+    {
+        [self reload];
+    }
+}
+
+#pragma mark - room retention event listener
+
+- (void)addRoomRetentionEventListener
+{
+    // Register a listener to handle the room retention in live timelines
+    retentionListener = [self.timeline listenToEventsOfTypes:@[MXRoomSummary.roomRetentionStateEventType] onEvent:^(MXEvent *redactionEvent, MXTimelineDirection direction, MXRoomState *roomState) {
+
+        // Consider only live events
+        if (direction == MXTimelineDirectionForwards)
+        {
+            // Remove the potential expired messages from the store
+            if ([self.room.summary removeExpiredRoomContentsFromStore])
+            {
+                [self.mxSession.store commit];
+            }
+        }
+    }];
+}
+
+- (void)removeRoomRetentionEventListener
+{
+    if (retentionListener)
+    {
+        [self.timeline removeListener:retentionListener];
+        retentionListener = nil;
     }
 }
 
