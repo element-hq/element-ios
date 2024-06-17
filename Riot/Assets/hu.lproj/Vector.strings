@@ -1352,7 +1352,7 @@
 "event_formatter_call_ringing" = "Hívás…";
 "event_formatter_call_connecting" = "Kapcsolás…";
 "settings_labs_enable_ringing_for_group_calls" = "Csengetés csoportos hívásokhoz";
-"room_no_privileges_to_create_group_call" = "Adminisztrátornak vagy moderátornak kell lenned a hívás indításához.";
+"room_no_privileges_to_create_group_call" = "Adminisztrátornak vagy moderátornak kell lennie a hívás indításához.";
 "room_join_group_call" = "Csatlakozás";
 
 // Chat
@@ -2501,8 +2501,8 @@
 "room_first_message_placeholder" = "Küld el az első üzenetedet…";
 "authentication_qr_login_confirm_title" = "Biztonságos kapcsolat beállítva";
 "room_event_encryption_info_key_authenticity_not_guaranteed" = "A titkosított üzenetek valódiságát ezen az eszközön nem lehet garantálni.";
-"wysiwyg_composer_format_action_underline" = "Aláhúzott";
-"wysiwyg_composer_format_action_strikethrough" = "Áthúzott";
+"wysiwyg_composer_format_action_underline" = "Aláhúzott formázás alkalmazása";
+"wysiwyg_composer_format_action_strikethrough" = "Áthúzott formázás alkalmazása";
 "wysiwyg_composer_format_action_italic" = "Dőlt";
 
 // Formatting Actions
@@ -2755,3 +2755,11 @@
 "room_command_kick_user_description" = "Eltávolítja az adott azonosítójú felhasználót ebből a szobából";
 "room_command_ban_user_description" = "Kitiltja az adott azonosítójú felhasználót";
 "room_command_unban_user_description" = "Feloldja az adott azonosítójú felhasználó kitiltását";
+"notice_display_name_changed_to" = "%@ erre módosította a megjelenítendő nevét: %@";
+"poll_timeline_loading" = "Betöltés...";
+"manage_session_redirect" = "Át lesz irányítva a kiszolgálója hitelesítési szolgáltatójához, hogy befejezze a kijelentkezést.";
+"manage_session_redirect_error" = "A funkcionalitás jelenleg nem érhető el. Lépjen kapcsolatba a Matrix-kiszolgáló rendszergazdájával.";
+"settings_manage_account_title" = "Fiók";
+"settings_manage_account_action" = "Fiók kezelése";
+"settings_manage_account_description" = "A fiókja kezelése itt: %@";
+"room_command_change_room_topic_description" = "Beállítja a szoba témáját";
