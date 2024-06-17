@@ -1,0 +1,7 @@
+
+
+"NSCalendarsUsageDescription" = "Sjå dei planlagde møta dine i appen.";
+"NSFaceIDUsageDescription" = "Face ID vert brukt til å få tilgang til appen din.";
+// Permissions usage explanations
+"NSCameraUsageDescription" = "Kameraet vert brukt til videosamtalar, og til å ta og laste opp bilde og videoar.";
+"NSMicrophoneUsageDescription" = "Appen treng tilgang til mikrofonen for samtalar, og for å spele inn video og lydmeldingar.";
