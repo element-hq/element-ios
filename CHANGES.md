@@ -1,3 +1,8 @@
+## Changes in 1.11.15 (2024-06-18)
+
+No significant changes.
+
+
 ## Changes in 1.11.14 (2024-06-17)
 
 🙌 Improvements
