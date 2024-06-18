@@ -23,22 +23,21 @@ extension Notification.Name {
 extension MXRoomSummary {
     @objc static let roomSummaryDidRemoveExpiredDataFromStore = "roomSummaryDidRemoveExpiredDataFromStore"
     @objc static let roomRetentionStateEventType = "m.room.retention"
+    @objc static let roomRetentionEventMaxLifetimeKey = "max_lifetime"
+    @objc static let roomRetentionMaxLifetime = "roomRetentionMaxLifetime"
     
-    private enum Constants {
-        static let roomRetentionInDaysKey = "roomRetentionInDays"
-    }
     /// Get the room messages retention period in days
-    func roomRetentionPeriodInDays() -> uint {
-        if let period = self.others[Constants.roomRetentionInDaysKey] as? uint {
+    private func roomRetentionPeriodInMillis() -> UInt64 {
+        if let period = self.others[MXRoomSummary.roomRetentionMaxLifetime] as? UInt64 {
             return period
         } else {
-            return 365
+            return Tools.durationInMs(fromDays: 365)
         }
     }
     
     /// Get the timestamp below which the received messages must be removed from the store, and the display
     @objc func minimumTimestamp() -> UInt64 {
-        let periodInMs = Tools.durationInMs(fromDays: self.roomRetentionPeriodInDays())
+        let periodInMs = self.roomRetentionPeriodInMillis()
         let currentTs = (UInt64)(Date().timeIntervalSince1970 * 1000)
         return (currentTs - periodInMs)
     }

@@ -1,6 +1,13 @@
-## Changes in 1.11.14 (2024-06-17)
+## Changes in 1.11.15 (2024-06-18)
 
 No significant changes.
+
+
+## Changes in 1.11.14 (2024-06-17)
+
+🙌 Improvements
+
+- Room retention event implementation ([#7809](https://github.com/element-hq/element-ios/pull/7809))
 
 
 ## Changes in 1.11.13 (2024-06-12)

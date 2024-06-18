@@ -39,9 +39,9 @@ PODS:
   - LoggerAPI (1.9.200):
     - Logging (~> 1.1)
   - Logging (1.4.0)
-  - MatrixSDK (0.27.9):
-    - MatrixSDK/Core (= 0.27.9)
-  - MatrixSDK/Core (0.27.9):
+  - MatrixSDK (0.27.10):
+    - MatrixSDK/Core (= 0.27.10)
+  - MatrixSDK/Core (0.27.10):
     - AFNetworking (~> 4.0.0)
     - GZIP (~> 1.3.0)
     - libbase58 (~> 0.1.4)
@@ -49,7 +49,7 @@ PODS:
     - OLMKit (~> 3.2.5)
     - Realm (= 10.27.0)
     - SwiftyBeaver (= 1.9.5)
-  - MatrixSDK/JingleCallStack (0.27.9):
+  - MatrixSDK/JingleCallStack (0.27.10):
     - JitsiMeetSDKLite (= 8.1.2-lite)
     - MatrixSDK/Core
   - MatrixSDKCrypto (0.4.2)
@@ -187,7 +187,7 @@ SPEC CHECKSUMS:
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   LoggerAPI: ad9c4a6f1e32f518fdb43a1347ac14d765ab5e3d
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
-  MatrixSDK: 246fd1d3620afcbf8cb76794e9343ebf3cbf881b
+  MatrixSDK: c805f9306d60955215f4b15043ed0f96fd4867b3
   MatrixSDKCrypto: 736069ee0a5ec12852ab3498bf2242acecc443fc
   OLMKit: da115f16582e47626616874e20f7bb92222c7a51
   ReadMoreTextView: 19147adf93abce6d7271e14031a00303fe28720d
