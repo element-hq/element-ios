@@ -55,10 +55,4 @@
  */
 + (uint64_t)durationInMsFromDays:(uint)days;
 
-/**
- * Convert a duration in ms to a number of days.
- */
-+ (uint)numberOfDaysFromDurationInMs:(uint64_t)duration;
-
-
 @end

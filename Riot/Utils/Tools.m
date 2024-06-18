@@ -124,9 +124,4 @@
     return days * (uint64_t)(86400000);
 }
 
-+ (uint)numberOfDaysFromDurationInMs:(uint64_t)duration
-{
-    return (uint)(duration / 86400000);
-}
-
 @end
