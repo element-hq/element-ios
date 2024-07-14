@@ -2773,3 +2773,4 @@
 "room_command_set_user_power_level_description" = "Meghatározza a felhasználó szintjét";
 "room_command_reset_user_power_level_description" = "Elveszi az adott azonosítójú felhasználó operátori jogosultságát";
 "room_command_error_unknown_command" = "Érvénytelen vagy nem kezelt parancs";
+"room_command_discard_session_description" = "Kényszeríti a titkosított szobában lévő aktuális kimenő csoportmunkamenet elvetését";
