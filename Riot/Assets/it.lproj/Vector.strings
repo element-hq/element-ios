@@ -2747,3 +2747,10 @@
 "settings_manage_account_description" = "Gestisci il tuo account su %@";
 "manage_session_redirect" = "Verrai reindirizzato al fornitore di autenticazione del tuo server per completare la disconnessione.";
 "manage_session_redirect_error" = "Funzionalità attualmente non disponibile. Contatta l'amministratore del tuo homeserver";
+
+
+// MARK: - WYSIWYG Composer
+"wysiwyg_composer_action_minimise_action" = "Rimpicciolisci il compositore";
+"wysiwyg_composer_action_maximise_action" = "Espandi il compositore";
+"room_action_report" = "Segnala stanza";
+"room_action_report_prompt_reason" = "Motivo della segnalazione della stanza";

@@ -14,7 +14,7 @@
 "leave" = "Dilni";
 "remove" = "Hiqe";
 "invite" = "Ftoje";
-"retry" = "Riprovo";
+"retry" = "Riprovoni";
 "off" = "Off";
 "cancel" = "Anuloje";
 "save" = "Ruaje";
@@ -2757,3 +2757,10 @@
 "settings_manage_account_title" = "Llogari";
 "settings_manage_account_action" = "Administroni llogari";
 "manage_session_redirect" = "Do të ridrejtoheni te shërbimi i mirëfilltësimit të shërbyesit tuaj, për të plotësuar daljen nga llogaria.";
+"room_action_report" = "Raportojeni dhomën";
+"room_action_report_prompt_reason" = "Arsye për raportimin e kësaj dhome";
+
+
+// MARK: - WYSIWYG Composer
+"wysiwyg_composer_action_minimise_action" = "Tkurre hartuesin";
+"wysiwyg_composer_action_maximise_action" = "Zgjeroje hartuesin";
