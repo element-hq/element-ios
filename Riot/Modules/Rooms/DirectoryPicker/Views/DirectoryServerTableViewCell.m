@@ -60,6 +60,16 @@
         {
             iconURL = [NSString stringWithFormat:@"%@%@", kMXContentUriScheme, [iconURL substringFromIndex:range.location + range.length]];
         }
+        // Check also if we are using the authenticated endpoint
+        else
+        {
+            mxMediaPrefix = [NSString stringWithFormat:@"/%@/download/", kMXAuthenticatedContentPrefixPath];
+            range = [iconURL rangeOfString:mxMediaPrefix];
+            if (range.location != NSNotFound)
+            {
+                iconURL = [NSString stringWithFormat:@"%@%@", kMXContentUriScheme, [iconURL substringFromIndex:range.location + range.length]];
+            }
+        }
         [self.iconImageView setImageURI:iconURL
                                withType:nil
                     andImageOrientation:UIImageOrientationUp
