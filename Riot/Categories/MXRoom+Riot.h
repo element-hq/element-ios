@@ -84,4 +84,8 @@
  */
 - (void)encryptionTrustLevelForUserId:(NSString*)userId onComplete:(void (^)(UserEncryptionTrustLevel userEncryptionTrustLevel))onComplete;
 
+// Returns bool value if the room incognito mode enabled by admin.
+
++ (BOOL)isRoomIncognitoEnabled:(MXRoomState*)roomState;
+
 @end
