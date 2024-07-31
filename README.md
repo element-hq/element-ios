@@ -17,7 +17,7 @@ Element iOS is an iOS [Matrix](https://matrix.org/) client provided by [Element]
 
 <p align="center">  
   <a href=https://itunes.apple.com/us/app/element/id1083446067?mt=8>
-  <img alt="Download on the app store" src="https://linkmaker.itunes.apple.com/images/badges/en-us/badge_appstore-lrg.svg" width=160>
+  <img alt="Download on the app store" src="https://www.apple.com/lae/itunes/link/images/link_badge_appstore_large_2x.png" width=160>
   </a>
 </p>
 
