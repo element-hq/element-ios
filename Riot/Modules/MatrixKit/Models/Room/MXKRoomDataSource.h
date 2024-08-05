@@ -51,6 +51,13 @@ typedef enum : NSUInteger
     
 } MXKRoomDataSourceBubblesPagination;
 
+// Check filesize before sending: make RoomDataSource errors public
+typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
+    MXKRoomDataSourceErrorResendGeneric = 10001,
+    MXKRoomDataSourceErrorResendInvalidMessageType = 10002,
+    MXKRoomDataSourceErrorResendInvalidLocalFilePath = 10003,
+    MXKRoomDataSourceErrorCantSendFileToBig = 10004, // Check filesize before sending: file to big error
+};
 
 #pragma mark - Cells identifiers
 
