@@ -61,7 +61,7 @@ abstract_target 'RiotPods' do
     pod 'SideMenu', '~> 6.5'
     pod 'DSWaveformImage', '~> 6.1.1'
     
-    pod 'FLEX', '~> 4.5.0', :configurations => ['Debug'], :inhibit_warnings => true
+    pod 'FLEX', '~> 5.22.10', :configurations => ['Debug'], :inhibit_warnings => true
 
     target 'RiotTests' do
       inherit! :search_paths
