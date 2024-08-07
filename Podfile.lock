@@ -20,7 +20,7 @@ PODS:
   - Down (0.11.0)
   - DSBottomSheet (0.3.0)
   - DSWaveformImage (6.1.1)
-  - FLEX (4.5.0)
+  - FLEX (5.22.10)
   - FlowCommoniOS (1.12.2)
   - GBDeviceInfo (7.1.0):
     - GBDeviceInfo/Core (= 7.1.0)
@@ -94,7 +94,7 @@ DEPENDENCIES:
   - Down (~> 0.11.0)
   - DSBottomSheet (~> 0.3)
   - DSWaveformImage (~> 6.1.1)
-  - FLEX (~> 4.5.0)
+  - FLEX (~> 5.22.10)
   - FlowCommoniOS (~> 1.12.0)
   - GBDeviceInfo (~> 7.1.0)
   - Introspect (~> 0.1)
@@ -173,7 +173,7 @@ SPEC CHECKSUMS:
   Down: b6ba1bc985c9d2f4e15e3b293d2207766fa12612
   DSBottomSheet: ca0ac37eb5af2dd54663f86b84382ed90a59be2a
   DSWaveformImage: 3c718a0cf99291887ee70d1d0c18d80101d3d9ce
-  FLEX: e51461dd6f0bfb00643c262acdfea5d5d12c596b
+  FLEX: f21ee4f498eed3f8a1eded66b21939fd3b7a22ce
   FlowCommoniOS: ca92071ab526dc89905495a37844fd7e78d1a7f2
   GBDeviceInfo: 5d62fa85bdcce3ed288d83c28789adf1173e4376
   GZIP: 3c0abf794bfce8c7cb34ea05a1837752416c8868
@@ -207,6 +207,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-PODFILE CHECKSUM: b622ffadc1a0fe5442787bd9023ca3d110384814
+PODFILE CHECKSUM: 7e14a7efb021fca69b3ffc2ffbe5fe632e6df7ea
 
 COCOAPODS: 1.14.3
