@@ -173,7 +173,7 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
         }
         
         // CHeck user power level in room against power level needed to post geolocation state event.
-        let liveSharingPowerLevel = parameters.roomDataSource.roomState.powerLevels.minimumPowerLevelForSendingStateEvent(.beaconInfo)
+        let liveSharingPowerLevel = roomPowerLevels.minimumPowerLevelForSendingStateEvent(.beaconInfo)
 
         return userPowerLevel.rawValue >= liveSharingPowerLevel
     }
