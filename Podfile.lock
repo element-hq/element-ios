@@ -39,26 +39,25 @@ PODS:
   - LoggerAPI (1.9.200):
     - Logging (~> 1.1)
   - Logging (1.4.0)
-  - MatrixSDK (0.27.6):
-    - MatrixSDK/Core (= 0.27.6)
-  - MatrixSDK/Core (0.27.6):
+  - MatrixSDK (0.27.10):
+    - MatrixSDK/Core (= 0.27.10)
+  - MatrixSDK/Core (0.27.10):
     - AFNetworking (~> 4.0.0)
     - GZIP (~> 1.3.0)
     - libbase58 (~> 0.1.4)
-    - MatrixSDKCrypto (= 0.3.13)
+    - MatrixSDKCrypto (= 0.4.2)
     - OLMKit (~> 3.2.5)
     - Realm (= 10.27.0)
     - SwiftyBeaver (= 1.9.5)
-  - MatrixSDK/JingleCallStack (0.27.6):
+  - MatrixSDK/JingleCallStack (0.27.10):
     - JitsiMeetSDKLite (= 8.1.2-lite)
     - MatrixSDK/Core
-  - MatrixSDKCrypto (0.3.13)
+  - MatrixSDKCrypto (0.4.2)
   - OLMKit (3.2.12):
     - OLMKit/olmc (= 3.2.12)
     - OLMKit/olmcpp (= 3.2.12)
   - OLMKit/olmc (3.2.12)
   - OLMKit/olmcpp (3.2.12)
-  - PostHog (2.0.0)
   - ReadMoreTextView (3.0.1)
   - Realm (10.27.0):
     - Realm/Headers (= 10.27.0)
@@ -102,10 +101,9 @@ DEPENDENCIES:
   - KeychainAccess (~> 4.2.2)
   - KTCenterFlowLayout (~> 1.3.1)
   - libPhoneNumber-iOS (~> 0.9.13)
-  - MatrixSDK (= 0.27.6)
-  - MatrixSDK/JingleCallStack (= 0.27.6)
+  - MatrixSDK (from `matrix-ios-sdk/MatrixSDK.podspec`)
+  - MatrixSDK/JingleCallStack (from `matrix-ios-sdk/MatrixSDK.podspec`)
   - OLMKit
-  - PostHog (~> 2.0.0)
   - ReadMoreTextView (~> 3.0.1)
   - Reusable (~> 4.1)
   - Sentry (~> 7.15.0)
@@ -144,10 +142,8 @@ SPEC REPOS:
     - libPhoneNumber-iOS
     - LoggerAPI
     - Logging
-    - MatrixSDK
     - MatrixSDKCrypto
     - OLMKit
-    - PostHog
     - ReadMoreTextView
     - Realm
     - Reusable
@@ -164,6 +160,10 @@ SPEC REPOS:
     - WeakDictionary
     - zxcvbn-ios
     - ZXingObjC
+
+EXTERNAL SOURCES:
+  MatrixSDK:
+    :path: matrix-ios-sdk/MatrixSDK.podspec
 
 SPEC CHECKSUMS:
   AFNetworking: 3bd23d814e976cd148d7d44c3ab78017b744cd58
@@ -187,10 +187,9 @@ SPEC CHECKSUMS:
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   LoggerAPI: ad9c4a6f1e32f518fdb43a1347ac14d765ab5e3d
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
-  MatrixSDK: 4129ab9c0acda1d0aad50b1c9765bd795b8d70b9
-  MatrixSDKCrypto: bf08b72f2cd015d8749420a2b8b92fc0536bedf4
+  MatrixSDK: c805f9306d60955215f4b15043ed0f96fd4867b3
+  MatrixSDKCrypto: 736069ee0a5ec12852ab3498bf2242acecc443fc
   OLMKit: da115f16582e47626616874e20f7bb92222c7a51
-  PostHog: 660ec6c9d80cec17b685e148f17f6785a88b597d
   ReadMoreTextView: 19147adf93abce6d7271e14031a00303fe28720d
   Realm: 9ca328bd7e700cc19703799785e37f77d1a130f2
   Reusable: 6bae6a5e8aa793c9c441db0213c863a64bce9136
@@ -208,6 +207,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-PODFILE CHECKSUM: c87b532985dd755b373732f841e3bcfe616f4e4f
+PODFILE CHECKSUM: b622ffadc1a0fe5442787bd9023ca3d110384814
 
 COCOAPODS: 1.14.3

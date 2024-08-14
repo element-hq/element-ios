@@ -5372,6 +5372,50 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
 }
 
+- (void)handleReportRoom 
+{
+    // Prompt user to enter a description of the problem content.
+    UIAlertController *reportReasonAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomActionReportPromptReason]
+                                                                               message:nil
+                                                                        preferredStyle:UIAlertControllerStyleAlert];
+    
+    [reportReasonAlert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        textField.secureTextEntry = NO;
+        textField.placeholder = nil;
+        textField.keyboardType = UIKeyboardTypeDefault;
+    }];
+    
+    MXWeakify(self);
+    [reportReasonAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        MXStrongifyAndReturnIfNil(self);
+        
+        NSString *text = [self->currentAlert textFields].firstObject.text;
+        self->currentAlert = nil;
+        
+        [self startActivityIndicator];
+        
+        [self.roomDataSource.mxSession.matrixRestClient reportRoom:self.roomDataSource.roomId reason:text success:^{
+            MXStrongifyAndReturnIfNil(self);
+            [self stopActivityIndicator];
+        } failure:^(NSError *error) {
+            MXStrongifyAndReturnIfNil(self);
+            [self stopActivityIndicator];
+            
+            MXLogDebug(@"[RoomVC] Report room (%@) failed", self.roomDataSource.roomId);
+            //Alert user
+            [self showError:error];
+        }];
+    }]];
+    
+    [reportReasonAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel] style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+        MXStrongifyAndReturnIfNil(self);
+        self->currentAlert = nil;
+    }]];
+    
+    [self presentViewController:reportReasonAlert animated:YES completion:nil];
+    self->currentAlert = reportReasonAlert;
+}
+
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -5616,6 +5660,10 @@ static CGSize kThreadListBarButtonItemImageSize;
     else if (tappedView == previewHeader.leftButton)
     {
         [self presentDeclineOptionsFromView:tappedView];
+    }
+    else if (tappedView == previewHeader.reportButton)
+    {
+        [self handleReportRoom];
     }
 }
 
@@ -7747,6 +7795,17 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
 }
 
+// Check filesize before sending: if send file error is "File too big", display alert box to user
+- (void)displayAlertIfErrorIsFileIsTooBig:(NSError *)error
+{
+    if( error.code == MXKRoomDataSourceErrorCantSendFileToBig )
+    {
+        NSUInteger maxUploadFileSize = self.roomDataSource.mxSession.maxUploadSize;
+        [self showAlertWithTitle:[VectorL10n fileUploadErrorTooLargeTitle]
+                         message:[VectorL10n fileUploadErrorTooLargeMessage:[NSByteCountFormatter stringFromByteCount:maxUploadFileSize countStyle:NSByteCountFormatterCountStyleFile]]];
+    }
+}
+
 - (void)sendImage:(NSData *)imageData mimeType:(NSString *)mimeType {
     // Create before sending the message in case of a discussion (direct chat)
     MXWeakify(self);
@@ -7758,7 +7817,9 @@ static CGSize kThreadListBarButtonItemImageSize;
             [self.roomDataSource sendImage:imageData mimeType:mimeType success:nil failure:^(NSError *error) {
                 // Nothing to do. The image is marked as unsent in the room history by the datasource
                 MXLogDebug(@"[MXKRoomViewController] sendImage failed.");
-            }];
+                // Check filesize before sending: if error is "FileTooBig", display alert box.
+                [self displayAlertIfErrorIsFileIsTooBig:error];
+             }];
         }
         // Errors are handled at the request level. This should be improved in case of code rewriting.
     }];
@@ -7775,6 +7836,8 @@ static CGSize kThreadListBarButtonItemImageSize;
             [(RoomDataSource*)self.roomDataSource sendVideo:url success:nil failure:^(NSError *error) {
                 // Nothing to do. The video is marked as unsent in the room history by the datasource
                 MXLogDebug(@"[MXKRoomViewController] sendVideo failed.");
+                // Check filesize before sending: if error is "FileTooBig", display alert box.
+                [self displayAlertIfErrorIsFileIsTooBig:error];
             }];
         }
         // Errors are handled at the request level. This should be improved in case of code rewriting.
@@ -7792,6 +7855,8 @@ static CGSize kThreadListBarButtonItemImageSize;
             [self.roomDataSource sendFile:url mimeType:mimeType success:nil failure:^(NSError *error) {
                 // Nothing to do. The file is marked as unsent in the room history by the datasource
                 MXLogDebug(@"[MXKRoomViewController] sendFile failed.");
+                // Check filesize before sending: if error is "FileTooBig", display alert box.
+                [self displayAlertIfErrorIsFileIsTooBig:error];
             }];
         }
         // Errors are handled at the request level. This should be improved in case of code rewriting.
@@ -7982,6 +8047,11 @@ static CGSize kThreadListBarButtonItemImageSize;
 {
     [self.navigationController popToViewController:self animated:true];
     [self reloadRoomWihtEventId:event.eventId threadId:event.threadId forceUpdateRoomMarker:NO];
+}
+
+- (void)roomInfoCoordinatorBridgePresenterDidRequestReportRoom:(RoomInfoCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [self handleReportRoom];
 }
 
 -(void)reloadRoomWihtEventId:(NSString *)eventId

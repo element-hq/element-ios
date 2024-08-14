@@ -82,6 +82,10 @@ struct Composer: View {
         wysiwygViewModel.maximised ? "minimiseButton" : "maximiseButton"
     }
     
+    private var toggleButtonAccessibilityLabel: String {
+        wysiwygViewModel.maximised ? VectorL10n.wysiwygComposerActionMinimiseAction : VectorL10n.wysiwygComposerActionMaximiseAction
+    }
+    
     private var toggleButtonImageName: String {
         wysiwygViewModel.maximised ? Asset.Images.minimiseComposer.name : Asset.Images.maximiseComposer.name
     }
@@ -171,6 +175,7 @@ struct Composer: View {
                             .frame(width: 16, height: 16)
                     }
                     .accessibilityIdentifier(toggleButtonAcccessibilityIdentifier)
+                    .accessibilityLabel(toggleButtonAccessibilityLabel)
                     .padding(.leading, 12)
                     .padding(.trailing, 4)
                 }

@@ -14,7 +14,6 @@
 // limitations under the License.
 //
 
-import PostHog
 import AnalyticsEvents
 
 /// A class responsible for managing a variety of analytics clients
@@ -95,6 +94,9 @@ import AnalyticsEvents
         
         guard let session = session else { return }
         useAnalyticsSettings(from: session)
+        client.updateSuperProperties(.init(appPlatform: .EI,
+                                           cryptoSDK: .Rust,
+                                           cryptoSDKVersion: session.crypto.version))
     }
     
     /// Stops analytics tracking and calls `reset` to clear any IDs and event queues.
@@ -149,6 +151,13 @@ import AnalyticsEvents
             switch result {
             case .success(let settings):
                 self.identify(with: settings)
+                self.client.updateSuperProperties(
+                    AnalyticsEvent.SuperProperties(
+                        appPlatform: .EI,
+                        cryptoSDK: .Rust,
+                        cryptoSDKVersion: session.crypto.version
+                    )
+                )
                 self.service = nil
             case .failure:
                 MXLog.error("[Analytics] Failed to use analytics settings. Will continue to run without analytics ID.")
@@ -243,7 +252,9 @@ extension Analytics {
         let userProperties = AnalyticsEvent.UserProperties(allChatsActiveFilter: allChatsActiveFilter?.analyticsName,
                                                            ftueUseCaseSelection: ftueUseCase?.analyticsName,
                                                            numFavouriteRooms: numFavouriteRooms,
-                                                           numSpaces: numSpaces)
+                                                           numSpaces: numSpaces,
+                                                           recoveryState: nil,
+                                                           verificationState: nil)
         client.updateUserProperties(userProperties)
     }
     

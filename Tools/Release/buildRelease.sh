@@ -42,7 +42,7 @@ cp -R ../../../.. /tmp/$REPO_NAME
 mv /tmp/$REPO_NAME .
 else
 echo "Git clone $REPO_URL with branch/tag $TAG..." 
-git clone $REPO_URL --depth=1 --branch $TAG
+git clone --recursive $REPO_URL --depth=1 --branch $TAG
 fi
 
 cd $REPO_NAME
@@ -54,11 +54,6 @@ bundle update
 
 # Update fastlane plugins
 bundle exec fastlane update_plugins
-
-# Use appropriated dependencies according to the current branch
-if [ "$LOCAL_SOURCE" != true ]; then
-bundle exec fastlane point_dependencies_to_same_feature
-fi
 
 # Build
 bundle exec fastlane app_store build_number:$BUILD_NUMBER git_tag:$TAG

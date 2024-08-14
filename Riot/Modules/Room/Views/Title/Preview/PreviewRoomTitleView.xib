@@ -1,25 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="Cpa-Xt-cwB" customClass="PreviewRoomTitleView">
-            <rect key="frame" x="0.0" y="0.0" width="600" height="355"/>
+            <rect key="frame" x="0.0" y="0.0" width="600" height="386"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y5s-FK-My4">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="215"/>
-                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    <color key="backgroundColor" systemColor="groupTableViewBackgroundColor"/>
                     <accessibility key="accessibilityConfiguration" identifier="MainHeaderBackground"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="215" id="YtX-K2-uD7"/>
@@ -38,7 +34,7 @@
                             </constraints>
                         </view>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Room Name" textAlignment="center" adjustsFontSizeToFit="NO" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="6uH-I3-RQg">
-                            <rect key="frame" x="249" y="126" width="103" height="22"/>
+                            <rect key="frame" x="249.5" y="126" width="101" height="23"/>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <accessibility key="accessibilityConfiguration" identifier="DisplayNameTextField"/>
                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
@@ -48,9 +44,9 @@
                             </connections>
                         </textField>
                         <textView opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" editable="NO" text="Room Topic" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Tk0-pA-9a0">
-                            <rect key="frame" x="31" y="153" width="538" height="17"/>
+                            <rect key="frame" x="31" y="154" width="538" height="16"/>
                             <accessibility key="accessibilityConfiguration" identifier="RoomTopic"/>
-                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <color key="textColor" systemColor="darkTextColor"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
                         </textView>
@@ -58,11 +54,11 @@
                             <rect key="frame" x="262" y="184" width="76" height="17"/>
                             <accessibility key="accessibilityConfiguration" identifier="RoomMembers"/>
                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
-                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <color key="textColor" systemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="details_icon" translatesAutoresizingMaskIntoConstraints="NO" id="S3Y-wJ-HOe">
-                            <rect key="frame" x="345" y="187" width="6" height="12"/>
+                            <rect key="frame" x="345" y="186.5" width="6" height="12"/>
                             <accessibility key="accessibilityConfiguration" identifier="RoomMembersDetailsIcon"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="6" id="XTx-6p-2wB"/>
@@ -94,17 +90,17 @@
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gIX-nY-f6M">
-                    <rect key="frame" x="280" y="239" width="41" height="20"/>
+                    <rect key="frame" x="279.5" y="239" width="41" height="20"/>
                     <accessibility key="accessibilityConfiguration" identifier="PreviewLabel"/>
                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="textColor" systemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WmW-5h-jL1" userLabel="buttonsContainer">
                     <rect key="frame" x="60" y="276" width="480" height="30"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="osd-JP-2az" userLabel="Left Button">
-                            <rect key="frame" x="0.0" y="0.0" width="230" height="30"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="osd-JP-2az" userLabel="Left Button">
+                            <rect key="frame" x="0.0" y="0.0" width="230.5" height="30"/>
                             <color key="backgroundColor" red="0.6886889638" green="1" blue="0.74383144840000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <accessibility key="accessibilityConfiguration" identifier="LeftButton"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
@@ -112,8 +108,8 @@
                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="461-vO-hLZ" userLabel="Right Button">
-                            <rect key="frame" x="250" y="0.0" width="230" height="30"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="461-vO-hLZ" userLabel="Right Button">
+                            <rect key="frame" x="249.5" y="0.0" width="230.5" height="30"/>
                             <color key="backgroundColor" red="0.6886889638" green="1" blue="0.74383144840000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <accessibility key="accessibilityConfiguration" identifier="RightButton"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
@@ -135,15 +131,23 @@
                         <constraint firstItem="osd-JP-2az" firstAttribute="height" secondItem="WmW-5h-jL1" secondAttribute="height" id="zHG-qI-kwU"/>
                     </constraints>
                 </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Giu-1w-duc">
+                    <rect key="frame" x="239.5" y="310" width="121" height="31"/>
+                    <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="plain" title="Report content">
+                        <fontDescription key="titleFontDescription" type="system" pointSize="14"/>
+                    </buttonConfiguration>
+                </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IwA-0X-IYb">
-                    <rect key="frame" x="281" y="323" width="38" height="18"/>
+                    <rect key="frame" x="281" y="344" width="38" height="18"/>
                     <accessibility key="accessibilityConfiguration" identifier="SubNoticeLabel"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="textColor" systemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BCO-DT-F0C">
-                    <rect key="frame" x="0.0" y="354" width="600" height="1"/>
+                    <rect key="frame" x="0.0" y="375" width="600" height="1"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <accessibility key="accessibilityConfiguration" identifier="BottomBorderView"/>
                     <constraints>
@@ -154,15 +158,17 @@
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <accessibility key="accessibilityConfiguration" identifier="RoomTitle"/>
             <constraints>
-                <constraint firstItem="IwA-0X-IYb" firstAttribute="top" secondItem="WmW-5h-jL1" secondAttribute="bottom" constant="17" id="0ft-2Y-gk3"/>
                 <constraint firstAttribute="trailing" secondItem="WmW-5h-jL1" secondAttribute="trailing" constant="60" id="1b7-i7-NOb"/>
                 <constraint firstAttribute="trailing" secondItem="BkF-x3-7fX" secondAttribute="trailing" id="33r-D5-3uy"/>
+                <constraint firstItem="Giu-1w-duc" firstAttribute="top" secondItem="WmW-5h-jL1" secondAttribute="bottom" constant="4" id="4rk-St-IBy"/>
                 <constraint firstItem="gIX-nY-f6M" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Cpa-Xt-cwB" secondAttribute="leading" constant="31" id="7Kn-g9-Ya6"/>
                 <constraint firstItem="WmW-5h-jL1" firstAttribute="leading" secondItem="Cpa-Xt-cwB" secondAttribute="leading" constant="60" id="8dy-U2-a3G"/>
                 <constraint firstItem="BCO-DT-F0C" firstAttribute="top" secondItem="IwA-0X-IYb" secondAttribute="bottom" constant="13" id="G2S-aH-ycH"/>
                 <constraint firstItem="BCO-DT-F0C" firstAttribute="leading" secondItem="Cpa-Xt-cwB" secondAttribute="leading" id="H07-HA-2Px"/>
                 <constraint firstItem="y5s-FK-My4" firstAttribute="leading" secondItem="Cpa-Xt-cwB" secondAttribute="leading" id="IU0-R1-jNV"/>
                 <constraint firstAttribute="trailing" secondItem="BCO-DT-F0C" secondAttribute="trailing" id="Izl-ms-lGJ"/>
+                <constraint firstItem="Giu-1w-duc" firstAttribute="centerX" secondItem="Cpa-Xt-cwB" secondAttribute="centerX" id="KCY-vw-EHD"/>
+                <constraint firstItem="IwA-0X-IYb" firstAttribute="top" secondItem="Giu-1w-duc" secondAttribute="bottom" constant="3" id="Kfj-HY-Vdh"/>
                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="gIX-nY-f6M" secondAttribute="trailing" constant="31" id="Ljb-d3-KKM"/>
                 <constraint firstItem="BkF-x3-7fX" firstAttribute="leading" secondItem="Cpa-Xt-cwB" secondAttribute="leading" id="Uvb-cK-dQf"/>
                 <constraint firstItem="BkF-x3-7fX" firstAttribute="top" secondItem="Cpa-Xt-cwB" secondAttribute="top" id="Zru-9A-ifB"/>
@@ -187,6 +193,7 @@
                 <outlet property="mainHeaderBackgroundHeightConstraint" destination="YtX-K2-uD7" id="47y-aL-t94"/>
                 <outlet property="mainHeaderContainer" destination="BkF-x3-7fX" id="1fp-xz-ETJ"/>
                 <outlet property="previewLabel" destination="gIX-nY-f6M" id="Bxi-6M-rTb"/>
+                <outlet property="reportButton" destination="Giu-1w-duc" id="gZe-uF-CoI"/>
                 <outlet property="rightButton" destination="461-vO-hLZ" id="u8R-Rg-WAv"/>
                 <outlet property="roomAvatar" destination="4yt-FK-V2Z" id="epr-4f-7cE"/>
                 <outlet property="roomMembers" destination="ou0-3Z-weL" id="lRs-fz-QXc"/>
@@ -194,9 +201,16 @@
                 <outlet property="roomTopic" destination="Tk0-pA-9a0" id="iAe-bC-f6X"/>
                 <outlet property="subNoticeLabel" destination="IwA-0X-IYb" id="aUb-Pt-V44"/>
             </connections>
+            <point key="canvasLocation" x="-27.199999999999999" y="-1.7991004497751126"/>
         </view>
     </objects>
     <resources>
-        <image name="details_icon" width="31" height="31"/>
+        <image name="details_icon" width="6" height="11"/>
+        <systemColor name="darkTextColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="groupTableViewBackgroundColor">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
     </resources>
 </document>

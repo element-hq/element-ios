@@ -1,3 +1,45 @@
+## Changes in 1.11.15 (2024-06-18)
+
+No significant changes.
+
+
+## Changes in 1.11.14 (2024-06-17)
+
+🙌 Improvements
+
+- Room retention event implementation ([#7809](https://github.com/element-hq/element-ios/pull/7809))
+
+
+## Changes in 1.11.13 (2024-06-12)
+
+Others
+
+- Analytics | Add support for super properties and appPlatform ([#7801](https://github.com/element-hq/element-ios/issues/7801))
+
+
+## Changes in 1.11.12 (2024-05-30)
+
+🐛 Bugfixes
+
+- Fix a crash when the user taps play multiple times and the video download fails. ([#7791](https://github.com/element-hq/element-ios/issues/7791))
+
+
+## Changes in 1.11.11 (2024-05-29)
+
+No significant changes.
+
+
+## Changes in 1.11.10 (2024-05-01)
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.27.7](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.27.7)).
+
+Others
+
+- Improvements to reporting of decryption failures.
+
+
 ## Changes in 1.11.9 (2024-04-02)
 
 Others

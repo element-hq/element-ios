@@ -520,8 +520,12 @@ extension ExploreRoomCoordinator: RoomInfoCoordinatorDelegate {
             self.remove(childCoordinator: coordinator)
         }
     }
+    
     func roomInfoCoordinator(_ coordinator: RoomInfoCoordinatorType, viewEventInTimeline event: MXEvent) {
         
     }
     
+    func roomInfoCoordinatorDidRequestReportRoom(_ coordinator: RoomInfoCoordinatorType) {
+        
+    }
 }

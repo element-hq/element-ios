@@ -45,7 +45,7 @@ include:
 packages:
   AnalyticsEvents:
     url: https://github.com/matrix-org/matrix-analytics-events
-    exactVersion: 0.15.0
+    exactVersion: 0.23.1
   Mapbox:
     url: https://github.com/maplibre/maplibre-gl-native-distribution
     minVersion: 5.12.2
@@ -58,11 +58,14 @@ packages:
     url: https://github.com/element-hq/swift-ogg
     branch: 0.0.1
   WysiwygComposer:
-    url: https://github.com/matrix-org/matrix-wysiwyg-composer-swift
-    version: 2.29.0
+    url: https://github.com/matrix-org/matrix-rich-text-editor-swift
+    version: 2.37.3
   DeviceKit:
     url: https://github.com/devicekit/DeviceKit
     majorVersion: 4.7.0
   DTCoreText:
     url: https://github.com/Cocoanetics/DTCoreText
     version: 1.6.26
+  PostHog:
+    url: https://github.com/PostHog/posthog-ios
+    minorVersion: 3.2.5

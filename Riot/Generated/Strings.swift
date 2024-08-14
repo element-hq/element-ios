@@ -5207,6 +5207,14 @@ public class VectorL10n: NSObject {
   public static var roomActionReply: String { 
     return VectorL10n.tr("Vector", "room_action_reply") 
   }
+  /// Report room
+  public static var roomActionReport: String { 
+    return VectorL10n.tr("Vector", "room_action_report") 
+  }
+  /// Reason for reporting this room
+  public static var roomActionReportPromptReason: String { 
+    return VectorL10n.tr("Vector", "room_action_report_prompt_reason") 
+  }
   /// Send file
   public static var roomActionSendFile: String { 
     return VectorL10n.tr("Vector", "room_action_send_file") 
@@ -9566,6 +9574,14 @@ public class VectorL10n: NSObject {
   /// Add some now?
   public static var widgetStickerPickerNoStickerpacksAlertAddNow: String { 
     return VectorL10n.tr("Vector", "widget_sticker_picker_no_stickerpacks_alert_add_now") 
+  }
+  /// Expand composer
+  public static var wysiwygComposerActionMaximiseAction: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_action_maximise_action") 
+  }
+  /// Shrink composer
+  public static var wysiwygComposerActionMinimiseAction: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_action_minimise_action") 
   }
   /// Apply bold format
   public static var wysiwygComposerFormatActionBold: String { 

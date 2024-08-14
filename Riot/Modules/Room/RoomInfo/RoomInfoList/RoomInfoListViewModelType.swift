@@ -26,6 +26,7 @@ protocol RoomInfoListViewModelCoordinatorDelegate: AnyObject {
     func roomInfoListViewModelDidCancel(_ viewModel: RoomInfoListViewModelType)
     func roomInfoListViewModelDidLeaveRoom(_ viewModel: RoomInfoListViewModelType)
     func roomInfoListViewModel(_ viewModel: RoomInfoListViewModelType, wantsToNavigateTo target: RoomInfoListTarget)
+    func roomInfoListViewModelDidRequestReportRoom(_ viewModel: RoomInfoListViewModelType)
 }
 
 /// Protocol describing the view model used by `RoomInfoListViewController`

@@ -117,4 +117,11 @@
     return fixedURL;
 }
 
+#pragma mark - Time utilities
+
++ (uint64_t)durationInMsFromDays:(uint)days
+{
+    return days * (uint64_t)(86400000);
+}
+
 @end

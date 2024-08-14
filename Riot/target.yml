@@ -49,6 +49,7 @@ targets:
     - package: WysiwygComposer
     - package: DeviceKit
     - package: DTCoreText
+    - package: PostHog
 
     configFiles:
       Debug: Debug.xcconfig

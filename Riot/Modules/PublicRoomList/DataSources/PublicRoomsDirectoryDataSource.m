@@ -46,6 +46,8 @@ static NSString *const kNSFWKeyword = @"nsfw";
     NSString *nextBatch;
 }
 
+@property (nonatomic, strong) NSRegularExpression *forbiddenTermsRegex;
+
 @end
 
 @implementation PublicRoomsDirectoryDataSource
@@ -57,6 +59,15 @@ static NSString *const kNSFWKeyword = @"nsfw";
     {
         rooms = [NSMutableArray array];
         _paginationLimit = 20;
+        
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"forbidden_terms" ofType:@"txt"];
+        NSString *fileContents = [NSString stringWithContentsOfFile:path encoding: NSUTF8StringEncoding error:nil];
+        NSArray *forbiddenTerms = [fileContents componentsSeparatedByCharactersInSet: NSCharacterSet.whitespaceAndNewlineCharacterSet];
+        
+        NSString *pattern = [NSString stringWithFormat:@"\\b(%@)\\b", [forbiddenTerms componentsJoinedByString:@"|"]];
+        pattern = [pattern stringByAppendingString:@"|(\\b18\\+)"]; // Special case "18+"
+        
+        _forbiddenTermsRegex = [[NSRegularExpression alloc] initWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:nil];
     }
     return self;
 }
@@ -155,16 +166,6 @@ static NSString *const kNSFWKeyword = @"nsfw";
     }
 }
 
-- (void)setShowNSFWRooms:(BOOL)showNSFWRooms
-{
-    if (showNSFWRooms != _showNSFWRooms)
-    {
-        _showNSFWRooms = showNSFWRooms;
-        
-        [self resetPagination];
-    }
-}
-
 - (NSUInteger)roomsCount
 {
     return rooms.count;
@@ -254,14 +255,7 @@ static NSString *const kNSFWKeyword = @"nsfw";
             
             NSArray<MXPublicRoom*> *publicRooms;
             
-            if (self.showNSFWRooms)
-            {
-                publicRooms = publicRoomsResponse.chunk;
-            }
-            else
-            {
-                publicRooms = [self filterPublicRooms:publicRoomsResponse.chunk containingKeyword:kNSFWKeyword];
-            }
+            publicRooms = [self filterPublicRooms:publicRoomsResponse.chunk];
 
             [self->rooms addObjectsFromArray:publicRooms];
             self->nextBatch = publicRoomsResponse.nextBatch;
@@ -338,15 +332,23 @@ static NSString *const kNSFWKeyword = @"nsfw";
     }
 }
 
-- (NSArray<MXPublicRoom*>*)filterPublicRooms:(NSArray<MXPublicRoom*>*)publicRooms containingKeyword:(NSString*)keyword
+- (NSArray<MXPublicRoom*>*)filterPublicRooms:(NSArray<MXPublicRoom*>*)publicRooms
 {
     NSMutableArray *filteredRooms = [NSMutableArray new];
 
     for (MXPublicRoom *publicRoom in publicRooms)
     {
-        if (NO == [[publicRoom.name lowercaseString] containsString:keyword]
-            && NO == [[publicRoom.topic lowercaseString] containsString:keyword])
-        {
+        BOOL shouldAllow = YES;
+        
+        if (publicRoom.name != nil) {
+            shouldAllow &= [self.forbiddenTermsRegex numberOfMatchesInString:publicRoom.name options:0 range:NSMakeRange(0, publicRoom.name.length)] == 0;
+        }
+        
+        if (publicRoom.topic != nil) {
+            shouldAllow &= [self.forbiddenTermsRegex numberOfMatchesInString:publicRoom.topic options:0 range:NSMakeRange(0, publicRoom.topic.length)] == 0;
+        }
+        
+        if (shouldAllow) {
             [filteredRooms addObject:publicRoom];
         }
     }

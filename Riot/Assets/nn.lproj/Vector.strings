@@ -9,3 +9,74 @@
 "warning" = "Åtvaring";
 // String for App Store
 "store_short_description" = "Sikker desentralisert chat/IP-telefoni";
+"ok" = "OK";
+"callbar_only_single_paused" = "Samtale sett på pause";
+"cancel" = "Avbryt";
+"save" = "Lagra";
+"join" = "Ver med";
+"decline" = "Avslå";
+"accept" = "Godta";
+"preview" = "Førehandsvising";
+"camera" = "Kamera";
+"voice" = "Røyst";
+"video" = "Video";
+"active_call" = "Aktiv samtale";
+"active_call_details" = "Aktiv samtale (%@)";
+"joined" = "Vart med";
+"later" = "Seinare";
+"rename" = "Endre namn";
+"collapse" = "Skjul";
+"send_to" = "Send til %@";
+"sending" = "Sender";
+"close" = "Lat att";
+"skip" = "Hopp over";
+"switch" = "Byt";
+"more" = "Meir";
+"less" = "Mindre";
+"open" = "Opne";
+"done" = "Ferdig";
+
+// Call Bar
+"callbar_only_single_active" = "Trykk for å gå tilbake til samtalen (%@)";
+"callbar_only_multiple_paused" = "%@ samtalar sett på pause";
+"callbar_return" = "Gå tilbake";
+"callbar_only_single_active_group" = "Trykk for å bli med i konferansesamtalen (%@)";
+
+// Accessibility
+"accessibility_checkbox_label" = "avkryssingsboks";
+"accessibility_button_label" = "knapp";
+"error" = "Feil";
+"invite_to" = "Inviter til %@";
+
+// MARK: Onboarding
+"onboarding_splash_register_button_title" = "Opprett konto";
+"accessibility_selected" = "vald";
+"private" = "Privat";
+"public" = "Offentleg";
+"stop" = "Stopp";
+"new_word" = "Ny";
+"existing" = "Eksisterande";
+"add" = "Legg til";
+"suggest" = "Føreslå";
+"edit" = "Rediger";
+
+// Activities
+"loading" = "Lastar";
+"saving" = "Lagrar";
+"callbar_active_and_single_paused" = "1 aktiv samtale (%@) · 1 samtale sett i pause";
+"callbar_active_and_multiple_paused" = "1 aktiv samtale (%@) · %@ samtalar sett på pause";
+"confirm" = "Stadfest";
+"onboarding_splash_login_button_title" = "Eg har allereie ein konto";
+"authentication_forgot_password_text_field_placeholder" = "E-postadresse";
+"next" = "Neste";
+"back" = "Tilbake";
+"continue" = "Fortset";
+"create" = "Lag";
+"remove" = "Fjern";
+"invite" = "Inviter";
+"retry" = "Prøv på nytt";
+"on" = "På";
+"off" = "Av";
+"authentication_login_username" = "Brukarnamn / e-postadresse / telefonnummer";
+"onboarding_display_name_placeholder" = "Visingsnamn";
+"authentication_login_with_qr" = "Logg inn med QR-kode";

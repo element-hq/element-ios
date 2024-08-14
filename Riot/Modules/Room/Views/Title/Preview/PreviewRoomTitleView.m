@@ -51,12 +51,22 @@
     [self.rightButton setTitle:[VectorL10n join] forState:UIControlStateNormal];
     [self.rightButton setTitle:[VectorL10n join] forState:UIControlStateHighlighted];
     
+    [self.reportButton setTitle:[VectorL10n roomActionReport] forState:UIControlStateNormal];
+    [self.reportButton setTitle:[VectorL10n roomActionReport] forState:UIControlStateHighlighted];
+    
     tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(reportTapGesture:)];
     [tap setNumberOfTouchesRequired:1];
     [tap setNumberOfTapsRequired:1];
     [tap setDelegate:self];
     [self.rightButton addGestureRecognizer:tap];
     self.rightButton.userInteractionEnabled = YES;
+    
+    tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(reportTapGesture:)];
+    [tap setNumberOfTouchesRequired:1];
+    [tap setNumberOfTapsRequired:1];
+    [tap setDelegate:self];
+    [self.reportButton addGestureRecognizer:tap];
+    self.reportButton.userInteractionEnabled = YES;
 }
 
 -(void)customizeViewRendering
@@ -86,6 +96,8 @@
     [self.rightButton.layer setCornerRadius:5];
     self.rightButton.clipsToBounds = YES;
     self.rightButton.backgroundColor = ThemeService.shared.theme.tintColor;
+    
+    [self.reportButton setTitleColor:ThemeService.shared.theme.warningColor forState:UIControlStateNormal];
 }
 
 - (void)refreshDisplay

@@ -592,6 +592,8 @@ Tap the + to start adding people.";
 "room_action_send_sticker" = "Send sticker";
 "room_action_send_file" = "Send file";
 "room_action_reply" = "Reply";
+"room_action_report" = "Report room";
+"room_action_report_prompt_reason" = "Reason for reporting this room";
 "room_replacement_information" = "This room has been replaced and is no longer active.";
 "room_replacement_link" = "The conversation continues here.";
 "room_predecessor_information" = "This room is a continuation of another conversation.";
@@ -1715,6 +1717,8 @@ Tap the + to start adding people.";
 // MARK: File upload
 "file_upload_error_title" = "File upload";
 "file_upload_error_unsupported_file_type_message" = "File type not supported.";
+"file_upload_error_too_large_title" = "File too large";
+"file_upload_error_too_large_message" = "Maximum supported file size is %@MB";
 
 // MARK: Emoji picker
 "emoji_picker_title" = "Reactions";
@@ -2603,6 +2607,8 @@ To enable access, tap Settings> Location and select Always";
 
 
 // MARK: - WYSIWYG Composer
+"wysiwyg_composer_action_minimise_action" = "Shrink composer";
+"wysiwyg_composer_action_maximise_action" = "Expand composer";
 
 // Send Media Actions
 "wysiwyg_composer_start_action_media_picker" = "Photo Library";

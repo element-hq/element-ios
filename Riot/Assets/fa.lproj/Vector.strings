@@ -97,7 +97,7 @@
 "contacts_address_book_matrix_users_toggle" = "فقط کاربران ماتریس";
 "directory_search_results_more_than" = ">%tu نتیجه برای %@ یافت شد";
 "directory_search_results" = "%tu نتیجه برای %@ یافت شد";
-"search_in_progress" = "در حال جست وجو";
+"search_in_progress" = "جوییدن…";
 "search_no_result" = "نتیچه ای یافت نشد";
 "search_people_placeholder" = "جستجو بر اساس شناسه کاربری، نام یا آدرس ایمیل";
 "search_default_placeholder" = "جست و جو";
@@ -246,7 +246,7 @@
 "room_accessibility_search" = "جستجو";
 "room_message_edits_history_title" = "ویرایش های پیام";
 "room_resource_usage_limit_reached_message_2" = "برخی از کاربران نمی توانند وارد سیستم شوند.";
-"room_resource_limit_exceeded_message_contact_3" = " برای ادامه استفاده از این سرویس";
+"room_resource_limit_exceeded_message_contact_3" = " برای ادامه استفاده از این خدمت.";
 "room_resource_limit_exceeded_message_contact_2_link" = "با سرپرست سرویس خود تماس بگیرید";
 "room_resource_limit_exceeded_message_contact_1" = " لطفا ";
 "room_predecessor_link" = "برای دیدن پیام‌های قدیمی‌تر به اینجاضربه بزنید.";
@@ -416,7 +416,7 @@
 "event_formatter_call_retry" = "تلاش مجدد";
 "event_formatter_call_answer" = "پاسخ";
 "event_formatter_call_decline" = "رد تماس";
-"event_formatter_call_back" = "تماس";
+"event_formatter_call_back" = "پاسخ تماس";
 "event_formatter_call_connection_failed" = "ارتباط ناموفق بود";
 "event_formatter_call_missed_video" = "تماس ویدیویی از دست رفته";
 "event_formatter_call_missed_voice" = "تماس صوتی از دست رفته";
@@ -464,7 +464,7 @@
 "group_participants_invited_section" = "دعوت شده";
 "group_participants_invite_malformed_id_title" = "خطای دعوت";
 "group_participants_invite_another_user" = "جستجو / دعوت با شناسه کاربری یا نام";
-"group_participants_filter_members" = "اعضای انجمن را فیلتر کنید";
+"group_participants_filter_members" = "پالایش اعضای اجتماع";
 "group_participants_invite_prompt_msg" = "آیا مطمئنید که می خواهید %@ را به این گروه دعوت کنید؟";
 "group_participants_invite_prompt_title" = "تایید";
 "group_participants_remove_prompt_msg" = "آیا مطمئنید که می خواهید %@ را از این گروه حذف کنید؟";
@@ -570,7 +570,7 @@
 "room_details_files" = "بارگذاری شده ها";
 "room_details_people" = "اعضا";
 "room_details_title_for_dm" = "جزییات";
-"identity_server_settings_alert_disconnect_still_sharing_3pid_button" = "به هر حال قطع کن";
+"identity_server_settings_alert_disconnect_still_sharing_3pid_button" = "قطع شدن به هر روی";
 "identity_server_settings_alert_disconnect_button" = "قطع کردن";
 "identity_server_settings_disconnect" = "قطع کردن";
 "identity_server_settings_change" = "تغییر دادن";
@@ -652,7 +652,7 @@
 "settings_confirm_password" = "تایید رمز";
 "settings_new_password" = "رمز جدید";
 "settings_old_password" = "رمز قدیمی";
-"settings_third_party_notices" = "اعلامیه های شخص ثالث";
+"settings_third_party_notices" = "یادآوری‌های سوم‌شخص";
 "settings_privacy_policy" = "سیاست حفظ حریم خصوصی";
 "settings_term_conditions" = "شرایط و ضوابط";
 "settings_copyright" = "کپی رایت";
@@ -684,7 +684,7 @@
 "settings_room_upgrades" = "ارتقاء اتاق";
 "settings_messages_by_a_bot" = "پیام های ربات";
 "settings_call_invitations" = "دعوت نامه های تماس";
-"settings_room_invitations" = "دعوت نامه های اتاق";
+"settings_room_invitations" = "دعوت‌های اتاق";
 "settings_messages_containing_keywords" = "کلمات کلیدی";
 "settings_messages_containing_at_room" = "@ اتاق";
 "settings_messages_containing_user_name" = "نام کاربری من";
@@ -694,13 +694,13 @@
 "settings_encrypted_direct_messages" = "پیام های مستقیم رمزگذاری شده";
 "settings_direct_messages" = "پیام مستقیم";
 "settings_notify_me_for" = "به من اطلاع بده برای";
-"settings_mentions_and_keywords" = "ذکر و کلمات کلیدی";
+"settings_mentions_and_keywords" = "نام‌بری و کلیدواژگان";
 "settings_default" = "اعلان های پیش فرض";
 "settings_notifications_disabled_alert_message" = "برای فعال کردن اعلان‌ها، به تنظیمات دستگاه خود بروید.";
 "settings_notifications_disabled_alert_title" = "غیر فعال کردن اعلان ها";
 "settings_pin_rooms_with_missed_notif" = "پین کردن اتاق هایی با اعلان های از دست رفته";
 "settings_pin_rooms_with_unread" = "پین کردن اتاق هایی با پیام های خوانده نشده";
-"settings_global_settings_info" = "تنظیمات اعلان جهانی در سرویس گیرنده وب %@ شما موجود است";
+"settings_global_settings_info" = "تنظیمات آگاهی عمومی در کارخواه وب %@تان موجود است";
 "settings_show_decrypted_content" = "نمایش محتوای رمزگشایی شده";
 "settings_device_notifications" = "اعلان های دستگاه";
 "settings_enable_push_notif" = "اعلان ها در این دستگاه";
@@ -1346,3 +1346,4 @@
 "onboarding_splash_page_2_title" = "تحت کنترل شماست.";
 "onboarding_splash_page_1_message" = "یک ارتباط امن و مستقل که سطح حریم شخصی آن دقیقا مشابه ارتباط رو در رو در منزل شماست.";
 "accessibility_selected" = "انتخاب شده";
+"room_title_members" = "%@ عضو";
