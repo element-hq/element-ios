@@ -1,3 +1,10 @@
+## Changes in 1.11.17 (2024-08-20)
+
+🙌 Improvements
+
+- Check power level before starting live sharing location ([#7808](https://github.com/element-hq/element-ios/pull/7808))
+
+
 ## Changes in 1.11.16 (2024-07-23)
 
 No significant changes.
