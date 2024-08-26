@@ -128,3 +128,6 @@
 /** General **/
 
 "Notification" = "알림";
+
+/* New voice broadcast from a specific person, not referencing a room. */
+"VOICE_BROADCAST_FROM_USER" = "%@ 음성 방송을 시작했습니다";
