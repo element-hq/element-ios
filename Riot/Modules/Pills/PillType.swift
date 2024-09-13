@@ -16,14 +16,14 @@
 
 import Foundation
 
-@available (iOS 15.0, *)
+@available(iOS 15.0, *)
 enum PillType: Codable {
     case user(userId: String) /// userId
     case room(roomId: String) /// roomId
     case message(roomId: String, eventId: String) // roomId, eventId
 }
 
-@available (iOS 15.0, *)
+@available(iOS 15.0, *)
 extension PillType {
     private static var regexPermalinkTarget: NSRegularExpression? = {
         let clientBaseUrl = BuildSettings.clientPermalinkBaseUrl ?? kMXMatrixDotToUrl
