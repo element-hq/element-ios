@@ -18,7 +18,7 @@ import UIKit
 import MatrixSDK
 
 /// Text attachment for pills display.
-@available (iOS 15.0, *)
+@available(iOS 15.0, *)
 @objcMembers
 class PillTextAttachment: NSTextAttachment {
     // MARK: - Properties
@@ -133,7 +133,7 @@ class PillTextAttachment: NSTextAttachment {
 }
 
 // MARK: - Private
-@available (iOS 15.0, *)
+@available(iOS 15.0, *)
 private extension PillTextAttachment {
         
     func updateBounds() {

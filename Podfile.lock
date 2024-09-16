@@ -26,7 +26,7 @@ PODS:
     - GBDeviceInfo/Core (= 7.1.0)
   - GBDeviceInfo/Core (7.1.0)
   - GZIP (1.3.2)
-  - Introspect (0.11.0)
+  - Introspect (0.12.0)
   - JitsiMeetSDKLite (8.1.2-lite):
     - JitsiWebRTC (~> 111.0)
   - JitsiWebRTC (111.0.2)
@@ -39,20 +39,20 @@ PODS:
   - LoggerAPI (1.9.200):
     - Logging (~> 1.1)
   - Logging (1.4.0)
-  - MatrixSDK (0.27.11):
-    - MatrixSDK/Core (= 0.27.11)
-  - MatrixSDK/Core (0.27.11):
+  - MatrixSDK (0.27.13):
+    - MatrixSDK/Core (= 0.27.13)
+  - MatrixSDK/Core (0.27.13):
     - AFNetworking (~> 4.0.0)
     - GZIP (~> 1.3.0)
     - libbase58 (~> 0.1.4)
-    - MatrixSDKCrypto (= 0.4.2)
+    - MatrixSDKCrypto (= 0.4.3)
     - OLMKit (~> 3.2.5)
     - Realm (= 10.27.0)
     - SwiftyBeaver (= 1.9.5)
-  - MatrixSDK/JingleCallStack (0.27.11):
+  - MatrixSDK/JingleCallStack (0.27.13):
     - JitsiMeetSDKLite (= 8.1.2-lite)
     - MatrixSDK/Core
-  - MatrixSDKCrypto (0.4.2)
+  - MatrixSDKCrypto (0.4.3)
   - OLMKit (3.2.12):
     - OLMKit/olmc (= 3.2.12)
     - OLMKit/olmcpp (= 3.2.12)
@@ -72,15 +72,15 @@ PODS:
   - Sentry/Core (7.15.0)
   - SideMenu (6.5.0)
   - SwiftBase32 (0.9.0)
-  - SwiftFormat/CLI (0.50.2)
-  - SwiftGen (6.6.2)
+  - SwiftFormat/CLI (0.54.5)
+  - SwiftGen (6.6.3)
   - SwiftJWT (3.6.200):
     - BlueCryptor (~> 1.0)
     - BlueECC (~> 1.1)
     - BlueRSA (~> 1.0)
     - KituraContracts (~> 1.2)
     - LoggerAPI (~> 1.7)
-  - SwiftLint (0.49.1)
+  - SwiftLint (0.57.0)
   - SwiftyBeaver (1.9.5)
   - UICollectionViewLeftAlignedLayout (1.0.2)
   - UICollectionViewRightAlignedLayout (0.0.3)
@@ -177,7 +177,7 @@ SPEC CHECKSUMS:
   FlowCommoniOS: ca92071ab526dc89905495a37844fd7e78d1a7f2
   GBDeviceInfo: 5d62fa85bdcce3ed288d83c28789adf1173e4376
   GZIP: 3c0abf794bfce8c7cb34ea05a1837752416c8868
-  Introspect: 4cc1e4c34dd016540c8d86a591c231c09dafbee3
+  Introspect: b66b675de8a85d9ef832f3a710d8e3c7db186884
   JitsiMeetSDKLite: 895213158cf62342069a10634a41d2f1c00057f7
   JitsiWebRTC: 80f62908fcf2a1160e0d14b584323fb6e6be630b
   KeychainAccess: c0c4f7f38f6fc7bbe58f5702e25f7bd2f65abf51
@@ -187,8 +187,8 @@ SPEC CHECKSUMS:
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   LoggerAPI: ad9c4a6f1e32f518fdb43a1347ac14d765ab5e3d
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
-  MatrixSDK: 7c29e5cc8934cfc1f81f83fcfa17cd652612086d
-  MatrixSDKCrypto: 736069ee0a5ec12852ab3498bf2242acecc443fc
+  MatrixSDK: 1dae186c839eb145974fc1fc127ec903de60a297
+  MatrixSDKCrypto: 27bee960e0e8b3a3039f3f3e93dd2ec88299c77e
   OLMKit: da115f16582e47626616874e20f7bb92222c7a51
   ReadMoreTextView: 19147adf93abce6d7271e14031a00303fe28720d
   Realm: 9ca328bd7e700cc19703799785e37f77d1a130f2
@@ -196,10 +196,10 @@ SPEC CHECKSUMS:
   Sentry: 63ca44f5e0c8cea0ee5a07686b02e56104f41ef7
   SideMenu: f583187d21c5b1dd04c72002be544b555a2627a2
   SwiftBase32: 9399c25a80666dc66b51e10076bf591e3bbb8f17
-  SwiftFormat: 710117321c55c82675c0dc03055128efbb13c38f
-  SwiftGen: 1366a7f71aeef49954ca5a63ba4bef6b0f24138c
+  SwiftFormat: 543a7b1ab4a6ce2d88bd5616a17903446ca3dc5c
+  SwiftGen: 4993cbf71cbc4886f775e26f8d5c3a1188ec9f99
   SwiftJWT: 88c412708f58c169d431d344c87bc79a87c830ae
-  SwiftLint: 32ee33ded0636d0905ef6911b2b67bbaeeedafa5
+  SwiftLint: eb47480d47c982481592c195c221d11013a679cc
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
   UICollectionViewLeftAlignedLayout: 830bf6fa5bab9f9b464f62e3384f9d2e00b3c0f6
   UICollectionViewRightAlignedLayout: 823eef8c567eba4a44c21bc2ffcb0d0d5f361e2d
@@ -207,6 +207,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-PODFILE CHECKSUM: 7e14a7efb021fca69b3ffc2ffbe5fe632e6df7ea
+PODFILE CHECKSUM: fb3e1c62f9e35a9bdbafce743664bf4f620af028
 
-COCOAPODS: 1.14.3
+COCOAPODS: 1.15.2

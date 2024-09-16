@@ -17,7 +17,7 @@
 import Foundation
 import UIKit
 
-@available (iOS 15.0, *)
+@available(iOS 15.0, *)
 struct PillAssetColor: Codable {
     var red: CGFloat = 0.0, green: CGFloat = 0.0, blue: CGFloat = 0.0, alpha: CGFloat = 0.0
     
@@ -30,7 +30,7 @@ struct PillAssetColor: Codable {
     }
 }
 
-@available (iOS 15.0, *)
+@available(iOS 15.0, *)
 struct PillAssetParameter: Codable {
     var tintColor: PillAssetColor?
     var backgroundColor: PillAssetColor?
@@ -38,7 +38,7 @@ struct PillAssetParameter: Codable {
     var padding: CGFloat = 2.0
 }
 
-@available (iOS 15.0, *)
+@available(iOS 15.0, *)
 enum PillTextAttachmentItem: Codable {
     case text(String)
     case avatar(url: String?, string: String?, matrixId: String)
@@ -46,7 +46,7 @@ enum PillTextAttachmentItem: Codable {
     case asset(named: String, parameters: PillAssetParameter)
 }
 
-@available (iOS 15.0, *)
+@available(iOS 15.0, *)
 extension PillTextAttachmentItem {
     var string: String? {
         switch self {
@@ -59,7 +59,7 @@ extension PillTextAttachmentItem {
 }
 
 /// Data associated with a Pill text attachment.
-@available (iOS 15.0, *)
+@available(iOS 15.0, *)
 struct PillTextAttachmentData: Codable {
     // MARK: - Properties
     /// Pill type

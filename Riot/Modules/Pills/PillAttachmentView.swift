@@ -17,7 +17,7 @@
 import UIKit
 
 /// Base view class for mention Pills.
-@available (iOS 15.0, *)
+@available(iOS 15.0, *)
 @objcMembers
 class PillAttachmentView: UIView {
     // MARK: - Internal Structs

@@ -92,7 +92,7 @@ final class SettingsIdentityServerViewModel: SettingsIdentityServerViewModelType
 
     private func checkCanAddIdentityServer(newIdentityServer: String,
                                            viewStateUpdate: @escaping (SettingsIdentityServerViewState) -> Void,
-                                           canAddcompletion: @escaping(() -> Void)) {
+                                           canAddcompletion: @escaping (() -> Void)) {
         viewStateUpdate(.loading)
 
         self.checkIdentityServerValidity(identityServer: newIdentityServer) { (identityServerValidityResponse) in
@@ -228,7 +228,7 @@ final class SettingsIdentityServerViewModel: SettingsIdentityServerViewModelType
 
     private func checkCanDisconnectIdentityServer(identityServer: String,
                                                   viewStateUpdate: @escaping (SettingsIdentityServerViewState) -> Void,
-                                                  canDisconnectCompletion: @escaping(() -> Void)) {
+                                                  canDisconnectCompletion: @escaping (() -> Void)) {
         self.update(viewState: .loading)
 
         self.checkExistingDataOnIdentityServer { (response) in

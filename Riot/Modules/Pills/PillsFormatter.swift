@@ -18,7 +18,7 @@ import Foundation
 import UIKit
 
 /// Provides utilities funcs to handle Pills inside attributed strings.
-@available (iOS 15.0, *)
+@available(iOS 15.0, *)
 @objcMembers
 class PillsFormatter: NSObject {
     // MARK: - Internal Properties
@@ -214,7 +214,7 @@ class PillsFormatter: NSObject {
 }
 
 // MARK: - Private Methods
-@available (iOS 15.0, *)
+@available(iOS 15.0, *)
 extension PillsFormatter {
     struct MarkdownLinkResult: Equatable {
         let url: URL
