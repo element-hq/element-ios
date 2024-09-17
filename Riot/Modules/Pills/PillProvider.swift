@@ -16,13 +16,13 @@
 
 import Foundation
 
-@available (iOS 15.0, *)
+@available(iOS 15.0, *)
 private enum PillAttachmentKind {
     case attachment(PillTextAttachment)
     case string(NSAttributedString)
 }
 
-@available (iOS 15.0, *)
+@available(iOS 15.0, *)
 struct PillProvider {
     private let session: MXSession
     private let eventFormatter: MXKEventFormatter
