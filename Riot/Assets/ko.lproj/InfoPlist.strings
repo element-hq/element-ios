@@ -1,8 +1,9 @@
 // Permissions usage explanations
-"NSCameraUsageDescription" = "카메라는 사진과 영상 촬영, 영상 통화를 하는 데 쓰입니다.";
-"NSPhotoLibraryUsageDescription" = "포토 라이브러리는 사진과 영상을 보내는데 쓰입니다.";
+"NSCameraUsageDescription" = "카메라는 영상 통화를 하거나 사진과 비디오를 찍고 업로드하는 데 사용됩니다.";
+"NSPhotoLibraryUsageDescription" = "사진 및 동영상을 라이브러리에서 업로드할 수 있도록 사진 접근을 허용하세요.";
 "NSMicrophoneUsageDescription" = "Element는 통화와 동영상 촬영 및 음성 메시지 녹음을 하기 위해 마이크에 액세스해야 합니다.";
-"NSContactsUsageDescription" = "Element는 채팅에 초대할 수 있도록 연락처를 표시합니다.";
+"NSContactsUsageDescription" = "다른사람이 매트릭스에서 당신의 연락처를 찾는 데 도움을 주기 위해 당신의 아이디 서버와 공유될 것입니다.";
 "NSCalendarsUsageDescription" = "앱에서 예정된 회의를 봅니다.";
 "NSLocationWhenInUseUsageDescription" = "사람들에게 위치 정보를 공유할때, Element에서 지도를 표시 하기 위한 권한이 필요합니다.";
 "NSFaceIDUsageDescription" = "Face ID 권한은 앱에 액세스하는 데 사용됩니다.";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "당신의 위치를 사람들과 공유할 때, Element는 그들에게 지도를 보여주기 위해 접근이 필요합니다.";

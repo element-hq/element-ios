@@ -49,7 +49,7 @@ class VoiceMessagePlaybackView: UIView, NibLoadable, Themable {
     @IBOutlet private var playButton: UIButton!
     @IBOutlet private var elapsedTimeLabel: UILabel!
     @IBOutlet private var waveformContainerView: UIView!
-    @IBOutlet private (set)var stackViewTrailingContraint: NSLayoutConstraint!
+    @IBOutlet private(set) var stackViewTrailingContraint: NSLayoutConstraint!
     
     private var longPressGestureRecognizer: UILongPressGestureRecognizer!
     private var panGestureRecognizer: UIPanGestureRecognizer!
