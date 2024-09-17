@@ -1,3 +1,10 @@
+## Changes in 1.11.18 (2024-09-17)
+
+🙌 Improvements
+
+- Replaced deprecated OlmKit APIs from ContentScanner with ones from the CryptoSDK.
+
+
 ## Changes in 1.11.17 (2024-08-20)
 
 🙌 Improvements
