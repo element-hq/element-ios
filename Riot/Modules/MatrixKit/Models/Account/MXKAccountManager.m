@@ -1,7 +1,7 @@
 /*
  Copyright 2015 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
- Copyright 2024 New Vector Ltd
+ Copyright 2017-2024 New Vector Ltd
  Copyright 2019 The Matrix.org Foundation C.I.C
 
  SPDX-License-Identifier: AGPL-3.0-only
