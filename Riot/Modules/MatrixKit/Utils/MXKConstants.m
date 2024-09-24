@@ -1,6 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
- Copyright 2018 New Vector Ltd
+ Copyright 2024 New Vector Ltd
  Copyright 2019 The Matrix.org Foundation C.I.C
 
  Licensed under the Apache License, Version 2.0 (the "License");
