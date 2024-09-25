@@ -106,9 +106,12 @@ final class SideMenuViewModel: SideMenuViewModelType {
         }
         
         sideMenuItems += [
-            .settings,
-            .feedback
+            .settings
         ]
+        
+        if BuildSettings.allowBugReportingAndFeedbackManually {
+            sideMenuItems += [.feedback]
+        }
         
         // Hide app version
         let appVersion: String? = nil
