@@ -750,6 +750,7 @@ TableViewSectionsDelegate>
     [self setupCrossSigningWithTitle:@"Set up cross-signing"    // TODO
                              message:[VectorL10n securitySettingsUserPasswordDescription]
                              success:^{
+                                [self loadCrossSigning];
                              } failure:^(NSError *error) {
                              }];
 }
@@ -976,6 +977,7 @@ TableViewSectionsDelegate>
         [self setupCrossSigningWithTitle:[VectorL10n secureKeyBackupSetupIntroTitle]
                                  message:[VectorL10n securitySettingsUserPasswordDescription]
                                  success:^{
+                                     [self loadCrossSigning];
                                      [self setupSecureBackup2];
                                  } failure:^(NSError *error) {
                                  }];
