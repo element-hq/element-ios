@@ -166,43 +166,11 @@ private class MockSession: MXSession {
     let canCrossSign: Bool
     override var myDeviceId: String! { .currentDevice }
     
-    override var crypto: MXCrypto! {
-        get { MockCrypto(canCrossSign: canCrossSign) }
-        set { }
-    }
-    
     init(canCrossSign: Bool) {
         self.canCrossSign = canCrossSign
         super.init()
     }
     
-}
-
-/// A mock `MXCrypto` that can override the `canCrossSign` state.
-private class MockCrypto: MXLegacyCrypto {
-    let canCrossSign: Bool
-    override var crossSigning: MXCrossSigning { MockCrossSigning(canCrossSign: canCrossSign) }
-    
-    init(canCrossSign: Bool) {
-        self.canCrossSign = canCrossSign
-        super.init()
-    }
-    
-}
-
-/// A mock `MXCrossSigning` with an overridden `canCrossSign` property.
-private class MockCrossSigning: MXLegacyCrossSigning {
-    let canCrossSignMock: Bool
-    override var canCrossSign: Bool { canCrossSignMock }
-    
-    init(canCrossSign: Bool) {
-        self.canCrossSignMock = canCrossSign
-        super.init()
-    }
-    
-    override var state: MXCrossSigningState {
-        .crossSigningExists
-    }
 }
 
 /// A mock `MXDeviceInfo` that can override the `isVerified` state.
