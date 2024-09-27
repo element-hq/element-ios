@@ -174,11 +174,12 @@ final class KeyVerificationVerifyByScanningViewModel: KeyVerificationVerifyBySca
                 self.removePendingQRCodeTransaction()
 
                 // Check due to legacy implementation of key verification which could pass incorrect type of transaction
-                if keyVerificationTransaction is MXIncomingSASTransaction {
-                    MXLog.debug("[KeyVerificationVerifyByScanningViewModel] SAS transaction should be outgoing")
-                    self.unregisterDidStateChangeNotification()
-                    self.update(viewState: .error(KeyVerificationVerifyByScanningViewModelError.unknown))
-                }
+            // TODO: Not sure about commenting this code, but MXIncomingSASTransaction has been removed
+//                if keyVerificationTransaction is MXIncomingSASTransaction {
+//                    MXLog.debug("[KeyVerificationVerifyByScanningViewModel] SAS transaction should be outgoing")
+//                    self.unregisterDidStateChangeNotification()
+//                    self.update(viewState: .error(KeyVerificationVerifyByScanningViewModelError.unknown))
+//                }
             
             }, failure: { [weak self] (error) in
                 guard let self = self else {
