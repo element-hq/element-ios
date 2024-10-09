@@ -9,8 +9,6 @@ Please see LICENSE in the repository root for full details.
 
 #import "SettingsViewController.h"
 
-#import <OLMKit/OLMKit.h>
-
 #import "AvatarGenerator.h"
 
 #import "BugReportViewController.h"

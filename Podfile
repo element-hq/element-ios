@@ -37,7 +37,6 @@ abstract_target 'RiotPods' do
 
   pod 'Sentry', '~> 7.15.0'
 
-  pod 'OLMKit'
   pod 'zxcvbn-ios'
 
   # Tools
