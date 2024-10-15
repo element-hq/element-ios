@@ -298,6 +298,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         let store = MXFileStore(credentials: credentials)
         let userDisplayName = await store.displayName(ofUserWithId: userId) ?? ""
 
+        // The backup is now handled by Rust
         let keyBackupNeeded = false
 
         let softLogoutCredentials = SoftLogoutCredentials(userId: userId,

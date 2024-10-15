@@ -1033,8 +1033,7 @@ Please see LICENSE in the repository root for full details.
 
 - (void)displaySoftLogoutMessage
 {
-    // Take some shortcuts and make some assumptions (Riot uses MXFileStore and MXRealmCryptoStore) to
-    // retrieve data to display as quick as possible
+    // Backup is now handled by Rust
     BOOL keyBackupNeeded = NO;
 
     MXFileStore *fileStore = [[MXFileStore alloc] initWithCredentials:softLogoutCredentials];
