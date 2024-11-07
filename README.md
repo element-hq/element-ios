@@ -6,9 +6,9 @@
 [![Build status](https://badge.buildkite.com/cc8f93e32da93fa7c1172398bd8af66254490567c7195a5f3f.svg?branch=develop)](https://buildkite.com/matrix-dot-org/element-ios/builds?branch=develop)
 [![Weblate](https://translate.riot.im/widgets/riot-ios/-/svg-badge.svg)](https://translate.riot.im/engage/riot-ios/?utm_source=widget)
 [![codecov](https://codecov.io/gh/element-hq/element-ios/branch/develop/graph/badge.svg?token=INNm5o6XWg)](https://codecov.io/gh/element-hq/element-ios)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=vector-im_element-ios&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=vector-im_element-ios)
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=vector-im_element-ios&metric=bugs)](https://sonarcloud.io/summary/new_code?id=vector-im_element-ios)
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=vector-im_element-ios&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=vector-im_element-ios)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=element-ios&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=element-ios)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=element-ios&metric=bugs)](https://sonarcloud.io/summary/new_code?id=element-ios)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=element-ios&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=element-ios)
 [![Element iOS Matrix room #element-ios:matrix.org](https://img.shields.io/matrix/element-ios:matrix.org.svg?label=%23element-ios:matrix.org&logo=matrix&server_fqdn=matrix.org)](https://matrix.to/#/#element-ios:matrix.org)
 ![GitHub](https://img.shields.io/github/license/element-hq/element-ios)
 [![Twitter URL](https://img.shields.io/twitter/url?label=Element&url=https%3A%2F%2Ftwitter.com%2Felement_hq)](https://twitter.com/element_hq)
@@ -17,7 +17,7 @@ Element iOS is an iOS [Matrix](https://matrix.org/) client provided by [Element]
 
 <p align="center">  
   <a href=https://itunes.apple.com/us/app/element/id1083446067?mt=8>
-  <img alt="Download on the app store" src="https://linkmaker.itunes.apple.com/images/badges/en-us/badge_appstore-lrg.svg" width=160>
+  <img alt="Download on the app store" src="https://www.apple.com/lae/itunes/link/images/link_badge_appstore_large_2x.png" width=160>
   </a>
 </p>
 
@@ -51,10 +51,8 @@ If after your research you still have a question, ask at [#element-ios:matrix.or
 
 Copyright (c) 2014-2017 OpenMarket Ltd  
 Copyright (c) 2017 Vector Creations Ltd  
-Copyright (c) 2017-2021 New Vector Ltd
+Copyright (c) 2017-2024 New Vector Ltd
 
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use this work except in compliance with the License. You may obtain a copy of the License in the [LICENSE](LICENSE) file, or at:
-
-[http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
+SPDX-License-Identifier: AGPL-3.0-only. Please see [LICENSE](LICENSE) in the repository root for full details.
 
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.

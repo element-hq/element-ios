@@ -1,3 +1,27 @@
+## Changes in 1.11.19 (2024-10-15)
+
+No significant changes.
+
+
+## Changes in 1.11.18 (2024-09-17)
+
+🙌 Improvements
+
+- Replaced deprecated OlmKit APIs from ContentScanner with ones from the CryptoSDK.
+
+
+## Changes in 1.11.17 (2024-08-20)
+
+🙌 Improvements
+
+- Check power level before starting live sharing location ([#7808](https://github.com/element-hq/element-ios/pull/7808))
+
+
+## Changes in 1.11.16 (2024-07-23)
+
+No significant changes.
+
+
 ## Changes in 1.11.15 (2024-06-18)
 
 No significant changes.

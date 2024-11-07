@@ -2970,3 +2970,10 @@
 "settings_manage_account_description" = "Spravujte svoj účet na %@";
 "manage_session_redirect" = "Budete presmerovaní na poskytovateľa overovania vášho servera, aby ste dokončili odhlásenie.";
 "manage_session_redirect_error" = "Funkcia aktuálne nie je dostupná. Obráťte sa na správcu vášho domovského servera";
+"room_action_report_prompt_reason" = "Dôvod nahlásenia tejto miestnosti";
+"wysiwyg_composer_action_maximise_action" = "Rozšíriť editor";
+"room_action_report" = "Nahlásiť miestnosť";
+
+
+// MARK: - WYSIWYG Composer
+"wysiwyg_composer_action_minimise_action" = "Zmenšiť editor";

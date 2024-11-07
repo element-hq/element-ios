@@ -2478,9 +2478,9 @@
 "user_sessions_settings" = "Munkamenetek kezelése";
 "invite_to" = "Meghívó ide: %@";
 "device_name_unknown" = "Ismeretlen kliens";
-"device_name_mobile" = "%@ Mobil";
-"device_name_desktop" = "%@ Alkalmazás";
-"device_name_web" = "%@ Web";
+"device_name_mobile" = "Mobilos %@";
+"device_name_desktop" = "Asztali %@";
+"device_name_web" = "Webes %@";
 "user_session_item_details" = "%1$@ · %2$@";
 
 // First item is client name and second item is session display name
@@ -2528,19 +2528,19 @@
 "user_session_details_device_os" = "Operációs rendszer";
 "user_session_details_device_browser" = "Böngésző";
 "user_session_details_device_model" = "Modell";
-"user_session_details_device_ip_location" = "Tartózkodási helyem";
+"user_session_details_device_ip_location" = "Saját tartózkodási hely";
 "user_session_details_device_ip_address" = "IP cím";
 "user_session_details_last_activity" = "Utolsó tevékenység";
-"user_session_details_session_section_footer" = "A másoláshoz koppints és tartsd rajta az ujjad.";
-"user_session_details_session_id" = "Kapcsolat azonosító";
+"user_session_details_session_section_footer" = "A másoláshoz koppintson és tartsa lenyomva.";
+"user_session_details_session_id" = "Kapcsolatazonosító";
 "user_session_details_session_name" = "Munkamenet neve";
 "user_session_details_device_section_header" = "Eszköz";
 "user_session_details_application_section_header" = "Alkalmazás";
 "user_session_details_session_section_header" = "Munkamenet";
-"user_session_details_title" = "Munkamenet információk";
+"user_session_details_title" = "Munkamenet-információk";
 "device_type_name_unknown" = "Ismeretlen";
-"device_type_name_mobile" = "Mobil";
-"device_type_name_web" = "Web";
+"device_type_name_mobile" = "Mobilos";
+"device_type_name_web" = "Webes";
 "device_type_name_desktop" = "Asztali";
 "user_inactive_session_item_with_date" = "90+ napja inaktív (%@)";
 "user_inactive_session_item" = "90+ napja inaktív";
@@ -2763,3 +2763,14 @@
 "settings_manage_account_action" = "Fiók kezelése";
 "settings_manage_account_description" = "A fiókja kezelése itt: %@";
 "room_command_change_room_topic_description" = "Beállítja a szoba témáját";
+"room_action_report" = "Szoba jelentése";
+"room_action_report_prompt_reason" = "A szoba jelentésének oka";
+
+
+// MARK: - WYSIWYG Composer
+"wysiwyg_composer_action_minimise_action" = "Szerkesztő összecsukása";
+"wysiwyg_composer_action_maximise_action" = "Szerkesztő kibontása";
+"room_command_set_user_power_level_description" = "Meghatározza a felhasználó szintjét";
+"room_command_reset_user_power_level_description" = "Elveszi az adott azonosítójú felhasználó operátori jogosultságát";
+"room_command_error_unknown_command" = "Érvénytelen vagy nem kezelt parancs";
+"room_command_discard_session_description" = "Kényszeríti a titkosított szobában lévő aktuális kimenő csoportmunkamenet elvetését";

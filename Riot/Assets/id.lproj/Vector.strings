@@ -2974,3 +2974,10 @@
 "settings_manage_account_description" = "Kelola akun Anda di %@";
 "manage_session_redirect" = "Anda akan dialihkan ke penyedia autentikasi server Anda untuk menyelesaikan proses keluar.";
 "manage_session_redirect_error" = "Fungsi saat ini tidak tersedia. Silakan hubungi admin homeserver Anda";
+"room_action_report_prompt_reason" = "Alasan melaporkan ruangan ini";
+
+
+// MARK: - WYSIWYG Composer
+"wysiwyg_composer_action_minimise_action" = "Kecilkan komposer";
+"wysiwyg_composer_action_maximise_action" = "Luaskan komposer";
+"room_action_report" = "Laporkan ruangan";

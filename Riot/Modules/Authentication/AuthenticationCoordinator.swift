@@ -298,8 +298,8 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         let store = MXFileStore(credentials: credentials)
         let userDisplayName = await store.displayName(ofUserWithId: userId) ?? ""
 
-        let cryptoStore = MXRealmCryptoStore(credentials: credentials)
-        let keyBackupNeeded = (cryptoStore?.inboundGroupSessions(toBackup: 1) ?? []).count > 0
+        // The backup is now handled by Rust
+        let keyBackupNeeded = false
 
         let softLogoutCredentials = SoftLogoutCredentials(userId: userId,
                                                           homeserverName: credentials.homeServerName() ?? "",

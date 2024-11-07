@@ -25,7 +25,7 @@ jobs:
         with:
           # Additional arguments for the sonarcloud scanner
           args:
-            -Dsonar.projectKey=vector-im_element-ios
-            -Dsonar.organization=new_vector_ltd_organization
+            -Dsonar.projectKey=element-ios
+            -Dsonar.organization=element-hq
             -Dsonar.inclusions=RiotSwiftUI/**
             # For more info about the parameters, please refer to https://docs.sonarcloud.io/advanced-setup/analysis-parameters/

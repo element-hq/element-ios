@@ -24,7 +24,7 @@
 "camera" = "카메라";
 // String for App Store
 "store_short_description" = "안전한 분산 대화/VoIP";
-"store_full_description" = "Element는 다음과 같은 기능을 제공하는 새로운 유형의 메신저입니다.\n\n1. 프라이버시를 관리할 수 있는 권한을 제공합니다.\n2. Matrix 네트워크의 사용자와 통신할 수 있을 뿐만 아니라 Slack 등의 \n앱을 연계하여 다른 네트워크와도 통신할 수 있습니다.\n3. 광고, 데이터마이닝, 백도어와 클로즈 플랫폼으로부터의 사용자를 보호합니다.\n4. 교차 검증과 강력한 종단간 암호화을 통해 사용자를 보호합니다.\n\nElement는 탈중앙화이며 오픈 소스이기 때문에 다른 메신저 앱과는 완전히 다릅니다.\n\nElement에서는 데이터 및 대화에 대한 소유권 및 제어 권한을 가질 수 있도록 자체 호스팅을 통해 \n직접 메신저 서버를 운영할 수 있고, 다른 사용자가 제공하고 있는 서버를 선택할 수 있습니다. 또한 개방형 네트워크에 액세스할 수 있으므로 Element 이외의 사용자와도 이야기할 수 있습니다. 그리고 매우 안전합니다.\n\nElement는 개방-분산형 통신의 표준인 Matrix에서 동작하기 때문에 이 모든 것을 수행할 수 있습니다.\n\nElement는 어떤 서버를 사용할지 사용자가 직접 Element 앱에서 결정할 수 있습니다.\n\n1. matrix.org의 공식 서버에서 무료 계정을 생성한다.\n2. 자체 호스팅을 통해 직접 서버를 운영하고 계정을 관리한다.\n3. Element Matrix Services의 호스팅 플랫폼에 가입하여 사용자 커스텀 서버에서 계정을 만든다.\n\n왜 Element를 선택해야합니까?\n\n내 데이터를 내가 소유함: 데이터나 메시지를 보관할 곳을 스스로 정할 수 있습니다. 데이터를 수집하거나 제 3자에게 데이터를 제공하는 거대 IT 기업이 아닌, 사용자가 스스로 데이터를 소유하고 제어할 수 있습니다.\n\n개방적인 메시징 및 협업: Element 또는 다른 Matrix 앱을 사용하든, 심지어 Slack, IRC, XMPP와 같은 다른 메시징 시스템을 사용하던 상관없이 Matrix 네트워크 상의 다른 사용자와 채팅할 수 있습니다.\n\n매우 안전함: 강력한 종단간 암호화(대화에 참여하고 있는 사람만 메시지를 복호화할 수 있습니다) 및 대화 참가자의 장치를 확인하기 위한 교차 검증을 실시할 수 있습니다.\n\n완벽한 커뮤니케이션: 메시징, 음성 및 화상 통화, 파일 공유, 화면 공유 및 다양한 통합, 봇, 위젯 등을 제공합니다. 방이나 커뮤니티를 만들어 서로 연락하고 일을 원활하게 해낼 수 있습니다.\n\n언제 어디서나: 모든 장치 및 웹(https://element.io/app)에서 메시지가 완전히 동기화되므로 언제 어디서나 연락을 취할 수 있습니다.";
+"store_full_description" = "Element는 다음과 같은 기능을 제공하는 새로운 유형의 메신저입니다.\n\n1. 프라이버시를 관리할 수 있는 권한을 제공합니다.\n2. Matrix 네트워크의 사용자와 통신할 수 있을 뿐만 아니라 Slack 등의 \n앱을 연계하여 다른 네트워크와도 통신할 수 있습니다.\n3. 광고, 데이터마이닝, 백도어와 클로즈 플랫폼으로부터의 사용자를 보호합니다.\n4. 교차 검증과 강력한 종단간 암호화을 통해 사용자를 보호합니다.\n\nElement는 탈중앙화이며 오픈 소스이기 때문에 다른 메신저 앱과는 완전히 다릅니다.\n\nElement에서는 데이터 및 대화에 대한 소유권 및 제어 권한을 가질 수 있도록 자체 호스팅을 통해 \n직접 메신저 서버를 운영할 수 있고, 다른 사용자가 제공하고 있는 서버를 선택할 수 있습니다. 또한 개방형 네트워크에 액세스할 수 있으므로 Element 이외의 사용자와도 이야기할 수 있습니다. 그리고 매우 안전합니다.\n\nElement는 개방-분산형 통신의 표준인 Matrix에서 동작하기 때문에 이 모든 것을 수행할 수 있습니다.\n\nElement는 어떤 서버를 사용할지 사용자가 직접 Element 앱에서 결정할 수 있습니다.\n\n1. matrix.org의 공식 서버에서 무료 계정을 생성한다.\n2. 자체 호스팅을 통해 직접 서버를 운영하고 계정을 관리한다.\n3. Element Matrix Services의 호스팅 플랫폼에 가입하여 사용자 커스텀 서버에서 계정을 만든다.\n\n왜 Element를 선택해야합니까?\n\n내 데이터를 내가 소유함: 데이터나 메시지를 보관할 곳을 스스로 정할 수 있습니다. 데이터를 수집하거나 제 3자에게 데이터를 제공하는 거대 IT 기업이 아닌, 사용자가 스스로 데이터를 소유하고 제어할 수 있습니다.\n\n개방적인 메시징 및 협업: Element 또는 다른 Matrix 앱을 사용하든, 심지어 Slack, IRC, XMPP와 같은 다른 메시징 시스템을 사용하던 상관없이 Matrix 네트워크 상의 다른 사용자와 채팅할 수 있습니다.\n\n매우 안전함: 강력한 종단간 암호화(대화에 참여하고 있는 사람만 메시지를 복호화할 수 있습니다) 및 대화 참가자의 장치를 확인하기 위한 교차 검증을 실시할 수 있습니다.\n\n완벽한 커뮤니케이션: 메시징, 음성 및 화상 통화, 파일 공유, 화면 공유 및 다양한 통합, 봇, 위젯 등을 제공합니다. 방이나 커뮤니티를 만들어 서로 연락하고 일을 원활하게 해낼 수 있습니다.\n\n언제 어디서나: 모든 장치 및 웹(https://app.element.io/)에서 메시지가 완전히 동기화되므로 언제 어디서나 연락을 취할 수 있습니다.";
 "join" = "참가";
 "decline" = "끊기";
 "accept" = "수락";
@@ -340,7 +340,7 @@
 "settings_add_email_address" = "이메일 주소 추가";
 "settings_phone_number" = "휴대 전화";
 "settings_add_phone_number" = "전화번호 추가";
-"settings_change_password" = "Matrix 계정 비밀번호 변경";
+"settings_change_password" = "비밀번호 변경";
 "settings_night_mode" = "야간 모드";
 "settings_fail_to_update_profile" = "프로필 업데이트에 실패함";
 "settings_enable_push_notif" = "이 기기에서 알림";
@@ -388,7 +388,7 @@
 "settings_crypto_device_key" = "\n세션 키:\n";
 "settings_crypto_export" = "키 내보내기";
 "settings_crypto_blacklist_unverified_devices" = "검증된 세션만 암호화";
-"settings_deactivate_my_account" = "내 계정 비활성화";
+"settings_deactivate_my_account" = "계정 영구 비활성화";
 "settings_key_backup_info" = "암호화된 메시지는 종단간 암호화로 보호됩니다. 오직 당신과 참가자만 키를 갖고 있어서 이 메시지를 읽을 수 있습니다.";
 "settings_key_backup_info_checking" = "확인 중…";
 "settings_key_backup_info_none" = "키가 이 세션에서 백업되지 않았습니다.";
@@ -1525,14 +1525,14 @@
 "settings_enable_room_message_bubbles" = "메시지 버블";
 "settings_labs_use_only_latest_user_avatar_and_name" = "대화 기록에서 사용자의 최신 프로필 사진 및 이름 표시";
 "settings_labs_enable_auto_report_decryption_errors" = "복호화 오류 자동 보고";
-"settings_labs_enable_threads" = "스레드 메시징";
+"settings_labs_enable_threads" = "스레드 메시지";
 "room_participants_invite_prompt_to_msg" = "%@을(를) %@에 초대하시겠습니까?";
 "rooms_empty_view_information" = "방은 비공개와 공개 모두 그룹채팅에 적합합니다. +를 눌러 기존에 개설된 방을 찾거나, 새로 개설할 수 있습니다.";
 "onboarding_celebration_button" = "출발";
-"onboarding_celebration_message" = "설정이 저장되었습니다.";
-"onboarding_celebration_title" = "모두 설정했어요!";
+"onboarding_celebration_message" = "프로필을 업데이트하려면 설정으로 가세요";
+"onboarding_celebration_title" = "보기 좋네요!";
 "onboarding_avatar_accessibility_label" = "프로필 사진";
-"onboarding_avatar_message" = "언제든지 수정할 수 있습니다.";
+"onboarding_avatar_message" = "언제든지 수정할 수 있습니다";
 "onboarding_avatar_title" = "프로필 사진 추가";
 "onboarding_display_name_max_length" = "프로필 이름은 256자 미만이어야 합니다";
 "onboarding_display_name_hint" = "나중에 수정할 수 있습니다";
@@ -1544,14 +1544,14 @@
 "onboarding_congratulations_home_button" = "홈 화면으로 이동";
 "onboarding_congratulations_personalize_button" = "프로필 설정";
 /* The placeholder string contains the user's matrix ID */
-"onboarding_congratulations_message" = "계정 %@이(가) 새롭게 생성되었습니다.";
+"onboarding_congratulations_message" = "계정 %@이(가) 새롭게 생성되었습니다";
 "onboarding_congratulations_title" = "축하합니다!";
 "onboarding_use_case_existing_server_message" = "기존 서버에 가입하려고 하시나요?";
 "onboarding_use_case_skip_button" = "질문 넘기기";
 /* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
 "onboarding_use_case_not_sure_yet" = "아직 확실하지 않으신가요? %@";
 "onboarding_use_case_personal_messaging" = "친구와 가족";
-"onboarding_use_case_message" = "연결할 수 있도록 도와드릴게요.";
+"onboarding_use_case_message" = "연결할 수 있도록 도와드릴게요";
 "onboarding_use_case_title" = "누구와 가장 많이 대화하나요?";
 "onboarding_splash_page_2_message" = "데이터 및 대화가 저장될 서버를 선택하여 내 정보에 대한 통제력과 독립성을 확보하세요. Matrix를 통해 연결됩니다.";
 "onboarding_splash_page_1_title" = "대화 내용을 소유하세요.";
@@ -1586,7 +1586,7 @@
 // Start
 
 "user_verification_start_verify_action" = "검증 시작하기";
-"key_verification_user_title" = "검증";
+"key_verification_user_title" = "인증";
 "key_verification_tile_request_outgoing_title" = "검증 전송됨";
 "widget_picker_manage_integrations" = "통합 관리하기…";
 "room_widget_permission_room_id_permission" = "방 ID";
@@ -1632,3 +1632,4 @@
 "room_preview_decline_invitation_options" = "초대를 거부하거나 친구를 차단하시겠습니까?";
 "threads_beta_information_link" = "더 알아보기";
 "threads_beta_title" = "스레드";
+"room_access_settings_screen_upgrade_alert_message" = "%@에 있는 사람은 누구나 이 방을 찾아 참여할 수 있습니다 - 모두를 수동으로 초대할 필요가 없습니다. 당신은 언제든지 방 설정에서 변경할 수 있습니다.";
