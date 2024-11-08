@@ -235,6 +235,7 @@
 {
     [tableView registerClass:RoomDirectCallStatusCell.class forCellReuseIdentifier:RoomDirectCallStatusCell.defaultReuseIdentifier];
     [tableView registerClass:RoomGroupCallStatusCell.class forCellReuseIdentifier:RoomGroupCallStatusCell.defaultReuseIdentifier];
+    [tableView registerClass:RoomMatrixRTCCallCell.class forCellReuseIdentifier:RoomMatrixRTCCallCell.defaultReuseIdentifier];
 }
 
 - (void)registerVoiceMessageCellsForTableView:(UITableView*)tableView
@@ -520,6 +521,7 @@
     return @{
         @(RoomTimelineCellIdentifierDirectCallStatus) : RoomDirectCallStatusCell.class,
         @(RoomTimelineCellIdentifierGroupCallStatus) : RoomGroupCallStatusCell.class,
+        @(RoomTimelineCellIdentifierMatrixRTCCall) : RoomMatrixRTCCallCell.class,
     };
 }
 

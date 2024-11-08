@@ -577,6 +577,15 @@ class NotificationService: UNNotificationServiceExtension {
                             notificationTitle = self.messageTitle(for: eventSenderName, in: roomDisplayName)
                             notificationBody = VectorL10n.pollTimelineEndedText
                         
+                        case .callNotify:
+                            if let callNotify = MXCallNotify(fromJSON: event.content) {
+                                let userIDs = callNotify.mentions.userIDs as? [String]
+                                if currentUserId.flatMap({ userIDs?.contains($0) }) ?? callNotify.mentions.room {
+                                    notificationTitle = self.messageTitle(for: eventSenderName, in: roomDisplayName)
+                                    notificationBody = NotificationService.localizedString(forKey: "UNSUPPORTED_CALL")
+                                }
+                            }
+                        
                         default:
                             break
                     }
