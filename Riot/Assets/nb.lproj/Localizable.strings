@@ -64,3 +64,29 @@
 
 /* New message from a specific person, not referencing a room */
 "MSG_FROM_USER" = "%@ sendte en melding";
+
+/* A single unread message */
+"SINGLE_UNREAD" = "Du har mottatt en melding";
+
+/* New file message from a specific person, not referencing a room. */
+"LOCATION_FROM_USER" = "%@ delte posisjonen sin";
+
+/** Media Messages **/
+
+/* New image message from a specific person, not referencing a room. */
+"PICTURE_FROM_USER" = "%@ sendte et bilde";
+
+/* New video message from a specific person, not referencing a room. */
+"VIDEO_FROM_USER" = "%@ sendte en video";
+
+/* New audio message from a specific person, not referencing a room. */
+"AUDIO_FROM_USER" = "%@ sendte en lydfil %@";
+
+/* New voice message from a specific person, not referencing a room. */
+"VOICE_MESSAGE_FROM_USER" = "%@ sendte en talemelding";
+
+/* New file message from a specific person, not referencing a room. */
+"FILE_FROM_USER" = "%@ sendte en fil %@";
+
+/* New image message from a specific person in a named room. */
+"IMAGE_FROM_USER_IN_ROOM" = "%@ postet et bilde %@ i %@";
