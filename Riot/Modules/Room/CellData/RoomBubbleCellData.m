@@ -142,6 +142,14 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                 self.displayTimestampForSelectedComponentOnLeftWhenPossible = NO;
                 break;
             }
+            case MXEventTypeCallNotify:
+            {
+                self.tag = RoomBubbleCellDataTagRTCCallNotify;
+                self.collapsable = NO;
+                self.collapsed = NO;
+                self.displayTimestampForSelectedComponentOnLeftWhenPossible = NO;
+                break;
+            }
             case MXEventTypePollStart:
             case MXEventTypePollEnd:
             {
@@ -374,6 +382,11 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
             break;
         case RoomBubbleCellDataTagVoiceBroadcastNoDisplay:
             break;
+        case RoomBubbleCellDataTagRTCCallNotify:
+        {
+            hasNoDisplay = NO;
+            break;
+        }
         default:
             hasNoDisplay = [super hasNoDisplay];
             break;
@@ -1119,6 +1132,9 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         case RoomBubbleCellDataTagGroupCall:
             shouldAddEvent = NO;
             break;
+        case RoomBubbleCellDataTagRTCCallNotify:
+            shouldAddEvent = NO;
+            break;
         case RoomBubbleCellDataTagRoomCreateConfiguration:
             shouldAddEvent = NO;
             break;
@@ -1191,6 +1207,9 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
             case MXEventTypeCallAnswer:
             case MXEventTypeCallHangup:
             case MXEventTypeCallReject:
+                shouldAddEvent = NO;
+                break;
+            case MXEventTypeCallNotify:
                 shouldAddEvent = NO;
                 break;
             case MXEventTypePollStart:

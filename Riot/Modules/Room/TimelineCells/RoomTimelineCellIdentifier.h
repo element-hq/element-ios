@@ -128,6 +128,7 @@ typedef NS_ENUM(NSUInteger, RoomTimelineCellIdentifier) {
     // - Call
     RoomTimelineCellIdentifierDirectCallStatus,
     RoomTimelineCellIdentifierGroupCallStatus,
+    RoomTimelineCellIdentifierMatrixRTCCall,
     
     // - Voice message
     // -- Incoming
