@@ -2726,3 +2726,4 @@
 // MARK: - WYSIWYG Composer
 "wysiwyg_composer_action_minimise_action" = "Peida tekstitoimeti";
 "wysiwyg_composer_action_maximise_action" = "Ava tekstitoimeti";
+"call_unsupported_matrix_rtc_call" = "See kõne pole toetatud. Kõnega liitumiseks palun kasuta uut Element X rakendust.";
