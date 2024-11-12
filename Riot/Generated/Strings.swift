@@ -1187,6 +1187,10 @@ public class VectorL10n: NSObject {
   public static var callTransferUsers: String { 
     return VectorL10n.tr("Vector", "call_transfer_users") 
   }
+  /// Unsupported call. The new Element X app is needed to join this call.
+  public static var callUnsupportedMatrixRtcCall: String { 
+    return VectorL10n.tr("Vector", "call_unsupported_matrix_rtc_call") 
+  }
   /// Video call with %@
   public static func callVideoWithUser(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "call_video_with_user", p1)

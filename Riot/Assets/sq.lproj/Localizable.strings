@@ -121,3 +121,4 @@
 
 /* New voice broadcast from a specific person, not referencing a room. */
 "VOICE_BROADCAST_FROM_USER" = "%@ nisi një transmetim zanor";
+"UNSUPPORTED_CALL" = "Thirrje që s’mbulohet";

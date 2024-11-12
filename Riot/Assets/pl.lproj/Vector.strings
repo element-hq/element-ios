@@ -2861,3 +2861,10 @@
 "settings_manage_account_title" = "Konto";
 "settings_manage_account_action" = "Zarządzaj kontem";
 "settings_manage_account_description" = "Zarządzaj swoim kontem w %@";
+
+
+// MARK: - WYSIWYG Composer
+"wysiwyg_composer_action_minimise_action" = "Zmniejsz edytora treści";
+"wysiwyg_composer_action_maximise_action" = "Powiększ edytora treści";
+"room_action_report_prompt_reason" = "Powód zgłoszenia tego pokoju";
+"room_action_report" = "Zgłoś pokój";
