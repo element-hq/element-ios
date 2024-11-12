@@ -64,3 +64,104 @@
 
 /* New message from a specific person, not referencing a room */
 "MSG_FROM_USER" = "%@ sendte en melding";
+
+/* A single unread message */
+"SINGLE_UNREAD" = "Du har mottatt en melding";
+
+/* New file message from a specific person, not referencing a room. */
+"LOCATION_FROM_USER" = "%@ delte posisjonen sin";
+
+/** Media Messages **/
+
+/* New image message from a specific person, not referencing a room. */
+"PICTURE_FROM_USER" = "%@ sendte et bilde";
+
+/* New video message from a specific person, not referencing a room. */
+"VIDEO_FROM_USER" = "%@ sendte en video";
+
+/* New audio message from a specific person, not referencing a room. */
+"AUDIO_FROM_USER" = "%@ sendte en lydfil %@";
+
+/* New voice message from a specific person, not referencing a room. */
+"VOICE_MESSAGE_FROM_USER" = "%@ sendte en talemelding";
+
+/* New file message from a specific person, not referencing a room. */
+"FILE_FROM_USER" = "%@ sendte en fil %@";
+
+/* New image message from a specific person in a named room. */
+"IMAGE_FROM_USER_IN_ROOM" = "%@ postet et bilde %@ i %@";
+
+/* A user has change their name to a new name which we don't know */
+"GENERIC_USER_UPDATED_DISPLAYNAME" = "%@ har endret navn";
+
+/* A user's membership has updated in an unknown way */
+"USER_MEMBERSHIP_UPDATED" = "%@ har oppdatert profilen";
+
+/* A single unread message in a room */
+"SINGLE_UNREAD_IN_ROOM" = "Du mottok en melding i %@";
+
+/** Invites **/
+
+/* A user has invited you to a chat */
+"USER_INVITE_TO_CHAT" = "%@ har invitert deg til en chat";
+
+/* A user has invited you to an (unamed) group chat */
+"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ har invitert deg til en gruppechat";
+
+/* A user has invited you to a named room */
+"USER_INVITE_TO_NAMED_ROOM" = "%@ har invitert deg til %@";
+
+/* Incoming one-to-one video call */
+"VIDEO_CALL_FROM_USER" = "Videoanrop fra %@";
+
+/* Incoming unnamed voice conference invite from a specific person */
+"VOICE_CONF_FROM_USER" = "Gruppeanrop fra %@";
+
+/* Incoming unnamed video conference invite from a specific person */
+"VIDEO_CONF_FROM_USER" = "Videogruppeanrop fra %@";
+
+/* Incoming named video conference invite from a specific person */
+"VIDEO_CONF_NAMED_FROM_USER" = "Videogruppeanrop fra %@: '%@'";
+
+/** Reactions **/
+
+/* A user has reacted to a message, including the reaction e.g. "Alice reacted 👍". */
+"REACTION_FROM_USER" = "%@ reagerte %@";
+
+/* A user has reacted to a message, but the reaction content is unknown */
+"GENERIC_REACTION_FROM_USER" = "%@ sendte en reaksjon";
+
+/* A user has change their avatar */
+"USER_UPDATED_AVATAR" = "%@ har endret avatar";
+
+/* A user added a Jitsi call to a room */
+"GROUP_CALL_STARTED" = "Gruppeanrop startet";
+
+/* Group call from user, CallKit caller name */
+"GROUP_CALL_FROM_USER" = "%@ (Gruppeanrop)";
+
+/** Key verification **/
+
+"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ ønsker å bekrefte";
+
+/* New message reply from a specific person, not referencing a room. */
+"REPLY_FROM_USER_TITLE" = "%@ svarte";
+
+/* New message reply from a specific person in a named room. */
+"REPLY_FROM_USER_IN_ROOM_TITLE" = "%@ svarte i %@";
+
+/** Membership Updates **/
+
+/* A user has change their name to a new name */
+"USER_UPDATED_DISPLAYNAME" = "%@ har endret navn til %@";
+
+/* Incoming named voice conference invite from a specific person */
+"VOICE_CONF_NAMED_FROM_USER" = "Gruppeanrop fra %@: '%@'";
+
+/* New message from a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM" = "%@ postet i %@";
+
+/** Calls **/
+
+/* Incoming one-to-one voice call */
+"VOICE_CALL_FROM_USER" = "Anrop fra %@";
