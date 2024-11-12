@@ -121,3 +121,4 @@
 
 /* New voice broadcast from a specific person, not referencing a room. */
 "VOICE_BROADCAST_FROM_USER" = "%@ alustas ringhäälingukõnet";
+"UNSUPPORTED_CALL" = "See kõne pole toetatud";
