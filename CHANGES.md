@@ -1,3 +1,8 @@
+## Changes in 1.11.20 (2024-11-12)
+
+No significant changes.
+
+
 ## Changes in 1.11.19 (2024-10-15)
 
 No significant changes.
