@@ -1253,6 +1253,7 @@ Tap the + to start adding people.";
 "call_no_stun_server_error_use_fallback_button" = "Try using %@";
 
 "call_actions_unhold" = "Resume";
+"call_unsupported_matrix_rtc_call" = "Unsupported call. The new Element X app is needed to join this call.";
 
 // No VoIP support
 "no_voip_title" = "Incoming call";

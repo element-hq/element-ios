@@ -2981,3 +2981,4 @@
 "wysiwyg_composer_action_minimise_action" = "Kecilkan komposer";
 "wysiwyg_composer_action_maximise_action" = "Luaskan komposer";
 "room_action_report" = "Laporkan ruangan";
+"call_unsupported_matrix_rtc_call" = "Panggilan tidak didukung. Aplikasi Element X diperlukan untuk bergabung ke panggilan ini.";

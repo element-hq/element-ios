@@ -2764,3 +2764,4 @@
 // MARK: - WYSIWYG Composer
 "wysiwyg_composer_action_minimise_action" = "Tkurre hartuesin";
 "wysiwyg_composer_action_maximise_action" = "Zgjeroje hartuesin";
+"call_unsupported_matrix_rtc_call" = "Thirrje që s’mbulohet. Për të marrë pjesë në këtë thirrje, lypset aplikacioni i ri Element X.";

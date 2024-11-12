@@ -182,6 +182,8 @@
 /* Group call from user, CallKit caller name */
 "GROUP_CALL_FROM_USER" = "%@ (Group call)";
 
+"UNSUPPORTED_CALL" = "Unsupported call";
+
 /** Key verification **/
 
 "KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ wants to verify";
