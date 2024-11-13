@@ -35,7 +35,7 @@ abstract_target 'RiotPods' do
   pod 'KeychainAccess', '~> 4.2.2'
   pod 'WeakDictionary', '~> 2.0'
 
-  pod 'Sentry', '~> 7.15.0'
+  pod 'Sentry', '~> 8.40.1'
 
   pod 'zxcvbn-ios'
 
