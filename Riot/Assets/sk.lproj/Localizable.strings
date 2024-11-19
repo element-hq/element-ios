@@ -171,3 +171,4 @@
 
 /* New voice broadcast from a specific person, not referencing a room. */
 "VOICE_BROADCAST_FROM_USER" = "%@ začal/a hlasové vysielanie";
+"UNSUPPORTED_CALL" = "Nepodporovaný hovor";
