@@ -53,22 +53,6 @@ final class CrossSigningSetupCoordinator: CrossSigningSetupCoordinatorType {
     }
     
     // MARK: - Private methods
-
-    private func showReauthentication(authenticationSession: MXAuthenticationSession) {
-        let setupCrossSigningRequest = self.crossSigningService.setupCrossSigningRequest()
-        
-        let reauthenticationParameters = ReauthenticationCoordinatorParameters(session: parameters.session,
-                                                                               presenter: parameters.presenter,
-                                                                               title: parameters.title,
-                                                                               message: parameters.message,
-                                                                               authenticationSession: authenticationSession)
-        
-        let coordinator = ReauthenticationCoordinator(parameters: reauthenticationParameters)
-        coordinator.delegate = self
-        self.add(childCoordinator: coordinator)
-        
-        coordinator.start()
-    }
     
     private func setupCrossSigning(with authenticationParameters: [String: Any] = [:]) {
         guard let crossSigning = parameters.session.crypto?.crossSigning else { return }
@@ -86,6 +70,22 @@ final class CrossSigningSetupCoordinator: CrossSigningSetupCoordinatorType {
                 delegate?.crossSigningSetupCoordinator(self, didFailWithError: error)
             }
         }
+    }
+
+    private func showReauthentication(authenticationSession: MXAuthenticationSession) {
+        let setupCrossSigningRequest = self.crossSigningService.setupCrossSigningRequest()
+        
+        let reauthenticationParameters = ReauthenticationCoordinatorParameters(session: parameters.session,
+                                                                               presenter: parameters.presenter,
+                                                                               title: parameters.title,
+                                                                               message: parameters.message,
+                                                                               authenticationSession: authenticationSession)
+        
+        let coordinator = ReauthenticationCoordinator(parameters: reauthenticationParameters)
+        coordinator.delegate = self
+        self.add(childCoordinator: coordinator)
+        
+        coordinator.start()
     }
 }
 
