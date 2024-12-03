@@ -309,8 +309,12 @@ class CallPresenter: NSObject {
                     return
                 }
                 let user = session.user(withUserId: event.sender)
-                let displayName = NSString.localizedUserNotificationString(forKey: "GROUP_CALL_FROM_USER",
-                                                                           arguments: [user?.displayname as Any])
+                let displayNameUNLocalizedString = NSString.localizedUserNotificationString(forKey: "GROUP_CALL_FROM_USER",
+                                                                                            arguments: [user?.displayname as Any])
+
+                // will fix app crash when CXCallUpdate accesses the localizedCallerName property because list of allowed classes for com.apple.callkit.callsourcehost service contains only NSString
+                let displayNameNSString = NSString(string: displayNameUNLocalizedString)
+                let displayName = String(displayNameNSString)
                 
                 MXLog.debug("[CallPresenter] processWidgetEvent: Report new incoming call with id: \(newUUID.uuidString)")
                 
