@@ -1319,7 +1319,7 @@
 // Call Bar
 "callbar_only_single_active" = "Нажмите для возврата к вызову (%@)";
 "room_details_integrations" = "Интеграции";
-"room_details_search" = "Искать комнату";
+"room_details_search" = "Поиск в комнате";
 "room_multiple_typing_notification" = "%@ и другие";
 "room_accessibility_video_call" = "Видео вызов";
 "room_message_replying_to" = "В ответ %@";
@@ -2053,7 +2053,7 @@
 "room_event_copy_link_info" = "Ссылка скопирована в буфер обмена.";
 "room_event_action_reply_in_thread" = "Нить";
 "room_event_action_view_in_room" = "Посмотреть в комнате";
-"room_event_action_end_poll" = "Закончить опрос";
+"room_event_action_end_poll" = "Завершить опрос";
 "room_event_action_remove_poll" = "Удалить опрос";
 "room_participants_invite_prompt_to_msg" = "Вы уверены что хотите пригласить %@ в %@?";
 "room_participants_leave_success" = "Левая комната";
@@ -2157,7 +2157,7 @@
 "user_other_session_verified_additional_info" = "Эта сессия готова к безопасному обмену сообщениями.";
 "user_other_session_current_session_details" = "Текущая сессия";
 "user_other_session_filter_menu_all" = "Все сессии";
-"wysiwyg_composer_start_action_stickers" = "Наклейки";
+"wysiwyg_composer_start_action_stickers" = "Наклейка";
 "authentication_login_with_qr" = "Войти при помощи QR-кода";
 "onboarding_avatar_message" = "Время добавить лицо к имени";
 "onboarding_congratulations_home_button" = "На главную";
@@ -2204,7 +2204,7 @@
 "notice_voice_broadcast_ended_by_you" = "Вы закончили голосовую трансляцию.";
 "room_displayname_more_than_two_members" = "%@ и %@ другие";
 "room_details_access_row_title" = "Доступ";
-"room_details_polls" = "История опроса";
+"room_details_polls" = "Опросы";
 // User sessions management
 "user_sessions_settings" = "Управление сеансами";
 "manage_session_sign_out_other_sessions" = "Выйти из всех остальных сеансов";
@@ -2353,3 +2353,74 @@
 "key_verification_scan_qr_code_information_new_session" = "Наведите камеру на QR-код, отображенном на другом вашем устройстве для подтверждения вашей новой сессии";
 "create_room_section_footer_type_restricted" = "Все в пространстве могут искать и вступать.";
 "launch_loading_delay_warning" = "Это может занимать больше времени.\nСпасибо за терпение.";
+"poll_history_no_past_poll_text" = "В комнате нет завершённых опросов";
+"poll_history_past_segment_title" = "Завершённые опросы";
+"all_chats_edit_layout_show_filters" = "Фильтры";
+"poll_timeline_total_votes_not_voted" = "%lu проголосовал(о). Проголосуйте, чтобы увидеть результаты";
+"all_chats_user_menu_accessibility_label" = "Меню пользователя";
+"poll_history_no_active_poll_period_text" = "Нет активных опросов за прошедшие %@ дней. Подгрузите ещё, чтобы просмотреть опросы за предыдущие месяцы";
+"poll_edit_form_poll_type" = "Тип опроса";
+"poll_edit_form_poll_type_closed_description" = "Результаты отобразятся только после завершения опроса";
+"all_chats_edit_layout_recents" = "Недавние";
+"poll_timeline_total_no_votes" = "Нет голосов";
+"poll_timeline_loading" = "Загрузка…";
+"wysiwyg_composer_start_action_location" = "Местоположение";
+"all_chats_edit_layout_alphabetical_order" = "Сортировать по алфавиту";
+"poll_history_no_past_poll_period_text" = "Нет завершённых опросов за прошедшие %@ дней. Подгрузите ещё, чтобы просмотреть опросы за предыдущие месяцы";
+"poll_history_load_more" = "Загрузить ещё";
+
+// MARK: - Polls
+
+"poll_edit_form_create_poll" = "Создать опрос";
+"poll_timeline_decryption_error" = "Из-за ошибок расшифровки некоторые голоса могут быть не учтены";
+"wysiwyg_composer_start_action_text_formatting" = "Форматирование текста";
+"all_chats_edit_layout_unreads" = "Непрочитанные";
+"poll_timeline_total_final_results_one_vote" = "Окончательный результат на основании 1 голоса";
+"all_chats_nothing_found_placeholder_message" = "Попробуйте скорректировать ваш поисковый запрос.";
+"poll_edit_form_poll_type_open_description" = "Проголосовавшие увидят результаты сразу после голосования";
+"poll_edit_form_poll_type_closed" = "Закрытый опрос";
+"poll_timeline_total_votes" = "%lu проголосовало";
+"poll_timeline_vote_not_registered_subtitle" = "Извините, ваш голос не был учтён, пожалуйста, попробуйте ещё раз";
+"poll_history_fetching_error" = "Ошибка при загрузке опросов.";
+"poll_timeline_total_final_results" = "Окончательный результат на основании %lu голосa(ов)";
+"poll_timeline_vote_not_registered_title" = "Голос не учтён";
+"poll_timeline_total_one_vote_not_voted" = "1 проголосовал. Проголосуйте, чтобы увидеть результаты";
+"poll_history_detail_view_in_timeline" = "Просмотреть в чате";
+"all_chats_edit_menu_space_settings" = "Настройки пространства";
+"poll_timeline_reply_ended_poll" = "Опрос завершён";
+"wysiwyg_composer_start_action_attachments" = "Вложение";
+"all_chats_section_title" = "Беседы";
+"all_chats_edit_layout" = "Настройки вида";
+"room_recents_recently_viewed_section" = "Недавно просмотренные";
+"wysiwyg_composer_start_action_voice_broadcast" = "Голосовая трансляция";
+"poll_timeline_total_one_vote" = "1 проголосовал";
+
+// MARK: - All Chats
+
+"all_chats_title" = "Все беседы";
+"all_chats_edit_layout_show_recents" = "Недавние";
+"all_chats_edit_layout_activity_order" = "Сортировать по активности";
+"all_chats_empty_list_placeholder_title" = "Нечего отображать.";
+"all_chats_empty_unreads_placeholder_message" = "Здесь будут отображаться непрочитанные сообщения, когда таковые появятся.";
+
+// MARK: - Polls history
+
+"poll_history_title" = "История опросов";
+"poll_history_loading_text" = "Опросы загружаются";
+"poll_edit_form_poll_type_open" = "Открытый опрос";
+"poll_timeline_ended_text" = "Опрос завершён";
+"all_chats_edit_layout_sorting_options_title" = "Сортировать сообщения по";
+"all_chats_nothing_found_placeholder_title" = "Ничего не найдено.";
+"all_chats_user_menu_settings" = "Настройки пользователя";
+"all_chats_edit_menu_leave_space" = "Покинуть %@";
+"poll_history_active_segment_title" = "Активные опросы";
+"poll_history_no_active_poll_text" = "В комнате нет активных опросов";
+"poll_timeline_one_vote" = "1 голос";
+"poll_timeline_votes_count" = "%lu голоса(ов)";
+"poll_timeline_not_closed_title" = "Не получается завершить опрос";
+"poll_timeline_not_closed_subtitle" = "Попробуйте ещё раз";
+
+// Send Media Actions
+"wysiwyg_composer_start_action_media_picker" = "Фото";
+"wysiwyg_composer_start_action_camera" = "Снимок с камеры";
+"wysiwyg_composer_start_action_polls" = "Опрос";
