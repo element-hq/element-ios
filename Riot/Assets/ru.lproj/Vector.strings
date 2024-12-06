@@ -1983,7 +1983,7 @@
 "stop" = "Остановить";
 "joining" = "Соединение";
 "enable" = "Включить";
-"authentication_verify_email_waiting_title" = "Подтвердите свою электронную почту";
+"authentication_verify_email_waiting_title" = "Подтвердите свою электронную почту.";
 "authentication_verify_email_text_field_placeholder" = "Электронная почта";
 "authentication_verify_email_input_title" = "Введите электронную почту";
 "authentication_login_forgot_password" = "Забыл(а) пароль";
@@ -2002,7 +2002,7 @@
 "settings_labs_enable_threads" = "Обсуждения сообщений";
 "settings_labs_enabled_polls" = "Опросы";
 "settings_ui_show_redactions_in_room_history" = "Показать место хранения удалённых сообщений";
-"settings_about" = "О";
+"settings_about" = "О приложении";
 "room_preview_decline_invitation_options" = "Вы хотите отклонить приглашение или проигнорировать пользователя?";
 "threads_discourage_information_2" = "\n\nВсё равно хотите включить обсуждения?";
 "threads_discourage_information_1" = "Ваш домашний сервер в настоящее время не поддерживает обсуждения, поэтому эта функция может работать ненадёжно. Некоторые сообщения в обсуждениях могут быть недоступны. ";
@@ -2616,14 +2616,14 @@
 "user_session_details_application_section_header" = "Приложение";
 "spaces_creation_email_invites_email_title" = "E-Mail";
 "location_sharing_live_stop_sharing_error" = "Не удается остановить трансляцию геопозиции";
-"device_type_name_mobile" = "Mobile";
+"device_type_name_mobile" = "";
 "user_session_details_session_id" = "ID сеанса";
 "user_session_details_device_os" = "Операционная система";
 "location_sharing_map_credits_title" = "© Copyright";
 "user_session_unverified_session_title" = "Незаверенный сеанс";
 "user_other_session_filter_menu_inactive" = "Неактивные";
 "user_sessions_view_all_action" = "Просмотреть все (%d)";
-"room_invites_empty_view_information" = "Здесь появятся ваши приглашения";
+"room_invites_empty_view_information" = "Здесь появятся ваши приглашения.";
 "location_sharing_open_open_street_maps" = "Открыть в OpenStreetMap";
 "user_other_session_security_recommendation_title" = "Другие сеансы";
 "device_name_unknown" = "Неизвестный клиент";
@@ -2666,7 +2666,7 @@
 
 // MARK: - Room invites
 
-"room_invites_empty_view_title" = "Ничего нового";
+"room_invites_empty_view_title" = "Ничего нового.";
 "room_waiting_other_participants_title" = "Ожидание присоединения пользователей к %@";
 "room_waiting_other_participants_message" = "Как только приглашенные пользователи присоединятся к %@, вы сможете общаться; комната будет зашифрована сквозным шифрованием";
 "poll_edit_form_poll_question_or_topic" = "Вопрос или тема опроса";
