@@ -2685,3 +2685,4 @@
 "user_other_session_selected_count" = "%@ выбрано";
 "user_other_session_menu_sign_out_sessions" = "Выйти из %@ сеансов";
 "user_session_overview_current_session_title" = "Текущий сеанс";
+"notice_voice_broadcast_live" = "Прямая трансляция";
