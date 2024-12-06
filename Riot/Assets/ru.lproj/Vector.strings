@@ -1999,7 +1999,7 @@
 "settings_analytics_and_crash_data" = "Отправлять данные о сбоях и аналитике";
 "settings_labs_enable_live_location_sharing" = "Трансляция геопозиции - делиться текущей геопозицией (активная разработка и, временно, сохраняющиеся в истории комнаты локации)";
 "settings_labs_use_only_latest_user_avatar_and_name" = "Показывать последний аватар и имя пользователей в истории сообщений";
-"settings_labs_enable_threads" = "Потоковый обмен сообщениями";
+"settings_labs_enable_threads" = "Обсуждения сообщений";
 "settings_labs_enabled_polls" = "Опросы";
 "settings_ui_show_redactions_in_room_history" = "Показать место хранения удалённых сообщений";
 "settings_about" = "О";
@@ -2212,11 +2212,11 @@
 "settings_presence_offline_mode_description" = "Если включено, вы будете всегда оффлайн для остальных пользователей, даже при использовании приложения.";
 "settings_presence" = "Присутствие";
 "settings_discovery_accept_terms" = "Примите Правила Идентификации Сервера";
-"settings_labs_enable_voice_broadcast" = "Голосовая трансляция";
-"settings_labs_enable_wysiwyg_composer" = "Попробуйте редактор текста";
+"settings_labs_enable_voice_broadcast" = "Голосовые трансляции";
+"settings_labs_enable_wysiwyg_composer" = "Наглядный текстовый редактор";
 "settings_labs_enable_new_app_layout" = "Новый Слой Приложения";
-"settings_labs_enable_new_session_manager" = "Новый менеджер сессии";
-"settings_labs_enable_auto_report_decryption_errors" = "Авто Отчет Ошибок Расшифровки";
+"settings_labs_enable_new_session_manager" = "Новый менеджер сеансов";
+"settings_labs_enable_auto_report_decryption_errors" = "Автоматически сообщать об ошибках расшифровки";
 "settings_push_rules_error" = "Произошла ошибка при обновлении настроек уведомлений. Пожалуйста, попробуйте переключить свой вариант еще раз.";
 "threads_beta_information" = "Держите обсуждения организованными с помощью потоков.\n\nПотоки помогают вести ваши разговоры по теме и их легко отслеживать. ";
 "room_creation_only_one_email_invite" = "Вы можете пригласить только один адрес email за раз";
@@ -2424,3 +2424,60 @@
 "wysiwyg_composer_start_action_media_picker" = "Фото";
 "wysiwyg_composer_start_action_camera" = "Снимок с камеры";
 "wysiwyg_composer_start_action_polls" = "Опрос";
+"call_unsupported_matrix_rtc_call" = "Вызов не поддерживается. Для подключения к этому вызову требуется новое приложение Element X.";
+"room_action_report" = "Сообщить о комнате";
+"room_action_report_prompt_reason" = "Причина сообщения/жалобы на комнату";
+"spaces_creation_new_rooms_general" = "Общая";
+"spaces_creation_new_rooms_random" = "Случайная";
+"spaces_creation_address_already_exists" = "%@\nуже существует";
+"side_menu_coach_message" = "Чтобы увидеть все комнаты, смахните вправо или коснитесь экрана";
+"spaces_add_space" = "Добавить пространство";
+"leave_space_and_one_room" = "Выйти из пространства и 1 комнаты";
+"spaces_subspace_creation_visibility_title" = "Какой вид подпространства вы хотите создать?";
+"spaces_creation_address" = "Адрес";
+"voice_broadcast_playback_loading_error" = "Не удается воспроизвести эту голосовую трансляцию.";
+"spaces_creation_private_space_title" = "Ваше приватное пространство";
+"spaces_add_subspace_title" = "Создать пространство внутри %@";
+"space_settings_access_section" = "Кто может получать доступ к этому пространству?";
+"space_settings_update_failed_message" = "Не удалось обновить настройки пространства. Повторить попытку?";
+"voice_broadcast_permission_denied_message" = "У вас нет необходимых разрешений для запуска голосовой трансляции в этой комнате. Обратитесь к администратору комнаты, чтобы он выдал вам разрешение.";
+"spaces_create_subspace_title" = "Создать подпространство";
+"spaces_subspace_creation_visibility_message" = "Созданное пространство будет добавлено в %@.";
+"spaces_creation_address_invalid_characters" = "%@\nсодержит недопустимые символы";
+"leave_space_selection_title" = "ВЫБЕРИТЕ КОМНАТЫ";
+"spaces_creation_empty_room_name_error" = "Необходимо указать имя";
+"spaces_creation_new_rooms_support" = "Поддержка";
+
+// MARK: Leave space
+
+"leave_space_action" = "Выйти из пространства";
+"spaces_explore_rooms_format" = "Просмотреть %@";
+
+// MARK: - Voice Broadcast
+"voice_broadcast_unauthorized_title" = "Не удается запустить голосовую трансляцию";
+"voice_broadcast_tile" = "Голосовая трансляция";
+"spaces_creation_footer" = "Вы сможете изменить это в будущем";
+"spaces_creation_cancel_message" = "Введённые вами данные будут утеряны.";
+"leave_space_and_more_rooms" = "Выйти из пространства и %@ комнат(ы)";
+"voice_broadcast_already_in_progress_message" = "Вы уже ведёте голосовую трансляцию. Пожалуйста, завершите текущую голосовую трансляцию и начните новую.";
+"spaces_create_space_title" = "Создать пространство";
+"spaces_creation_visibility_title" = "Какой вид пространства вы хотите создать?";
+"room_creation_user_not_found_prompt_message" = "Не удается найти профили по этому Matrix ID. Всё равно начать личную переписку?";
+"room_creation_user_not_found_prompt_invite_action" = "Всё равно начать переписку";
+"room_participants_invite_unknown_participant_prompt_to_msg" = "Не удается найти профили по этому Matrix ID. Вы уверены, что хотите пригласить %@ в %@?";
+"room_participants_invite_anyway" = "Всё равно пригласить";
+"voice_message_broadcast_in_progress_message" = "Вы не можете записывать голосовые сообщения во время прямой трансляции. Пожалуйста, завершите прямую трансляцию, чтобы начать запись голосового сообщения";
+"spaces_creation_cancel_title" = "Отменить создание пространства?";
+"settings_manage_account_title" = "Учётная запись";
+"spaces_creation_settings_message" = "Добавьте детали, которые помогут ему выделиться. Вы сможете изменить их в любой момент.";
+"voice_broadcast_playback_lock_screen_placeholder" = "Голосовая трансляция";
+"space_settings_current_address_message" = "Ваше пространство доступно для просмотра по адресу\n%@";
+"spaces_creation_visibility_message" = "Чтобы присоединиться к существующему пространству, вам нужно приглашение.";
+"spaces_creation_address_default_message" = "Ваше пространство будет доступно для просмотра по адресу\n%@";
+"spaces_creation_public_space_title" = "Ваше публичное пространство";
+"spaces_creation_new_rooms_room_name_title" = "Имя комнаты";
+"leave_space_selection_all_rooms" = "Выбрать все комнаты";
+"leave_space_selection_no_rooms" = "Не выбирать комнаты";
+"voice_message_broadcast_in_progress_title" = "Невозможно начать запись голосового сообщения";
+"voice_broadcast_blocked_by_someone_else_message" = "Кто-то другой уже ведёт голосовую трансляцию. Дождитесь окончания текущей голосовой трансляции, чтобы начать свою.";
+"voice_broadcast_live" = "В эфире";
