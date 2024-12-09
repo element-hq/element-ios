@@ -233,7 +233,7 @@
 "settings_config_home_server" = "Домашний сервер: %@";
 "settings_config_identity_server" = "Сервер идентификации: %@";
 "settings_config_user_id" = "Идентификатор пользователя: %@";
-"settings_user_settings" = "ПОЛЬЗОВАТЕЛЬСКИЕ НАСТРОЙКИ";
+"settings_user_settings" = "ПАРАМЕТРЫ ПОЛЬЗОВАТЕЛЯ";
 "settings_notifications_settings" = "НАСТРОЙКИ УВЕДОМЛЕНИЙ";
 "settings_user_interface" = "ПОЛЬЗОВАТЕЛЬСКИЙ ИНТЕРФЕЙС";
 "settings_ignored_users" = "ИГНОРИРУЕМЫЕ ПОЛЬЗОВАТЕЛИ";
@@ -2686,3 +2686,43 @@
 "user_other_session_menu_sign_out_sessions" = "Выйти из %@ сеансов";
 "user_session_overview_current_session_title" = "Текущий сеанс";
 "notice_voice_broadcast_live" = "Прямая трансляция";
+"user_sessions_overview_security_recommendations_unverified_title" = "Незаверенные сеансы";
+"manage_session_redirect" = "Вы будете перенаправлены к поставщику услуг аутентификации вашего сервера для совершения выхода.";
+"user_sessions_overview_other_sessions_section_title" = "Другие сеансы";
+"all_chats_edit_layout_add_filters_title" = "Фильтруйте свои сообщения";
+"user_sessions_overview_title" = "Сеансы";
+"notice_display_name_changed_to" = "%@ изменил(а) своё имя на %@";
+"user_sessions_overview_security_recommendations_inactive_title" = "Неактивные сеансы";
+"wysiwyg_composer_format_action_inline_code" = "Код";
+"wysiwyg_composer_format_action_italic" = "Курсив";
+"wysiwyg_composer_format_action_un_indent" = "Убрать отступ";
+"wysiwyg_composer_format_action_quote" = "Цитировать";
+"wysiwyg_composer_format_action_indent" = "Вставить отступ";
+"user_sessions_overview_other_sessions_section_info" = "Для обеспечения максимальной безопасности заверьте свои сеансы, а также выйдите из каждого сеанса, который вы не узнаёте или не пользуетесь им.";
+"wysiwyg_composer_link_action_link" = "Ссылка";
+"deselect_all" = "Отменить все";
+"notice_error_unformattable_event" = "* Не удается отобразить сообщение. Пожалуйста, создайте отчёт об ошибке";
+"user_sessions_overview_security_recommendations_section_title" = "Рекомендации по обеспечению безопасности";
+"all_chats_edit_layout_add_filters_message" = "Автоматически фильтруйте свои сообщения по выбранным категориям";
+"room_event_encryption_info_key_authenticity_not_guaranteed" = "Подлинность этого зашифрованного сообщения не может быть гарантирована на данном устройстве.";
+"user_sessions_overview_security_recommendations_unverified_info" = "Заверьте или выйдите из незаверенных сеансов.";
+"user_sessions_overview_security_recommendations_section_info" = "Повысьте безопасность своей учетной записи, следуя этим рекомендациям.";
+"wysiwyg_composer_format_action_strikethrough" = "Перечёркнутый";
+"wysiwyg_composer_link_action_edit_title" = "Изменить ссылку";
+"user_sessions_overview_security_recommendations_inactive_info" = "Рассмотрите возможность выхода из старых сеансов (90 дней или старше), которыми вы больше не пользуетесь.";
+"all_chats_all_filter" = "Все";
+"settings_manage_account_action" = "Управлять учётной записью";
+"settings_manage_account_description" = "Управляйте вашей учётной записью на %@";
+"wysiwyg_composer_format_action_link" = "Вставить ссылку";
+"wysiwyg_composer_format_action_underline" = "Подчёркнутый";
+
+// Links
+"wysiwyg_composer_link_action_text" = "Текст";
+"wysiwyg_composer_link_action_create_title" = "Создать ссылку";
+"ignore_user" = "Игнорировать пользователя";
+
+// Formatting Actions
+"wysiwyg_composer_format_action_bold" = "Жирный";
+"wysiwyg_composer_format_action_unordered_list" = "Маркированный список";
+"wysiwyg_composer_format_action_ordered_list" = "Нумерованный список";
+"wysiwyg_composer_format_action_code_block" = "Блок кода";
