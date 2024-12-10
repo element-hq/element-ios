@@ -1,1 +1,0 @@
-Fix a crash when restoring from a backup and a bug where you couldn't reset cross-signing.  

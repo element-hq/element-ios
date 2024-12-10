@@ -1,3 +1,11 @@
+## Changes in 1.11.22 (2024-12-10)
+
+🐛 Bugfixes
+
+- Fix a crash when restoring from a backup and a bug where you couldn't reset cross-signing. ([#7883](https://github.com/element-hq/element-ios/pull/7883))
+- Fix display of incoming call for group calls when receiving VOIP notification. ([#7858](https://github.com/element-hq/element-ios/issues/7858))
+
+
 ## Changes in 1.11.21 (2024-11-14)
 
 No significant changes.
