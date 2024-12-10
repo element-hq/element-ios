@@ -2227,7 +2227,7 @@
 "authentication_qr_login_start_subtitle" = "用此设备的相机扫描显示在你的其他设备上的QR码：";
 "authentication_qr_login_start_title" = "扫描QR码";
 "authentication_choose_password_signout_all_devices" = "登出全部设备";
-"authentication_login_with_qr" = "用QR码登录";
+"authentication_login_with_qr" = "使用二维码登录";
 "onboarding_congratulations_home_button" = "带我到主页";
 "onboarding_use_case_message" = "我们将帮助你连接";
 "invite_to" = "邀请到%@";
@@ -2426,3 +2426,5 @@
 "network_offline_message" = "您已离线，请检查您的网络链接。";
 "key_verification_alert_body" = "重新检查以确保您的账户安全。";
 "key_verification_scan_qr_code_title" = "扫描 QR Code";
+"room_action_report" = "举报房间";
+"pill_message_from" = "来自 %@ 的消息";

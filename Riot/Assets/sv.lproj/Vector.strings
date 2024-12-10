@@ -2721,3 +2721,4 @@
 
 // MARK: - WYSIWYG Composer
 "wysiwyg_composer_action_minimise_action" = "Krymp redigerare";
+"call_unsupported_matrix_rtc_call" = "Samtal stöds inte. Nya Element X-appen behövs för att gå med i det här samtalet.";

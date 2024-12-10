@@ -75,3 +75,336 @@
 // Call Bar
 "callbar_only_single_active" = "შეეხეთ, რომ დაბრუნდეთ ზარში (%@)";
 "callbar_only_multiple_paused" = "%@ შეჩერებული ზარები";
+
+// Accessibility
+"accessibility_checkbox_label" = "ღილაკი";
+"accessibility_button_label" = "ღილაკი";
+"accessibility_selected" = "შერჩეული";
+"onboarding_splash_login_button_title" = "მე უკვე მაქვს ანგარიში";
+"onboarding_splash_page_1_title" = "დაეუფლეთ თქვენს საუბრებს.";
+"onboarding_splash_page_2_title" = "თქვენ აკონტროლებთ.";
+"onboarding_splash_page_3_title" = "უსაფრთხო შეტყობინებები.";
+"onboarding_splash_page_3_message" = "ბოლოს ბოლომდე დაშიფრული და ტელეფონის ნომერი არ არის საჭირო. რეკლამები და მონაცემთა მოპოვება არ ხდება.";
+"onboarding_splash_page_4_title_no_pun" = "შეტყობინებები თქვენი გუნდისთვის.";
+"onboarding_use_case_title" = "ვის ესაუბრებით ყველაზე მეტად?";
+"onboarding_use_case_message" = "ჩვენ დაგეხმარებით დაკავშირებაში";
+"onboarding_use_case_personal_messaging" = "მეგობრები და ოჯახი";
+"onboarding_use_case_work_messaging" = "გუნდები";
+"onboarding_use_case_community_messaging" = "თემები";
+"onboarding_use_case_skip_button" = "გამოტოვეთ ეს კითხვა";
+"onboarding_use_case_existing_server_message" = "გსურთ შეუერთდეთ არსებულ სერვერს?";
+"onboarding_use_case_existing_server_button" = "სერვერთან დაკავშირება";
+"onboarding_congratulations_title" = "გილოცავ!";
+"onboarding_congratulations_personalize_button" = "პროფილის პერსონალიზაცია";
+"onboarding_congratulations_home_button" = "სახლში წამიყვანე";
+"onboarding_personalization_save" = "შეინახეთ და გააგრძელეთ";
+"onboarding_personalization_skip" = "გამოტოვეთ ეს ნაბიჯი";
+"onboarding_display_name_message" = "ეს გამოჩნდება შეტყობინებების გაგზავნისას.";
+"onboarding_display_name_placeholder" = "საჩვენებელი სახელი";
+"onboarding_avatar_title" = "დაამატეთ პროფილის სურათი";
+"onboarding_avatar_message" = "დროა სახელის დახატვა";
+"onboarding_avatar_accessibility_label" = "პროფილის სურათი";
+"onboarding_celebration_button" = "მოდით წავიდეთ";
+
+// MARK: Authentication
+"authentication_registration_title" = "შექმენით თქვენი ანგარიში";
+"authentication_registration_username" = "მომხმარებლის სახელი";
+"authentication_registration_username_footer" = "თქვენ არ შეგიძლიათ შეცვალოთ ეს მოგვიანებით";
+"authentication_registration_password_footer" = "უნდა იყოს 8 ან მეტი სიმბოლო";
+"authentication_server_info_title" = "სადაც თქვენი საუბრები იცხოვრებს";
+"authentication_login_title" = "კეთილი იყოს თქვენი მობრძანება!";
+"authentication_login_forgot_password" = "დაგავიწყდათ პაროლი";
+"authentication_server_info_title_login" = "სადაც თქვენი საუბრები ცხოვრობს";
+"authentication_login_with_qr" = "შედით QR კოდით";
+"authentication_server_selection_login_message" = "რა არის თქვენი სერვერის მისამართი?";
+"authentication_server_selection_server_url" = "სახლის სერვერის URL";
+"authentication_server_selection_generic_error" = "ამ URL-ზე სერვერის პოვნა ვერ ხერხდება, გთხოვთ, შეამოწმოთ, რომ ეს სწორია.";
+"authentication_verify_email_input_title" = "შეიყვანეთ თქვენი ელფოსტა";
+/* The placeholder will show the homeserver's domain */
+"authentication_verify_email_input_message" = "%@ საჭიროებს თქვენი ანგარიშის დადასტურებას";
+"authentication_verify_email_text_field_placeholder" = "ელფოსტა";
+"authentication_verify_email_waiting_title" = "დაადასტურეთ თქვენი ელფოსტა.";
+"authentication_verify_email_waiting_hint" = "ელ.წერილი არ მიგიღიათ?";
+"authentication_verify_email_waiting_button" = "ელფოსტის ხელახლა გაგზავნა";
+"authentication_forgot_password_input_title" = "შეიყვანეთ თქვენი ელფოსტა";
+"authentication_forgot_password_text_field_placeholder" = "ელფოსტა";
+"authentication_forgot_password_waiting_title" = "შეამოწმეთ თქვენი ელ.წერილი.";
+/* The placeholder will show the email address that was entered. */
+"authentication_forgot_password_waiting_message" = "მიჰყევით %@-ზე გაგზავნილ ინსტრუქციას";
+"authentication_forgot_password_waiting_button" = "ელფოსტის ხელახლა გაგზავნა";
+"authentication_choose_password_input_title" = "აირჩიეთ ახალი პაროლი";
+"authentication_choose_password_signout_all_devices" = "გადით ყველა მოწყობილობიდან";
+"authentication_choose_password_submit_button" = "პაროლის აღდგენა";
+"authentication_choose_password_not_verified_message" = "შეამოწმეთ თქვენი შემომავალი";
+"authentication_verify_msisdn_input_title" = "შეიყვანეთ თქვენი ტელეფონის ნომერი";
+"authentication_verify_msisdn_text_field_placeholder" = "ტელეფონის ნომერი";
+"authentication_verify_msisdn_otp_text_field_placeholder" = "დადასტურების კოდი";
+"authentication_verify_msisdn_waiting_title" = "დაადასტურეთ თქვენი ტელეფონის ნომერი";
+/* The placeholder will show the phone number that was entered. */
+"authentication_verify_msisdn_waiting_message" = "კოდი გაიგზავნა %@-ზე";
+"authentication_verify_msisdn_waiting_button" = "კოდის ხელახლა გაგზავნა";
+"authentication_terms_title" = "კონფიდენციალურობის პოლიტიკა";
+"authentication_terms_policy_url_error" = "არჩეული წესების პოვნა შეუძლებელია. გთხოვთ, სცადოთ მოგვიანებით.";
+"authentication_qr_login_start_title" = "QR კოდის სკანირება";
+"authentication_qr_login_start_step1" = "გახსენით ელემენტი თქვენს სხვა მოწყობილობაზე";
+"authentication_qr_login_start_step3" = "აირჩიეთ \"მოწყობილობის დაკავშირება\"";
+"authentication_qr_login_start_step4" = "აირჩიეთ „ამ მოწყობილობაზე QR კოდის ჩვენება“";
+"authentication_qr_login_start_display_qr" = "QR კოდის ჩვენება ამ მოწყობილობაზე";
+"authentication_qr_login_display_title" = "მოწყობილობის მიბმა";
+"authentication_qr_login_display_step1" = "გახსენით ელემენტი თქვენს სხვა მოწყობილობაზე";
+"authentication_qr_login_display_step2" = "აირჩიეთ „შესვლა QR კოდით“";
+"authentication_qr_login_scan_title" = "QR კოდის სკანირება";
+"authentication_qr_login_confirm_title" = "დამყარდა უსაფრთხო კავშირი";
+"authentication_qr_login_loading_connecting_device" = "მოწყობილობასთან დაკავშირება";
+"authentication_qr_login_loading_waiting_signin" = "ელოდება მოწყობილობის შესვლას.";
+"authentication_qr_login_loading_signed_in" = "ახლა შესული ხართ თქვენი სხვა მოწყობილობიდან.";
+"authentication_qr_login_failure_title" = "დაკავშირება ვერ მოხერხდა";
+"authentication_qr_login_failure_device_not_supported" = "ამ მოწყობილობასთან დაკავშირება მხარდაჭერილი არ არის.";
+"authentication_qr_login_failure_invalid_qr" = "QR კოდი არასწორია.";
+"authentication_qr_login_failure_request_timed_out" = "დაკავშირება არ დასრულებულა საჭირო დროში.";
+"authentication_qr_login_failure_retry" = "სცადეთ ხელახლა";
+"password_validation_error_header" = "მითითებული პაროლი არ აკმაყოფილებს ქვემოთ მოცემულ კრიტერიუმებს:";
+/* The placeholder will show a number */
+"password_validation_error_min_length" = "მინიმუმ %d სიმბოლო.";
+"password_validation_error_contain_lowercase_letter" = "შეიცავდეს პატარა ასოს.";
+"password_validation_error_contain_uppercase_letter" = "შეიტანეთ დიდი ასო.";
+"password_validation_error_contain_number" = "შეიცავდეს რიცხვს.";
+"password_validation_error_contain_symbol" = "შეიცავს სიმბოლოს.";
+"password_policy_pwd_in_dict_error" = "ეს პაროლი ნაპოვნია ლექსიკონში და დაუშვებელია.";
+
+// MARK: Legacy Authentication
+"auth_login" = "შესვლა";
+"auth_submit" = "გაგზავნა";
+"auth_skip" = "გამოტოვება";
+"auth_send_reset_email" = "გადატვირთვის ელფოსტის გაგზავნა";
+"auth_user_id_placeholder" = "ელ. ფოსტა ან მომხმარებლის სახელი";
+"auth_password_placeholder" = "პაროლი";
+"auth_new_password_placeholder" = "ახალი პაროლი";
+"auth_optional_email_placeholder" = "ელფოსტის მისამართი (არასავალდებულო)";
+"auth_email_placeholder" = "ელფოსტის მისამართი";
+"auth_phone_placeholder" = "ტელეფონის ნომერი";
+"auth_repeat_password_placeholder" = "გაიმეორეთ პაროლი";
+"auth_home_server_placeholder" = "URL (მაგ. https://matrix.org)";
+"auth_identity_server_placeholder" = "URL (მაგ. https://vector.im)";
+"auth_invalid_login_param" = "არასწორი მომხმარებლის სახელი და/ან პაროლი";
+"auth_invalid_password" = "პაროლი ძალიან მოკლეა (მინ. 6)";
+"auth_invalid_email" = "ეს არ ჰგავს მოქმედ ელფოსტის მისამართს";
+"auth_missing_password" = "პაროლი აკლია";
+"auth_add_phone_message_2" = "დააყენეთ ტელეფონი და მოგვიანებით იქნება სურვილისამებრ აღმოაჩინოს ადამიანები, რომლებიც გიცნობენ.";
+"auth_missing_email" = "ელფოსტის მისამართი აკლია";
+"auth_missing_phone" = "დაკარგული ტელეფონის ნომერი";
+"auth_missing_email_or_phone" = "აკლია ელფოსტის მისამართი ან ტელეფონის ნომერი";
+"auth_phone_in_use" = "ეს ტელეფონის ნომერი უკვე გამოიყენება";
+"auth_untrusted_id_server" = "პირადობის სერვერი არ არის სანდო";
+"auth_username_in_use" = "მომხმარებლის სახელი გამოიყენება";
+"auth_forgot_password" = "დაგავიწყდათ Matrix ანგარიშის პაროლი?";
+"auth_email_not_found" = "ელფოსტის გაგზავნა ვერ მოხერხდა: ელფოსტის ეს მისამართი ვერ მოიძებნა";
+"auth_email_validation_message" = "გთხოვთ, შეამოწმოთ თქვენი ელ.წერილი რეგისტრაციის გასაგრძელებლად";
+"auth_msisdn_validation_error" = "ტელეფონის ნომრის დადასტურება შეუძლებელია.";
+"auth_recaptcha_message" = "ამ სახლის სერვერს სურს დარწმუნდეს, რომ თქვენ არ ხართ რობოტი";
+"auth_reset_password_missing_email" = "თქვენს ანგარიშთან დაკავშირებული ელ.ფოსტის მისამართი უნდა შეიყვანოთ.";
+"auth_reset_password_missing_password" = "ახალი პაროლი უნდა შეიყვანოთ.";
+"auth_reset_password_next_step_button" = "მე დავადასტურე ჩემი ელფოსტის მისამართი";
+"auth_reset_password_error_not_found" = "როგორც ჩანს, თქვენი ელფოსტის მისამართი არ ასოცირდება Matrix ID-თან ამ სახლის სერვერზე.";
+"auth_accept_policies" = "გთხოვთ, გადახედოთ და დაეთანხმოთ ამ სახლის სერვერის პოლიტიკას:";
+"auth_autodiscover_invalid_response" = "სახლის სერვერის აღმოჩენის არასწორი პასუხი";
+"auth_softlogout_signed_out" = "თქვენ გასული ხართ";
+"auth_softlogout_clear_data" = "პირადი მონაცემების გასუფთავება";
+"auth_softlogout_clear_data_message_1" = "გაფრთხილება: თქვენი პერსონალური მონაცემები (მათ შორის დაშიფვრის გასაღებები) კვლავ ინახება ამ მოწყობილობაზე.";
+"auth_softlogout_clear_data_button" = "ყველა მონაცემის გასუფთავება";
+"auth_softlogout_clear_data_sign_out_title" = "დარწმუნებული ხარ?";
+"auth_softlogout_clear_data_sign_out" = "გასვლა";
+
+// Social login
+
+"social_login_list_title_continue" = "გააგრძელე";
+"social_login_list_title_sign_in" = "ან";
+"social_login_list_title_sign_up" = "ან";
+"social_login_button_title_continue" = "განაგრძეთ %@-ით";
+"social_login_button_title_sign_in" = "შედით %@-ით";
+"social_login_button_title_sign_up" = "დარეგისტრირდით %@-ით";
+
+// Errors
+"error_user_already_logged_in" = "როგორც ჩანს, თქვენ ცდილობთ სხვა სახლის სერვერთან დაკავშირებას. გსურთ გასვლა?";
+
+// Chat creation
+"room_creation_title" = "ახალი ჩატი";
+"room_creation_account" = "ანგარიში";
+"room_creation_appearance" = "გარეგნობა";
+"room_creation_appearance_name" = "სახელი";
+"room_creation_privacy" = "კონფიდენციალურობა";
+"room_creation_private_room" = "ეს ჩატი პირადია";
+"room_creation_public_room" = "ეს ჩატი საჯაროა";
+"room_creation_make_public_prompt_title" = "გახადოს ეს ჩატი საჯარო?";
+"room_creation_keep_private" = "შეინახეთ პირადი";
+"room_creation_make_private" = "პირადი";
+"room_creation_dm_error" = "ჩვენ ვერ შევქმენით თქვენი DM. გთხოვთ, შეამოწმოთ მომხმარებლები, რომელთა მოწვევაც გსურთ და ხელახლა სცადოთ.";
+"room_creation_only_one_email_invite" = "თქვენ შეგიძლიათ მოიწვიოთ მხოლოდ ერთი ელ.წერილი ერთდროულად";
+"room_creation_user_not_found_prompt_title" = "დადასტურება";
+"room_creation_user_not_found_prompt_invite_action" = "მაინც დაიწყე DM";
+
+// Room recents
+"room_recents_directory_section" = "ოთახის დირექტორია";
+"room_recents_favourites_section" = "რჩეულები";
+"room_recents_people_section" = "ხალხი";
+"room_recents_conversations_section" = "ოთახები";
+"room_recents_no_conversation" = "ოთახები არ არის";
+"room_recents_server_notice_section" = "სისტემის გაფრთხილებები";
+"room_recents_invites_section" = "იწვევს";
+"room_recents_suggested_rooms_section" = "შემოთავაზებული ოთახები";
+"room_recents_create_empty_room" = "შექმენით ოთახი";
+"room_recents_join_room" = "შეუერთდი ოთახს";
+"room_recents_join_room_title" = "შეუერთდი ოთახს";
+"room_recents_unknown_room_error_message" = "ამ ოთახს ვერ ვპოულობ. დარწმუნდით, რომ ის არსებობს";
+
+// People tab
+"people_invites_section" = "იწვევს";
+"people_conversation_section" = "საუბრები";
+"people_empty_view_title" = "ხალხი";
+
+// Rooms tab
+"room_directory_no_public_room" = "არ არის ხელმისაწვდომი საჯარო ოთახები";
+"rooms_empty_view_title" = "ოთახები";
+
+// Groups tab
+"group_invite_section" = "იწვევს";
+"group_section" = "თემები";
+
+// Search
+"search_rooms" = "ოთახები";
+"search_messages" = "შეტყობინებები";
+"search_people" = "ხალხი";
+"search_files" = "ფაილები";
+"search_default_placeholder" = "ძიება";
+"search_no_result" = "არანაირი შედეგი";
+"search_in_progress" = "ძიება…";
+
+// Directory
+"directory_cell_title" = "დაათვალიერეთ დირექტორია";
+"directory_cell_description" = "%tu ოთახი";
+"directory_search_results_title" = "დაათვალიერეთ დირექტორია შედეგები";
+/* The placeholder %1$tu will be replaced with a number and %2$@ with the user's search terms. Note the > at the start indicates "more than 20 results". */
+"directory_search_results_more_than" = ">%1$tu შედეგი მოიძებნა %2$@-ისთვის";
+"directory_searching_title" = "დირექტორიაში ძიება…";
+"directory_search_fail" = "მონაცემების მიღება ვერ მოხერხდა";
+"contacts_address_book_matrix_users_toggle" = "მხოლოდ მატრიქსის მომხმარებლები";
+"contacts_address_book_no_contact" = "ადგილობრივი კონტაქტები არ არის";
+"contacts_address_book_permission_required" = "ადგილობრივ კონტაქტებზე წვდომისთვის საჭიროა ნებართვა";
+"contacts_address_book_permission_denied_alert_title" = "კონტაქტები გამორთულია";
+"contacts_user_directory_section" = "მომხმარებლის დირექტორია";
+"contacts_user_directory_offline_section" = "მომხმარებლის დირექტორია (ხაზგარეშე)";
+"find_your_contacts_title" = "დაიწყეთ თქვენი კონტაქტების ჩამოთვლით";
+"find_your_contacts_button_title" = "იპოვეთ თქვენი კონტაქტები";
+"find_your_contacts_footer" = "ეს შეიძლება ნებისმიერ დროს გამორთოთ პარამეტრებიდან.";
+
+// Chat participants
+"room_participants_title" = "მონაწილეები";
+"room_participants_add_participant" = "დაამატეთ მონაწილე";
+"store_full_description" = "ელემენტი ახალი ტიპის მესენჯერი და თანამშრომლობის აპლიკაციაა, რომელიც:\n\nგაძლევთ კონტროლს თქვენი კონფიდენციალურობის დასაცავად.\nგაძლევთ შესაძლებლობას, იურთიერთოთ Matrix ქსელში მყოფ ნებისმიერ ადამიანთან და სხვა აპლიკაციებთან, როგორიცაა Slack.\nგიცავთ რეკლამისგან, მონაცემების მოპოვებისგან, უკანა კარიებიდან და დახურული ეკოსისტემებისგან.\nუზრუნველყოფს თქვენს უსაფრთხოებას ბოლოს ბოლომდე დაშიფვრით და მოწყობილობების დადასტურების მექანიზმით (cross-signing).\nელემენტი სრულიად განსხვავდება სხვა მესენჯერებისა და თანამშრომლობის აპლიკაციებისგან, რადგან არის დეცენტრალიზებული და ღია კოდის.\n\nრატომ ელემენტი?\nმონაცემების მფლობელობა\nთქვენ წყვეტთ, სად შეინახოთ თქვენი მონაცემები და შეტყობინებები. თქვენ ხართ მათი მფლობელი და მართავთ, არანაირი მეგაკორპორაცია ან მესამე მხარე.\n\nღია შეტყობინებები და თანამშრომლობა\nშეგიძლიათ საუბარი Matrix ქსელში ნებისმიერ მომხმარებელთან, მიუხედავად იმისა, იყენებენ ისინი ელემენტს, სხვა Matrix აპლიკაციას თუ სხვა მესენჯერს (Slack, IRC, XMPP).\n\nსუპერ უსაფრთხოება\nბოლოს ბოლომდე დაშიფვრა, სადაც მხოლოდ საუბრის მონაწილეებს შეუძლიათ შეტყობინებების გაშიფვრა, და მოწყობილობების დადასტურება მონაწილეების უსაფრთხოებისთვის.\n\nსრული კომუნიკაცია\nშეტყობინებები, ხმის და ვიდეო ზარები, ფაილების გაზიარება, ეკრანის გაზიარება, ინტეგრაციები, ბოტები და ვიჯეტები. შექმენით ოთახები და საზოგადოებები, შეინარჩუნეთ კავშირი და მიაღწიეთ მიზნებს.\n\nთქვენ ყველგან\nიყავით კავშირზე ნებისმიერი მოწყობილობიდან და იხილეთ შეტყობინებების ისტორია სინქრონიზაციის გზით. ვებზე: https://element.io/app";
+"callbar_only_single_active_group" = "დაკლიკეთ ჯგუფურ ზარში შესასვლელად (%@)";
+
+// MARK: Onboarding
+"onboarding_splash_register_button_title" = "ანგარიშის შექმნა";
+"onboarding_splash_page_1_message" = "უსაფრთხო და დამოუკიდებელი კომუნიკაცია, რომელიც გთავაზობთ იმავე კონფიდენციალურობის დონეს, როგორიც სახლში პირისპირ საუბრისას გაქვთ.";
+"onboarding_splash_page_2_message" = "აირჩიეთ, სად ინახება თქვენი საუბრები, რათა მიიღოთ კონტროლი და დამოუკიდებლობა. დაკავშირებულია Matrix-ის მეშვეობით.";
+"onboarding_splash_page_4_message" = "Element ასევე შესანიშნავია სამუშაო გარემოსთვის. მას ენდობიან მსოფლიოს ყველაზე უსაფრთხო ორგანიზაციები.";
+/* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
+"onboarding_use_case_not_sure_yet" = "ჯერ არ ხართ დარწმუნებული? %@";
+/* The placeholder string contains the user's matrix ID */
+"onboarding_congratulations_message" = "თქვენი ანგარიში %@ შეიქმნა";
+"onboarding_display_name_title" = "აირჩიეთ საჩვენებელი სახელი";
+"onboarding_display_name_hint" = "თქვენ შეგიძლიათ შეცვალოთ ეს მოგვიანებით";
+"onboarding_display_name_max_length" = "თქვენი საჩვენებელი სახელი უნდა იყოს 256 სიმბოლოზე ნაკლები";
+"onboarding_celebration_title" = "კარგად გამოიყურება!";
+"onboarding_celebration_message" = "გადადით პარამეტრებში ნებისმიერ დროს, რათა განაახლოთ თქვენი პროფილი";
+/* The placeholder will show the full Matrix ID that has been entered. */
+"authentication_registration_username_footer_available" = "სხვებს შეუძლიათ შენი აღმოჩენა %@";
+"authentication_login_username" = "მომხმარებლის სახელი / ელ.ფოსტა / ტელეფონი";
+"authentication_server_selection_login_title" = "დაუკავშირდით სახლის სერვერს";
+"authentication_server_selection_register_title" = "აირჩიეთ თქვენი სახლის სერვერი";
+"authentication_server_selection_register_message" = "როგორია თქვენი სერვერის მისამართი? ეს არის თქვენი მონაცემების საცავი";
+"authentication_cancel_flow_confirmation_message" = "თქვენი ანგარიში ჯერ არ არის შექმნილი. შეწყვიტოთ რეგისტრაციის პროცესი?";
+/* The placeholder will show the email address that was entered. */
+"authentication_verify_email_waiting_message" = "მიჰყევით %@-ზე გაგზავნილ ინსტრუქციას";
+/* The placeholder will show the homeserver's domain */
+"authentication_forgot_password_input_message" = "%@ გამოგიგზავნით დამადასტურებელ ბმულს";
+"authentication_choose_password_input_message" = "დარწმუნდით, რომ ეს არის 8 ან მეტი სიმბოლო";
+"authentication_choose_password_text_field_placeholder" = "ახალი პაროლი";
+"authentication_choose_password_not_verified_title" = "ელფოსტა არ არის დადასტურებული";
+/* The placeholder will show the homeserver's domain */
+"authentication_verify_msisdn_input_message" = "%@ საჭიროებს თქვენი ანგარიშის დადასტურებას";
+"authentication_verify_msisdn_invalid_phone_number" = "ტელეფონის ნომერი არასწორია";
+/* The placeholder will show the homeserver's domain */
+"authentication_terms_message" = "გთხოვთ, წაიკითხოთ %@-ის პირობები და წესები";
+"authentication_recaptcha_title" = "ადამიანი ხარ?";
+"authentication_qr_login_start_subtitle" = "გამოიყენეთ ამ მოწყობილობის კამერა, რომ დაასკანეროთ QR კოდი, რომელიც ნაჩვენებია თქვენს სხვა მოწყობილობაზე:";
+"authentication_qr_login_start_step2" = "გადადით პარამეტრები -> უსაფრთხოება და კონფიდენციალურობა";
+"authentication_qr_login_start_need_alternative" = "გჭირდებათ ალტერნატიული მეთოდი?";
+"authentication_qr_login_display_subtitle" = "დაასკანერეთ ქვემოთ მოცემული QR კოდი თქვენი მოწყობილობით, რომელიც გამოუსვლელია.";
+"authentication_qr_login_scan_subtitle" = "განათავსეთ QR კოდი ქვემოთ მოცემულ კვადრატში";
+"authentication_qr_login_confirm_subtitle" = "დაადასტურეთ, რომ ქვემოთ მოცემული კოდი ემთხვევა თქვენს სხვა მოწყობილობას:";
+"authentication_qr_login_confirm_alert" = "გთხოვთ, დარწმუნდით, რომ იცით ამ კოდის წარმოშობა. მოწყობილობების მიბმით, თქვენ მიაწვდით ვინმეს სრულ წვდომას თქვენს ანგარიშზე.";
+"authentication_qr_login_failure_request_denied" = "მოთხოვნა უარყოფილი იქნა სხვა მოწყობილობაზე.";
+
+// MARK: Password Validation
+"password_validation_info_header" = "თქვენი პაროლი უნდა აკმაყოფილებდეს ქვემოთ მოცემულ კრიტერიუმებს:";
+/* The placeholder will show a number */
+"password_validation_error_max_length" = "არ აღემატებოდეს %d სიმბოლოს.";
+
+// MARK: Password policy errors
+"password_policy_too_short_pwd_error" = "ძალიან მოკლე პაროლი";
+"password_policy_weak_pwd_error" = "ეს პაროლი ძალიან სუსტია. იგი უნდა შეიცავდეს მინიმუმ 8 სიმბოლოს, მათ შორის თითოეულ ტიპს: დიდი ასო, პატარა ასო, ციფრი და სპეციალური სიმბოლო.";
+"auth_register" = "რეგისტრაცია";
+"auth_login_single_sign_on" = "შესვლა";
+"auth_return_to_login" = "დაბრუნება შესვლის ეკრანზე";
+"auth_user_name_placeholder" = "მომხმარებლის სახელი";
+"auth_optional_phone_placeholder" = "ტელეფონის ნომერი (სურვილისამებრ)";
+"auth_repeat_new_password_placeholder" = "დაადასტურეთ თქვენი ახალი Matrix ანგარიშის პაროლი";
+"auth_invalid_user_name" = "მომხმარებლის სახელები შეიძლება შეიცავდეს მხოლოდ ასოებს, რიცხვებს, წერტილებს, დეფისებს და ქვედა ხაზებს";
+"auth_invalid_phone" = "ეს არ ჰგავს მოქმედ ტელეფონის ნომერს";
+"auth_add_email_message_2" = "დააყენეთ ელფოსტა ანგარიშის აღსადგენად და მოგვიანებით, რათა სურვილისამებრ აღმოაჩინონ ის ადამიანები, ვინც გიცნობთ.";
+"auth_add_email_phone_message_2" = "დააყენეთ ელფოსტა ანგარიშის აღდგენისთვის. გამოიყენეთ მოგვიანებით ელფოსტა ან ტელეფონი, რათა სურვილისამებრ აღმოჩნდეთ თქვენი ნაცნობი ადამიანების მიერ.";
+"auth_email_in_use" = "ეს ელფოსტის მისამართი უკვე გამოიყენება";
+"auth_email_is_required" = "საიდენტიფიკაციო სერვერი არ არის კონფიგურირებული, ასე რომ თქვენ არ შეგიძლიათ დაამატოთ ელფოსტის მისამართი, რათა მომავალში განაახლოთ თქვენი Matrix ანგარიშის პაროლი.";
+"auth_phone_is_required" = "არ არის კონფიგურირებული საიდენტიფიკაციო სერვერი, ასე რომ თქვენ არ შეგიძლიათ ტელეფონის ნომრის დამატება მომავალში თქვენი Matrix ანგარიშის პაროლის გადატვირთვისთვის.";
+"auth_password_dont_match" = "პაროლები არ ემთხვევა";
+"auth_forgot_password_error_no_configured_identity_server" = "საიდენტიფიკაციო სერვერი არ არის კონფიგურირებული: დაამატეთ ერთი თქვენი Matrix ანგარიშის პაროლის აღსადგენად.";
+"auth_use_server_options" = "გამოიყენეთ მორგებული სერვერის პარამეტრები (მოწინავე)";
+"auth_msisdn_validation_title" = "დადასტურება მოლოდინშია";
+"auth_msisdn_validation_message" = "ჩვენ გავგზავნეთ SMS აქტივაციის კოდით. გთხოვთ, შეიყვანოთ ეს კოდი ქვემოთ.";
+"auth_reset_password_message" = "თქვენი Matrix ანგარიშის პაროლის აღსადგენად, შეიყვანეთ თქვენს ანგარიშთან მიბმული ელ.ფოსტის მისამართი:";
+"auth_reset_password_email_validation_message" = "ელფოსტა გაიგზავნა %@-ზე. მას შემდეგ რაც მიჰყვებით მასში არსებულ ბმულს, დააწკაპუნეთ ქვემოთ.";
+"auth_reset_password_error_unauthorized" = "ელფოსტის მისამართის დადასტურება ვერ მოხერხდა: დარწმუნდით, რომ დააწკაპუნეთ ბმულზე ელფოსტაში";
+"auth_reset_password_error_is_required" = "საიდენტიფიკაციო სერვერი არ არის კონფიგურირებული: დაამატეთ ერთი სერვერის ვარიანტებში თქვენი Matrix ანგარიშის პაროლის აღსადგენად.";
+"auth_reset_password_success_message" = "თქვენი Matrix ანგარიშის პაროლი გადაყენებულია.\n\nთქვენ გამოხვედით ყველა სესიიდან და აღარ მიიღებთ push-შეტყობინებებს. შეტყობინებების ხელახლა ჩასართავად, ხელახლა შედით თითოეულ მოწყობილობაზე.";
+"auth_add_email_and_phone_warning" = "რეგისტრაცია ერთდროულად ელფოსტისა და ტელეფონის ნომრით ჯერ არ არის მხარდაჭერილი, სანამ API არ შეიქმნება. მხოლოდ ტელეფონის ნომერი იქნება გათვალისწინებული. შეგიძლიათ დაამატოთ თქვენი ელფოსტა პროფილში პარამეტრებიდან.";
+"auth_softlogout_sign_in" = "შესვლა";
+"auth_softlogout_reason" = "თქვენმა სახლის სერვერის (%1$@) ადმინისტრატორმა გამოხვედით თქვენი ანგარიშიდან %2$@ (%3$@).";
+"auth_softlogout_recover_encryption_keys" = "შედით, რომ აღადგინოთ დაშიფვრის გასაღებები, რომლებიც ინახება ექსკლუზიურად ამ მოწყობილობაზე. თქვენ გჭირდებათ ისინი, რომ წაიკითხოთ ყველა თქვენი უსაფრთხო შეტყობინება ნებისმიერ მოწყობილობაზე.";
+"auth_softlogout_clear_data_message_2" = "გაასუფთავეთ, თუ დაასრულეთ ამ მოწყობილობის გამოყენება ან გსურთ სხვა ანგარიშში შესვლა.";
+"auth_softlogout_clear_data_sign_out_msg" = "დარწმუნებული ხართ, რომ გსურთ ამ მოწყობილობაზე ამჟამად შენახული ყველა მონაცემის გასუფთავება? ხელახლა შედით თქვენი ანგარიშის მონაცემებსა და შეტყობინებებზე წვდომისთვის.";
+"room_creation_appearance_picture" = "ჩეთის სურათი (სურვილისამებრ)";
+"room_creation_make_public" = "გახადეთ საჯარო";
+"room_creation_make_public_prompt_msg" = "დარწმუნებული ხართ, რომ გსურთ ეს ჩატი საჯარო გახადოთ? ნებისმიერს შეუძლია წაიკითხოს თქვენი შეტყობინებები და შეუერთდეს ჩატში.";
+"room_creation_wait_for_creation" = "ოთახი უკვე იქმნება. გთხოვთ დაელოდოთ.";
+"room_creation_invite_another_user" = "მომხმარებლის ID, სახელი ან ელფოსტა";
+"room_creation_error_invite_user_by_email_without_identity_server" = "არ არის კონფიგურირებული საიდენტიფიკაციო სერვერი, ასე რომ თქვენ არ შეგიძლიათ დაამატოთ მონაწილე ელფოსტით.";
+"room_creation_user_not_found_prompt_message" = "ამ Matrix ID-ის პროფილების პოვნა შეუძლებელია. მაინც გსურთ DM-ის დაწყება?";
+"room_recents_low_priority_section" = "დაბალი პრიორიტეტი";
+"room_recents_start_chat_with" = "დაიწყეთ ჩატი";
+"room_recents_join_room_prompt" = "აკრიფეთ ოთახის ID ან ოთახის მეტსახელი";
+"people_no_conversation" = "არანაირი საუბრები";
+"people_empty_view_information" = "უსაფრთხოდ ესაუბრეთ ნებისმიერს. შეეხეთ +-ს ხალხის დამატების დასაწყებად.";
+"rooms_empty_view_information" = "ოთახები შესანიშნავია ნებისმიერი ჯგუფური ჩეთისთვის, კერძო თუ საჯარო. შეეხეთ +-ს არსებული ოთახების საპოვნელად ან ახლის შესაქმნელად.";
+"search_filter_placeholder" = "ფილტრი";
+"search_people_placeholder" = "მოძებნეთ მომხმარებლის ID, სახელი ან ელექტრონული ფოსტით";
+/* The placeholder %1$tu will be replaced with a number and %2$@ with the user's search terms. */
+"directory_search_results" = "ნაპოვნია %1$tu შედეგი %2$@-ისთვის";
+
+// Contacts
+"contacts_address_book_section" = "ლოკალური კონტაქტები";
+"contacts_address_book_no_identity_server" = "პირადობის სერვერი არ არის კონფიგურირებული";
+"contacts_address_book_permission_denied" = "თქვენ არ მისცემდით %@-ს თქვენს ადგილობრივ კონტაქტებზე წვდომის უფლებას";
+"contacts_address_book_permission_denied_alert_message" = "კონტაქტების ჩასართავად გადადით თქვენი მოწყობილობის პარამეტრებში.";
+"find_your_contacts_message" = "მიეცით საშუალება %@-ს აჩვენოს თქვენი კონტაქტები, რათა სწრაფად დაიწყოთ საუბარი მათთან, ვინც უკეთ იცნობთ.";
+"find_your_contacts_identity_service_error" = "პირადობის სერვერთან დაკავშირება შეუძლებელია.";

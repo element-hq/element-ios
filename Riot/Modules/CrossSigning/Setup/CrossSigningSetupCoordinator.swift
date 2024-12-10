@@ -45,7 +45,7 @@ final class CrossSigningSetupCoordinator: CrossSigningSetupCoordinatorType {
     // MARK: - Public methods
     
     func start() {
-        self.showReauthentication()
+        setupCrossSigning()
     }
     
     func toPresentable() -> UIViewController {
@@ -53,40 +53,39 @@ final class CrossSigningSetupCoordinator: CrossSigningSetupCoordinatorType {
     }
     
     // MARK: - Private methods
-
-    private func showReauthentication() {
+    
+    private func setupCrossSigning(with authenticationParameters: [String: Any] = [:]) {
+        guard let crossSigning = parameters.session.crypto?.crossSigning else { return }
         
+        crossSigning.setup(withAuthParams: authenticationParameters) { [weak self] in
+            guard let self else { return }
+            delegate?.crossSigningSetupCoordinatorDidComplete(self)
+        } failure: { [weak self] error in
+            guard let self else { return }
+            
+            if let responseData = (error as NSError).userInfo[MXHTTPClientErrorResponseDataKey] as? [AnyHashable: Any],
+               let authenticationSession = MXAuthenticationSession(fromJSON: responseData) {
+                showReauthentication(authenticationSession: authenticationSession)
+            } else {
+                delegate?.crossSigningSetupCoordinator(self, didFailWithError: error)
+            }
+        }
+    }
+
+    private func showReauthentication(authenticationSession: MXAuthenticationSession) {
         let setupCrossSigningRequest = self.crossSigningService.setupCrossSigningRequest()
         
         let reauthenticationParameters = ReauthenticationCoordinatorParameters(session: parameters.session,
                                                                                presenter: parameters.presenter,
                                                                                title: parameters.title,
                                                                                message: parameters.message,
-                                                                               authenticatedEndpointRequest: setupCrossSigningRequest)
+                                                                               authenticationSession: authenticationSession)
         
         let coordinator = ReauthenticationCoordinator(parameters: reauthenticationParameters)
         coordinator.delegate = self
         self.add(childCoordinator: coordinator)
         
         coordinator.start()
-    }
-    
-    private func setupCrossSigning(with authenticationParameters: [String: Any]) {
-        guard let crossSigning = self.parameters.session.crypto?.crossSigning else {
-            return
-        }
-        
-        crossSigning.setup(withAuthParams: authenticationParameters) { [weak self] in
-            guard let self = self else {
-                return
-            }
-            self.delegate?.crossSigningSetupCoordinatorDidComplete(self)
-        } failure: { [weak self] error in
-            guard let self = self else {
-                return
-            }
-            self.delegate?.crossSigningSetupCoordinator(self, didFailWithError: error)
-        }
     }
 }
 
