@@ -2979,3 +2979,4 @@
 
 // MARK: - WYSIWYG Composer
 "wysiwyg_composer_action_minimise_action" = "Зменшити редактор";
+"call_unsupported_matrix_rtc_call" = "Непідтримуваний виклик. Потрібен застосунок Element X, щоб приєднатися до цього виклику.";
