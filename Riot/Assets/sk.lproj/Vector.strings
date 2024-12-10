@@ -2977,3 +2977,4 @@
 
 // MARK: - WYSIWYG Composer
 "wysiwyg_composer_action_minimise_action" = "Zmenšiť editor";
+"call_unsupported_matrix_rtc_call" = "Nepodporovaný hovor. Na pripojenie k tomuto hovoru je potrebná nová aplikácia Element X.";
