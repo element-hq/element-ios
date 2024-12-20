@@ -80,3 +80,287 @@
 "authentication_login_username" = "Brukarnamn / e-postadresse / telefonnummer";
 "onboarding_display_name_placeholder" = "Visingsnamn";
 "authentication_login_with_qr" = "Logg inn med QR-kode";
+/* The placeholder will show the homeserver's domain */
+"authentication_verify_email_input_message" = "%@ treng å stadfeste kontoen din";
+"authentication_choose_password_input_title" = "Vel eit nytt passord";
+"call_transfer_error_title" = "Feil";
+"home_context_menu_favourite" = "Favoritt";
+"pin_protection_forgot_pin" = "Gløymt PIN-kode";
+"all_chats_all_filter" = "Alle";
+"auth_invalid_password" = "Passordet er for kort (minimum 6 teikn)";
+"room_creation_account" = "Konto";
+"room_action_report" = "Rapporter rom";
+"settings_first_name" = "Fornamn";
+"group_home_multi_members_format" = "%tu medlemmar";
+"group_participants_leave_prompt_title" = "Forlat gruppa";
+"settings_config_user_id" = "Logga inn som %@";
+"settings_user_interface" = "BRUKARGRENSESNITT";
+"threads_beta_information_link" = "Les meir";
+"all_chats_edit_layout_activity_order" = "Sorter etter aktivitet";
+"auth_optional_email_placeholder" = "E-postadresse (valfritt)";
+"threads_action_all_threads" = "Alla trådar";
+
+// MARK: - All Chats
+
+"all_chats_title" = "Alle chattar";
+"auth_email_placeholder" = "E-postadresse";
+"room_creation_appearance_name" = "Namn";
+"room_creation_invite_another_user" = "Brukar-ID, namn eller e-post";
+"submit" = "Send inn";
+"authentication_verify_email_waiting_title" = "Stadfest e-postadressa di.";
+"auth_new_password_placeholder" = "Nytt passord";
+"auth_user_name_placeholder" = "Brukarnamn";
+"auth_invalid_email" = "Dette ser ikkje ut som ei gyldig e-postadresse";
+"auth_missing_password" = "Manglande passord";
+"identity_server_settings_add" = "Legg til";
+"security_settings_crypto_sessions" = "MINE ØKTER";
+"pin_protection_choose_pin" = "Opprett ein PIN-kode for sikkerheit";
+"pin_protection_confirm_pin_to_change" = "Stadfest PIN-kode for å endre PIN-kode";
+"pin_protection_settings_change_pin" = "Tilbakestill PIN-kode";
+"all_chats_edit_layout_unreads" = "Ulesne";
+"start" = "Start";
+"auth_user_id_placeholder" = "E-postadresse eller brukarnamn";
+"auth_password_placeholder" = "Passord";
+"auth_repeat_password_placeholder" = "Gjenta passord";
+"auth_invalid_login_param" = "Feil brukarnamn og/eller passord";
+"auth_invalid_phone" = "Dette ser ikkje ut som eit gyldig telefonnummer";
+"settings_user_settings" = "BRUKARINNSTILLINGAR";
+"settings_surname" = "Etternamn";
+"settings_add_3pid_invalid_password_message" = "Ugyldige opplysningar";
+"settings_crypto_device_key" = "\nØktnøkkel:\n";
+"room_access_settings_screen_upgrade_alert_title" = "Oppgrader rom";
+"pin_protection_settings_section_header_with_biometrics" = "PIN-kode og %@";
+"threads_action_my_threads" = "Mine trådar";
+"settings_deactivate_my_account" = "Deaktiver kontoen min";
+"room_access_settings_screen_upgrade_alert_upgrading" = "Oppgraderer rom";
+"group_details_rooms" = "Rom";
+"group_home_multi_rooms_format" = "%tu rom";
+"create_room_enable_encryption" = "Aktiver kryptering";
+"notification_settings_room_rule_title" = "Rom: '%@'";
+"authentication_verify_email_input_title" = "Skriv inn e-postadressa di";
+"authentication_verify_email_text_field_placeholder" = "E-postadresse";
+"auth_invalid_user_name" = "Brukarnamn kan berre innehalde bokstavar, tal, punktum, bindestrek og understrek";
+"room_creation_privacy" = "Personvern";
+"room_event_action_cancel_download" = "Avbryt nedlasting";
+"room_action_send_file" = "Send fil";
+"room_accessibility_video_call" = "Videosamtale";
+"threads_title" = "Trådar";
+"media_type_accessibility_video" = "Video";
+"settings_discovery_three_pid_details_revoke_action" = "Tilbakekall";
+"room_accessibility_thread_more" = "Meir";
+"membership_invite" = "Invitert";
+"room_accessibility_record_voice_message" = "Spel inn ei talemelding";
+"room_accessibility_threads" = "Trådar";
+"threads_beta_cancel" = "Ikkje no";
+"message_from_a_thread" = "Frå ein tråd";
+
+// Settings
+"settings_title" = "Innstillingar";
+"settings_sign_out" = "Logg ut";
+"settings_remove_prompt_title" = "Stadfesting";
+"settings_add_3pid_password_message" = "Skriv inn Matrix-kontopassordet ditt for å halde fram";
+"settings_discovery_three_pid_details_enter_sms_code_action" = "Legg inn SMS-aktiveringskode";
+
+// Security settings
+"security_settings_title" = "Sikkerheit";
+"group_details_people" = "Folk";
+"key_verification_tile_request_status_cancelled_by_me" = "Du avbraut";
+"user_verification_sessions_list_user_trust_level_unknown_title" = "Ukjend";
+"user_verification_sessions_list_table_title" = "Økter";
+"create_room_section_footer_encryption" = "Kryptering kan ikkje deaktiverast seinare.";
+"home_context_menu_mute" = "Demp";
+"side_menu_action_settings" = "Innstillingar";
+"all_chats_section_title" = "chattar";
+"all_chats_edit_layout_alphabetical_order" = "Sorter A-Å";
+
+// MARK: - Location sharing
+
+"location_sharing_title" = "Plassering";
+"location_sharing_close_action" = "Lat att";
+"user_session_details_device_section_header" = "Eining";
+"user_session_details_application_version" = "Versjon";
+"wysiwyg_composer_link_action_create_title" = "Opprett ei lenke";
+"reset_to_default" = "Still tilbake til standard";
+"settings_crypto_device_name" = "Namn på økt: ";
+
+// Contacts
+"contact_mx_users" = "Matrix-brukarar";
+"create_room" = "Opprett rom";
+"num_members_one" = "%@ brukar";
+"ban" = "Utesteng";
+"settings_discovery_three_pid_details_cancel_email_validation_action" = "Avbryt e-postgodkjenning";
+"today" = "I dag";
+"analytics_prompt_not_now" = "Ikkje no";
+"key_backup_setup_skip_alert_skip_action" = "Hopp over";
+"location_sharing_post_failure_subtitle" = "%@ klarte ikkje å sende plasseringa di. Prøv igjen seinare.";
+"poll_timeline_loading" = "Lastar...";
+"user_session_details_application_name" = "Namn";
+"login_mobile_device" = "Mobil";
+"call_more_actions_unhold" = "Begynn igjen";
+"pill_message" = "Melding";
+"room_action_send_sticker" = "Send klistremerke";
+"room_accessibility_hangup" = "Legg på";
+"key_verification_tile_request_status_expired" = "Gått ut";
+
+// MARK: - PIN Protection
+
+"pin_protection_choose_pin_welcome_after_login" = "Velkomen tilbake.";
+"pin_protection_choose_pin_welcome_after_register" = "Velkomen.";
+"pin_protection_confirm_pin" = "Stadfest PIN-koden din";
+"pin_protection_confirm_pin_to_disable" = "Stadfest PIN-kode for å deaktivere PIN-kode";
+"pin_protection_settings_section_header" = "PIN-kode";
+"attach_media" = "Legg ved media frå biblioteket";
+"login_desktop_device" = "Datamaskin";
+"abort" = "Avbryt";
+"authentication_registration_username" = "Brukarnamn";
+
+// MARK: Authentication
+"authentication_registration_title" = "Opprett kontoen din";
+"authentication_choose_password_text_field_placeholder" = "Nytt passord";
+"authentication_forgot_password_input_title" = "Skriv inn e-postadressa di";
+"authentication_verify_msisdn_text_field_placeholder" = "Telefonnummer";
+"authentication_verify_msisdn_waiting_title" = "Stadfest telefonnummeret ditt";
+/* The placeholder will show the phone number that was entered. */
+"authentication_verify_msisdn_waiting_message" = "Ein kode er sendt til %@";
+"authentication_qr_login_start_title" = "Skann QR-kode";
+"authentication_qr_login_scan_title" = "Skann QR-kode";
+
+// MARK: Legacy Authentication
+"auth_login" = "Logg inn";
+"auth_submit" = "Send inn";
+"settings_crypto_device_id" = "\nØkt-ID: ";
+"copy_button_name" = "Kopier";
+
+// actions
+"action_logout" = "Logg ut";
+"login" = "Innlogging";
+"redact" = "Fjern";
+
+// Group Home
+"group_home_one_member_format" = "1 medlem";
+"sign_up" = "Registrer deg";
+"login_password_placeholder" = "Passord";
+"version_check_modal_action_title_deprecated" = "Finn ut korleis";
+"all_chats_edit_layout_show_filters" = "Vis filter";
+"login_error_forbidden" = "Ugyldig brukarnamn/passord";
+
+// Room
+"room_please_select" = "Vel eit rom";
+"auth_repeat_new_password_placeholder" = "Stadfest det nye passordet for Matrix-kontoen din";
+"social_login_button_title_continue" = "Hald fram med %@";
+"social_login_button_title_sign_in" = "Logg inn med %@";
+"social_login_button_title_sign_up" = "Registrer deg med %@";
+"all_chats_edit_layout_recents" = "Nylege";
+"discard" = "Forkast";
+"call_more_actions_transfer" = "Overfør";
+"group_home_one_room_format" = "1 rom";
+"room_action_reply" = "Svar";
+"room_accessibility_search" = "Søk";
+"room_accessibility_upload" = "Last opp";
+"group_details_home" = "Heim";
+"location_sharing_post_failure_title" = "Vi klarte ikkje å sende plasseringa di";
+"login_home_server_title" = "Heimeserver-URL:";
+"manage_session_not_trusted" = "Ikkje tiltrudd";
+"wysiwyg_composer_link_action_edit_title" = "Rediger lenke";
+
+// Login Screen
+"login_create_account" = "Opprett konto:";
+"default" = "standard";
+"authentication_qr_login_start_display_qr" = "Vis QR-kode på denne eininga";
+"authentication_qr_login_loading_connecting_device" = "Koplar til eining";
+"authentication_qr_login_failure_invalid_qr" = "QR-koden er ugyldig";
+"authentication_qr_login_failure_retry" = "Prøv på nytt";
+"auth_optional_phone_placeholder" = "Telefonnummer (valfritt)";
+"live_location_sharing_banner_stop" = "Stopp";
+"pin_protection_enter_pin" = "Skriv inn PIN-koden din";
+"searchable_directory_search_placeholder" = "Namn eller ID";
+
+// MARK: - Create Room
+
+"create_room_title" = "Nytt rom";
+"create_room_type_public" = "Offentleg rom (kven som helst)";
+"call_transfer_contacts_recent" = "Nylege";
+"home_context_menu_unmute" = "Ikkje demp";
+"all_chats_edit_layout_show_recents" = "Vis nylege";
+"membership_ban" = "Utestengd";
+"share" = "Del";
+"all_chats_nothing_found_placeholder_title" = "Fann ingenting.";
+
+// MARK: - MatrixKit
+
+
+/* *********************** */
+/*      iOS specific       */
+/* *********************** */
+
+"matrix" = "Matrix";
+"login_server_url_placeholder" = "URL (t.d. https://matrix.org)";
+"select_account" = "Vel ein konto";
+"end_call" = "Avslutt samtale";
+"invite_user" = "Inviter Matrix-brukarar";
+"contact_local_contacts" = "Lokale kontaktar";
+"language_picker_default_language" = "Standard (%@)";
+
+/* -*-
+   Automatic localization for en
+
+   The following key/value pairs were extracted from the android i18n file:
+    /matrix-sdk/src/main/res/values/strings.xml.
+*/
+
+"notice_room_invite" = "%@ inviterte %@";
+"call_more_actions_change_audio_device" = "Byt lydeining";
+"call_more_actions_dialpad" = "Tastatur";
+"pill_message_from" = "Melding frå %@";
+"settings_add_3pid_password_title_msidsn" = "Legg til telefonnummer";
+"settings_discovery_three_pid_details_share_action" = "Del";
+"manage_session_name_info_link" = "Les meir";
+"room_access_settings_screen_upgrade_required" = "Oppgradering påkravd";
+"key_verification_tile_request_status_waiting" = "Ventar…";
+"user_session_details_device_os" = "Operativsystem";
+"pill_message_in" = "Mesldingar i %@";
+"room_command_part_room_description" = "Forlat rommet";
+"media_type_accessibility_audio" = "Lyd";
+"account_logout_all" = "Logg ut alle kontoar";
+"security_settings_crypto_sessions_loading" = "Lastar økter…";
+
+// MARK: Reaction history
+"reaction_history_title" = "Reaksjonar";
+"user_other_session_filter_menu_all" = "Alle økter";
+"login_tablet_device" = "Nettbrett";
+"yes" = "Ja";
+"auth_phone_placeholder" = "Telefonnummer";
+"auth_home_server_placeholder" = "URL (t.d. https://matrix.org)";
+"auth_identity_server_placeholder" = "URL (t.d. https://vector.im)";
+"room_access_settings_screen_upgrade_alert_upgrade_button" = "Oppgrader";
+"login_leave_fallback" = "Avbryt";
+"dismiss" = "Avvis";
+"submit_code" = "Send inn kode";
+"kick" = "Fjern frå chatt";
+"resend" = "Send på nytt";
+
+// Action
+"no" = "Nei";
+"settings_manage_account_action" = "Handsam kontoen";
+"settings_manage_account_description" = "Handsam kontoen din på %@";
+"settings_add_3pid_password_title_email" = "Legg til e-postadresse";
+"settings_crypto_export" = "Eksporter nøklar";
+"settings_crypto_blacklist_unverified_devices" = "Krypter berre til stadfesta økter";
+"user_verification_sessions_list_user_trust_level_warning_title" = "Åtvaring";
+"room_creation_participants_title" = "Deltakarar:";
+"message_reply_to_sender_sent_a_file" = "sende ei fil.";
+"room_creation_participants_placeholder" = "(t.d. @ola:heimeserver1; @kari:heimeserver2 ...)";
+"create_account" = "Opprett konto";
+"num_members_other" = "%@ brukarar";
+"unban" = "Omgjer utestenging";
+"delete" = "Slett";
+"receipt_status_read" = "Lest: ";
+
+// Legacy to Rust security upgrade
+
+"key_verification_self_verify_security_upgrade_alert_title" = "App oppdatert";
+"pin_protection_reset_alert_title" = "Tilbakestill PIN-kode";
+
+// MARK: - Searchable Directory View Controller
+
+"searchable_directory_create_new_room" = "Opprett eit nytt rom";
