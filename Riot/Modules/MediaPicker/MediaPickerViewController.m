@@ -392,8 +392,8 @@ Please see LICENSE in the repository root for full details.
         MXStrongifyAndReturnIfNil(self);
         
         // List user albums which are not empty
-        // Tchap: starting from iOS 18, select any subtype albums rather than regular ones else no album is listed (only a few recents photos)
-        //        Maybe because 'smart' albums get a full revamp in iOS 18?
+        // Starting from iOS 18, select any subtype albums rather than regular ones else no album is listed (only a few recents photos)
+        // Maybe because 'smart' albums get a full revamp in iOS 18?
         PHFetchResult *albums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAny options:nil];
 
         NSMutableArray *updatedUserAlbums = [NSMutableArray array];
