@@ -137,9 +137,13 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
             return
         }
         
+        var showReplacementAppBanner = false
         do {
             // Start the flow (if homeserverAddress is nil, the default server will be used).
             try await authenticationService.startFlow(flow)
+        } catch RegistrationError.delegatedOIDCRequiresReplacementApp where BuildSettings.replacementApp != nil {
+            // The flow can continue, allowing the Registration Screen to display the banner.
+            showReplacementAppBanner = true
         } catch {
             MXLog.error("[AuthenticationCoordinator] start: Failed to start, showing server selection.")
             showServerSelectionScreen(for: flow)
@@ -151,7 +155,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
             if authenticationService.state.homeserver.needsRegistrationFallback {
                 showFallback(for: flow)
             } else {
-                showRegistrationScreen()
+                showRegistrationScreen(showReplacementAppBanner: showReplacementAppBanner)
             }
         case .login:
             if authenticationService.state.homeserver.needsLoginFallback {
@@ -354,13 +358,12 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     // MARK: - Registration
     
     /// Shows the registration screen.
-    @MainActor private func showRegistrationScreen() {
+    @MainActor private func showRegistrationScreen(showReplacementAppBanner: Bool = false) {
         MXLog.debug("[AuthenticationCoordinator] showRegistrationScreen")
         let homeserver = authenticationService.state.homeserver
         let parameters = AuthenticationRegistrationCoordinatorParameters(navigationRouter: navigationRouter,
                                                                          authenticationService: authenticationService,
-                                                                         registrationFlow: homeserver.registrationFlow,
-                                                                         loginMode: homeserver.preferredLoginMode)
+                                                                         showReplacementAppBanner: showReplacementAppBanner)
         let coordinator = AuthenticationRegistrationCoordinator(parameters: parameters)
         coordinator.callback = { [weak self, weak coordinator] result in
             guard let self = self, let coordinator = coordinator else { return }

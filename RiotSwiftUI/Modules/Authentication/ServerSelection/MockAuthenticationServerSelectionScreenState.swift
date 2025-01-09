@@ -19,6 +19,7 @@ enum MockAuthenticationServerSelectionScreenState: MockScreenState, CaseIterable
     case invalidAddress
     case login
     case nonModal
+    case mas
     
     /// The associated screen
     var screenType: Any.Type {
@@ -50,6 +51,11 @@ enum MockAuthenticationServerSelectionScreenState: MockScreenState, CaseIterable
             viewModel = AuthenticationServerSelectionViewModel(homeserverAddress: "matrix.org",
                                                                flow: .register,
                                                                hasModalPresentation: false)
+        case .mas:
+            viewModel = AuthenticationServerSelectionViewModel(homeserverAddress: "beta.matrix.org",
+                                                               flow: .register,
+                                                               hasModalPresentation: false)
+            Task { await viewModel.displayError(.requiresReplacementApp) }
         }
         
         // can simulate service and viewModel actions here if needs be.

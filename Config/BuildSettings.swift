@@ -441,4 +441,25 @@ final class BuildSettings: NSObject {
     
     // MARK: - Alerts
     static let showUnverifiedSessionsAlert = true
+    
+    // MARK: - Sunset
+    
+    /// Meta data about the app that will replaces this one with Matrix 2.0 support.
+    struct ReplacementApp {
+        /// The app's display name, used in marketing banners.
+        let name = "Element X"
+        /// A link that will be opened to tell the user more about the new app, Matrix 2.0 and the migration.
+        let learnMoreURL = URL(string: "https://element.io")! // FIXME: This isn't the final URL.
+        /// The app's iTunes/product ID, used to show the App Store page in-app.
+        let productID = "1631335820"
+        /// A fallback URL that will be opened if there are any issues showing the App Store page in-app.
+        let appStoreURL = URL(string: "https://apps.apple.com/app/element-x-secure-chat-call/id1631335820")!
+    }
+    
+    /// Information about the Matrix 2.0 compatible app that will replace this one in the future.
+    ///
+    /// The presence of this setting acts as a feature flag to show marketing banners for the app
+    /// when it is detected that the homeserver is running Matrix 2.0. Set this to `nil` until you
+    /// are ready to migrate your users.
+    static let replacementApp: ReplacementApp? = .init()
 }
