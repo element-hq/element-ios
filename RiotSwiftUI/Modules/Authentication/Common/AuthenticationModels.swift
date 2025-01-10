@@ -42,6 +42,7 @@ enum AuthenticationError: String, LocalizedError {
 /// Errors that can be thrown from `RegistrationWizard`
 enum RegistrationError: String, LocalizedError {
     case registrationDisabled
+    case delegatedOIDCRequiresReplacementApp
     case createAccountNotCalled
     case missingThreePIDData
     case missingThreePIDURL
@@ -58,6 +59,8 @@ enum RegistrationError: String, LocalizedError {
             return VectorL10n.authMsisdnValidationError
         case .invalidPhoneNumber:
             return VectorL10n.authenticationVerifyMsisdnInvalidPhoneNumber
+        case .delegatedOIDCRequiresReplacementApp:
+            return VectorL10n.sunsetDelegatedOidcRegistrationNotSupportedGenericError
         default:
             return VectorL10n.errorCommonMessage
         }

@@ -1,3 +1,13 @@
+## Changes in 1.11.23 (2025-01-10)
+
+🙌 Improvements
+
+- Show sunset banners, guiding users to install Element X when registering a new account against a server with MAS. ([#7889](https://github.com/element-hq/element-ios/issues/7889))
+
+⚠️ API Changes
+
+- Adds a BuildSettings.replacementApp setting, used to control the sunset banners. ([#7889](https://github.com/element-hq/element-ios/issues/7889))
+
 ## Changes in 1.11.22 (2024-12-10)
 
 🐛 Bugfixes

@@ -148,8 +148,13 @@ class AuthenticationService: NSObject {
                 self.registrationWizard = registrationWizard
             } catch {
                 guard homeserver.preferredLoginMode.hasSSO, error as? RegistrationError == .registrationDisabled else {
-                    throw error
+                    if homeserver.preferredLoginMode.providesDelegatedOIDCCompatibility {
+                        throw RegistrationError.delegatedOIDCRequiresReplacementApp
+                    } else {
+                        throw error
+                    }
                 }
+                
                 // Continue without throwing when registration is disabled but SSO is available.
             }
         }
@@ -281,10 +286,13 @@ class AuthenticationService: NSObject {
         // Get the login flow
         let loginFlowResponse = try await client.getLoginSession()
         
-        let identityProviders = loginFlowResponse.flows?.compactMap { $0 as? MXLoginSSOFlow }.first?.identityProviders ?? []
+        let firstSSOFlow = loginFlowResponse.flows?.compactMap { $0 as? MXLoginSSOFlow }.first
+        let identityProviders = firstSSOFlow?.identityProviders ?? []
+        let providesDelegatedOIDCCompatibility = firstSSOFlow?.delegatedOIDCCompatibility ?? false
         return LoginFlowResult(supportedLoginTypes: loginFlowResponse.flows?.compactMap { $0 } ?? [],
                                ssoIdentityProviders: identityProviders.sorted { $0.name < $1.name }.map(\.ssoIdentityProvider),
-                               homeserverAddress: client.homeserver)
+                               homeserverAddress: client.homeserver, 
+                               providesDelegatedOIDCCompatibility: providesDelegatedOIDCCompatibility)
     }
     
     /// Perform a well-known request on the specified homeserver URL.

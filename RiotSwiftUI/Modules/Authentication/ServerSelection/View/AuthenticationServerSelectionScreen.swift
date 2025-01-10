@@ -70,14 +70,10 @@ struct AuthenticationServerSelectionScreen: View {
     var serverForm: some View {
         VStack(alignment: .leading, spacing: 12) {
             VStack(spacing: 8) {
-                if #available(iOS 15.0, *) {
-                    textField
-                        .onSubmit(submit)
-                } else {
-                    textField
-                }
+                textField
+                    .onSubmit(submit)
                 
-                if let errorMessage = viewModel.viewState.footerErrorMessage {
+                if case let .message(errorMessage) = viewModel.viewState.footerError {
                     Text(errorMessage)
                         .font(theme.fonts.footnote)
                         .foregroundColor(textFieldFooterColor)
@@ -85,6 +81,8 @@ struct AuthenticationServerSelectionScreen: View {
                         .accessibilityIdentifier("textFieldFooter")
                 }
             }
+            
+            sunsetBanners
             
             Button(action: submit) {
                 Text(viewModel.viewState.buttonTitle)
@@ -95,7 +93,6 @@ struct AuthenticationServerSelectionScreen: View {
         }
     }
     
-    /// The text field, extracted for iOS 15 modifiers to be applied.
     var textField: some View {
         TextField(VectorL10n.authenticationServerSelectionServerUrl, text: $viewModel.homeserverAddress) {
             isEditingTextField = $0
@@ -107,6 +104,23 @@ struct AuthenticationServerSelectionScreen: View {
                                                 isError: viewModel.viewState.isShowingFooterError))
         .onChange(of: viewModel.homeserverAddress) { _ in viewModel.send(viewAction: .clearFooterError) }
         .accessibilityIdentifier("addressTextField")
+    }
+    
+    @ViewBuilder
+    var sunsetBanners: some View {
+        if viewModel.viewState.footerError == .sunsetBanner, let replacementApp = BuildSettings.replacementApp {
+            VStack(spacing: 16) {
+                SunsetOIDCRegistrationBanner(homeserverAddress: viewModel.homeserverAddress, 
+                                             replacementApp: replacementApp)
+                
+                SunsetDownloadBanner(replacementApp: replacementApp) {
+                    viewModel.send(viewAction: .downloadReplacementApp(replacementApp))
+                }
+            }
+            .padding(.vertical, 4)
+            .padding(.bottom, 16)
+            .accessibilityIdentifier("sunsetBanners")
+        }
     }
     
     @ToolbarContentBuilder

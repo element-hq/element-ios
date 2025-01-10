@@ -98,6 +98,14 @@
 "accessibility_button_label" = "button";
 "accessibility_selected" = "selected";
 
+// MARK: Sunset
+"sunset_delegated_oidc_registration_not_supported_title" = "You can no longer create an account with %1$@ using this app";
+"sunset_delegated_oidc_registration_not_supported_message" = "Download %1$@ to use %2$@ for your account or choose a different homeserver.";
+"sunset_delegated_oidc_registration_not_supported_generic_error" = "You can no longer create an account with the entered homeserver using this app";
+"sunset_download_banner_title" = "Download %1$@";
+"sunset_download_banner_message" = "Faster, more secure, and packed with powerful collaboration tools.";
+"sunset_download_banner_learn_more" = "Learn more";
+
 // MARK: Onboarding
 "onboarding_splash_register_button_title" = "Create account";
 "onboarding_splash_login_button_title" = "I already have an account";
