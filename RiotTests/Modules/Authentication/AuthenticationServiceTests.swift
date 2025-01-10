@@ -319,7 +319,7 @@ import XCTest
         let ssoIdentityProviders = [SSOIdentityProvider(id: "1", name: "SAML", brand: nil, iconURL: nil)]
         let homeserver = AuthenticationState.Homeserver(address: address,
                                                         addressFromUser: addressFromUser,
-                                                        preferredLoginMode: .sso(ssoIdentityProviders: ssoIdentityProviders),
+                                                        preferredLoginMode: .sso(ssoIdentityProviders: ssoIdentityProviders, providesDelegatedOIDCCompatibility: false),
                                                         registrationFlow: nil)
         
         // When creating view data for that homeserver.
