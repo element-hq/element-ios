@@ -449,7 +449,7 @@ final class BuildSettings: NSObject {
         /// The app's display name, used in marketing banners.
         let name = "Element X"
         /// A link that will be opened to tell the user more about the new app, Matrix 2.0 and the migration.
-        let learnMoreURL = URL(string: "https://element.io")! // FIXME: This isn't the final URL.
+        let learnMoreURL = URL(string: "https://element.io/app-for-productivity")!
         /// The app's iTunes/product ID, used to show the App Store page in-app.
         let productID = "1631335820"
         /// A fallback URL that will be opened if there are any issues showing the App Store page in-app.
