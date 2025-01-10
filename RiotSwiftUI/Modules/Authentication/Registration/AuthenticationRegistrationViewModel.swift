@@ -19,9 +19,9 @@ class AuthenticationRegistrationViewModel: AuthenticationRegistrationViewModelTy
 
     // MARK: - Setup
 
-    init(homeserver: AuthenticationHomeserverViewData) {
+    init(homeserver: AuthenticationHomeserverViewData, showReplacementAppBanner: Bool) {
         let bindings = AuthenticationRegistrationBindings()
-        let viewState = AuthenticationRegistrationViewState(homeserver: homeserver, bindings: bindings)
+        let viewState = AuthenticationRegistrationViewState(homeserver: homeserver, showReplacementAppBanner: showReplacementAppBanner, bindings: bindings)
         
         super.init(initialViewState: viewState)
     }
@@ -44,6 +44,8 @@ class AuthenticationRegistrationViewModel: AuthenticationRegistrationViewModelTy
             Task { await callback?(.continueWithSSO(provider)) }
         case .fallback:
             Task { await callback?(.fallback) }
+        case .downloadReplacementApp(let replacementApp):
+            Task { await callback?(.downloadReplacementApp(replacementApp)) }
         }
     }
     
@@ -54,6 +56,10 @@ class AuthenticationRegistrationViewModel: AuthenticationRegistrationViewModelTy
     
     @MainActor func update(homeserver: AuthenticationHomeserverViewData) {
         state.homeserver = homeserver
+        
+        // Only the initial homeserver will ever need this, it isn't possible to update the
+        // server to another one that requires the replacement app as the selection will fail.
+        state.showReplacementAppBanner = false
     }
     
     @MainActor func update(username: String) {
@@ -82,6 +88,10 @@ class AuthenticationRegistrationViewModel: AuthenticationRegistrationViewModelTy
             state.bindings.alertInfo = AlertInfo(id: type,
                                                  title: VectorL10n.error,
                                                  message: VectorL10n.loginErrorRegistrationIsNotSupported)
+        case .registrationNotSupported:
+            state.bindings.alertInfo = AlertInfo(id: type,
+                                                 title: VectorL10n.error,
+                                                 message: VectorL10n.sunsetDelegatedOidcRegistrationNotSupportedGenericError)
         case .unknown:
             state.bindings.alertInfo = AlertInfo(id: type)
         }

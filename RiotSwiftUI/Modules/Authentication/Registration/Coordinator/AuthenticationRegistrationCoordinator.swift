@@ -7,15 +7,14 @@
 
 import CommonKit
 import MatrixSDK
+import StoreKit
 import SwiftUI
 
 struct AuthenticationRegistrationCoordinatorParameters {
     let navigationRouter: NavigationRouterType
     let authenticationService: AuthenticationService
-    /// The registration flow that is available for the chosen server.
-    let registrationFlow: RegistrationResult?
-    /// The login mode to allow SSO buttons to be shown when available.
-    let loginMode: LoginMode
+    /// Whether the authentication service is configured with a server uses MAS and so Element X should be used for registration instead.
+    let showReplacementAppBanner: Bool
 }
 
 enum AuthenticationRegistrationCoordinatorResult: CustomStringConvertible {
@@ -75,7 +74,7 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
         self.parameters = parameters
         
         let homeserver = parameters.authenticationService.state.homeserver
-        let viewModel = AuthenticationRegistrationViewModel(homeserver: homeserver.viewData)
+        let viewModel = AuthenticationRegistrationViewModel(homeserver: homeserver.viewData, showReplacementAppBanner: parameters.showReplacementAppBanner)
         authenticationRegistrationViewModel = viewModel
         
         let view = AuthenticationRegistrationScreen(viewModel: viewModel.context)
@@ -116,6 +115,8 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
                 self.callback?(.continueWithSSO(provider))
             case .fallback:
                 self.callback?(.fallback)
+            case .downloadReplacementApp(let replacementApp):
+                Task { await self.showReplacementAppStorePage(replacementApp) }
             }
         }
     }
@@ -242,6 +243,9 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
             switch registrationError {
             case .registrationDisabled:
                 authenticationRegistrationViewModel.displayError(.registrationDisabled)
+            case .delegatedOIDCRequiresReplacementApp:
+                // Edge case, is only shown in the user enters @alice:myserver.com to register directly on myserver.com
+                authenticationRegistrationViewModel.displayError(.registrationNotSupported)
             case .createAccountNotCalled, .missingThreePIDData, .missingThreePIDURL, .threePIDClientFailure, .threePIDValidationFailure, .waitingForThreePIDValidation, .invalidPhoneNumber:
                 // Shouldn't happen at this stage
                 authenticationRegistrationViewModel.displayError(.unknown)
@@ -288,5 +292,18 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
     @MainActor private func updateViewModelHomeserver() {
         let homeserver = authenticationService.state.homeserver
         authenticationRegistrationViewModel.update(homeserver: homeserver.viewData)
+    }
+    
+    /// Presets the App Store page for the replacement app as a sheet.
+    @MainActor private func showReplacementAppStorePage(_ replacementApp: BuildSettings.ReplacementApp) async {
+        do {
+            let storeViewController = SKStoreProductViewController()
+            try await storeViewController.loadProduct(withParameters: [SKStoreProductParameterITunesItemIdentifier: replacementApp.productID])
+            authenticationRegistrationHostingController.present(storeViewController, animated: true)
+        } catch {
+            // Open the app store URL outside of the app as a fallback.
+            MXLog.warning("Unable to open the in-app store product page: \(error)")
+            await UIApplication.shared.open(replacementApp.appStoreURL)
+        }
     }
 }

@@ -13,11 +13,10 @@ import XCTest
 @MainActor class AuthenticationRegistrationViewModelTests: XCTestCase {
     let defaultHomeserver = AuthenticationHomeserverViewData.mockMatrixDotOrg
     var viewModel: AuthenticationRegistrationViewModelProtocol!
-    var context: AuthenticationRegistrationViewModelType.Context!
+    var context: AuthenticationRegistrationViewModelType.Context { viewModel.context }
     
     @MainActor override func setUp() async throws {
-        viewModel = AuthenticationRegistrationViewModel(homeserver: defaultHomeserver)
-        context = viewModel.context
+        viewModel = AuthenticationRegistrationViewModel(homeserver: defaultHomeserver, showReplacementAppBanner: false)
     }
     
     func testMatrixDotOrg() {
@@ -27,6 +26,7 @@ import XCTest
         // Then the view state should contain a homeserver that matches matrix.org and shows SSO buttons.
         XCTAssertEqual(context.viewState.homeserver, homeserver, "The homeserver data should match the original.")
         XCTAssertTrue(context.viewState.showSSOButtons, "The SSO buttons should be shown.")
+        XCTAssertFalse(context.viewState.showReplacementAppBanner, "The sunset banner should not be shown.")
     }
     
     func testBasicServer() {
@@ -261,6 +261,28 @@ import XCTest
         
         // Then the view state should reflect that the homeserver is loading.
         XCTAssertEqual(context.username, localPart, "The username should match the value passed to the update method.")
+    }
+    
+    func testSunsetBanner() async {
+        // Given a view model configured with a default homeserver that requires MAS (and the sunset banner).
+        let homeserver = AuthenticationHomeserverViewData(address: "beta.matrix.org",
+                                                          showLoginForm: false,
+                                                          showRegistrationForm: false,
+                                                          showQRLogin: false,
+                                                          ssoIdentityProviders: []) // The initial discovery would have failed so the OIDC provider is not known.
+        viewModel = AuthenticationRegistrationViewModel(homeserver: homeserver, showReplacementAppBanner: true)
+        XCTAssertEqual(context.viewState.homeserver, homeserver, "The homeserver data should match the original.")
+        XCTAssertTrue(context.viewState.showReplacementAppBanner, "The sunset banner should be shown.")
+        XCTAssertFalse(context.viewState.showSSOButtons, "The SSO buttons should not be shown.")
+        
+        // When selecting another server that doesn't require MAS.
+        let legacyHomeserver = AuthenticationHomeserverViewData.mockMatrixDotOrg
+        viewModel.update(homeserver: legacyHomeserver)
+        
+        // Then the banner should be removed and registration should be possible.
+        XCTAssertEqual(context.viewState.homeserver, legacyHomeserver, "The homeserver data should match the updated server.")
+        XCTAssertFalse(context.viewState.showReplacementAppBanner, "The sunset banner should no longer be visible.")
+        XCTAssertTrue(context.viewState.showSSOButtons, "The SSO buttons should now be visible.")
     }
 }
 

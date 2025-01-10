@@ -355,6 +355,7 @@ internal class Asset: NSObject {
     internal static let voiceBroadcastTileMic = ImageAsset(name: "voice_broadcast_tile_mic")
     internal static let voiceBroadcastTimeLeft = ImageAsset(name: "voice_broadcast_time_left")
     internal static let launchScreenLogo = ImageAsset(name: "launch_screen_logo")
+    internal static let sunsetBannerIcon = ImageAsset(name: "sunset_banner_icon")
   }
   @objcMembers
   @objc(AssetSharedImages) internal class SharedImages: NSObject {
