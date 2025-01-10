@@ -8743,6 +8743,30 @@ public class VectorL10n: NSObject {
   public static var suggest: String { 
     return VectorL10n.tr("Vector", "suggest") 
   }
+  /// You can no longer create an account with the entered homeserver using this app
+  public static var sunsetDelegatedOidcRegistrationNotSupportedGenericError: String { 
+    return VectorL10n.tr("Vector", "sunset_delegated_oidc_registration_not_supported_generic_error") 
+  }
+  /// Download %1$@ to use %2$@ for your account or choose a different homeserver.
+  public static func sunsetDelegatedOidcRegistrationNotSupportedMessage(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "sunset_delegated_oidc_registration_not_supported_message", p1, p2)
+  }
+  /// You can no longer create an account with %1$@ using this app
+  public static func sunsetDelegatedOidcRegistrationNotSupportedTitle(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "sunset_delegated_oidc_registration_not_supported_title", p1)
+  }
+  /// Learn more
+  public static var sunsetDownloadBannerLearnMore: String { 
+    return VectorL10n.tr("Vector", "sunset_download_banner_learn_more") 
+  }
+  /// Faster, more secure, and packed with powerful collaboration tools.
+  public static var sunsetDownloadBannerMessage: String { 
+    return VectorL10n.tr("Vector", "sunset_download_banner_message") 
+  }
+  /// Download %1$@
+  public static func sunsetDownloadBannerTitle(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "sunset_download_banner_title", p1)
+  }
   /// Switch
   public static var `switch`: String { 
     return VectorL10n.tr("Vector", "switch") 

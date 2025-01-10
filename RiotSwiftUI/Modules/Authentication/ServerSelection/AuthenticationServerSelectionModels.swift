@@ -14,15 +14,22 @@ enum AuthenticationServerSelectionViewModelResult {
     case confirm(homeserverAddress: String)
     /// Dismiss the view without using the entered address.
     case dismiss
+    /// Show the app store page for the replacement app.
+    case downloadReplacementApp(BuildSettings.ReplacementApp)
 }
 
 // MARK: View
 
 struct AuthenticationServerSelectionViewState: BindableState {
+    enum FooterError: Equatable {
+        case message(String)
+        case sunsetBanner
+    }
+    
     /// View state that can be bound to from SwiftUI.
     var bindings: AuthenticationServerSelectionBindings
     /// An error message to be shown in the text field footer.
-    var footerErrorMessage: String?
+    var footerError: FooterError?
     /// The flow that the screen is being used for.
     let flow: AuthenticationFlow
     /// Whether the screen is presented modally or within a navigation stack.
@@ -43,7 +50,7 @@ struct AuthenticationServerSelectionViewState: BindableState {
     
     /// The text field is showing an error.
     var isShowingFooterError: Bool {
-        footerErrorMessage != nil
+        footerError != nil
     }
     
     /// Whether it is possible to continue when tapping the confirmation button.
@@ -66,6 +73,8 @@ enum AuthenticationServerSelectionViewAction {
     case dismiss
     /// Clear any errors shown in the text field footer.
     case clearFooterError
+    /// Show the app store page for the replacement app.
+    case downloadReplacementApp(BuildSettings.ReplacementApp)
 }
 
 enum AuthenticationServerSelectionErrorType: Hashable {
@@ -73,4 +82,6 @@ enum AuthenticationServerSelectionErrorType: Hashable {
     case footerMessage(String)
     /// An error occurred when trying to open the EMS link
     case openURLAlert
+    /// An error message shown alongside a marketing banner to download the replacement app.
+    case requiresReplacementApp
 }

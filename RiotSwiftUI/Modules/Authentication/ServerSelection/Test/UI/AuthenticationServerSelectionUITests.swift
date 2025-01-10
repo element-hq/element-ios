@@ -30,6 +30,9 @@ class AuthenticationServerSelectionUITests: MockScreenTestCase {
         
         let dismissButton = app.buttons["dismissButton"]
         XCTAssertTrue(dismissButton.exists, "The dismiss button should be shown during modal presentation.")
+        
+        let downloadBanner = app.buttons["sunsetBanners"]
+        XCTAssertFalse(downloadBanner.exists, "The sunset banners should not be shown when registering against a legacy homeserver.")
     }
     
     func testLoginState() {
@@ -75,5 +78,16 @@ class AuthenticationServerSelectionUITests: MockScreenTestCase {
         
         let confirmButton = app.buttons["confirmButton"]
         XCTAssertEqual(confirmButton.label, VectorL10n.next, "The confirm button should say Next when not in modal presentation.")
+    }
+    
+    func testSunsetBanners() {
+        app.goToScreenWithIdentifier(MockAuthenticationServerSelectionScreenState.mas.title)
+        
+        let downloadBanner = app.buttons["sunsetBanners"]
+        XCTAssertTrue(downloadBanner.exists, "The sunset banners should be shown when registering against a homeserver with MAS.")
+        
+        let confirmButton = app.buttons["confirmButton"]
+        XCTAssertTrue(confirmButton.exists, "The confirm button should always be shown.")
+        XCTAssertFalse(confirmButton.isEnabled, "The confirm button should be disabled when there is an error.")
     }
 }

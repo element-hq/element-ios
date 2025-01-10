@@ -12,13 +12,15 @@ struct LoginFlowResult {
     let supportedLoginTypes: [MXLoginFlow]
     let ssoIdentityProviders: [SSOIdentityProvider]
     let homeserverAddress: String
+    let providesDelegatedOIDCCompatibility: Bool
     
     var loginMode: LoginMode {
         if supportedLoginTypes.contains(where: { $0.type == kMXLoginFlowTypeSSO }),
-           supportedLoginTypes.contains(where: { $0.type == kMXLoginFlowTypePassword }) {
+           supportedLoginTypes.contains(where: { $0.type == kMXLoginFlowTypePassword }),
+           !providesDelegatedOIDCCompatibility {
             return .ssoAndPassword(ssoIdentityProviders: ssoIdentityProviders)
         } else if supportedLoginTypes.contains(where: { $0.type == kMXLoginFlowTypeSSO }) {
-            return .sso(ssoIdentityProviders: ssoIdentityProviders)
+            return .sso(ssoIdentityProviders: ssoIdentityProviders, providesDelegatedOIDCCompatibility: providesDelegatedOIDCCompatibility)
         } else if supportedLoginTypes.contains(where: { $0.type == kMXLoginFlowTypePassword }) {
             return .password
         } else {
@@ -34,7 +36,7 @@ enum LoginMode {
     /// The homeserver supports login with a password.
     case password
     /// The homeserver supports login via one or more SSO providers.
-    case sso(ssoIdentityProviders: [SSOIdentityProvider])
+    case sso(ssoIdentityProviders: [SSOIdentityProvider], providesDelegatedOIDCCompatibility: Bool)
     /// The homeserver supports login with either a password or via an SSO provider.
     case ssoAndPassword(ssoIdentityProviders: [SSOIdentityProvider])
     /// The homeserver only allows login with unsupported mechanisms. Use fallback instead.
@@ -42,7 +44,7 @@ enum LoginMode {
     
     var ssoIdentityProviders: [SSOIdentityProvider]? {
         switch self {
-        case .sso(let ssoIdentityProviders), .ssoAndPassword(let ssoIdentityProviders):
+        case .sso(let ssoIdentityProviders, _), .ssoAndPassword(let ssoIdentityProviders):
             // Provide a backup for homeservers that support SSO but don't offer any identity providers
             // https://spec.matrix.org/latest/client-server-api/#client-login-via-sso
             return ssoIdentityProviders.count > 0 ? ssoIdentityProviders : [SSOIdentityProvider(id: "", name: "SSO", brand: nil, iconURL: nil)]
@@ -54,6 +56,15 @@ enum LoginMode {
     var hasSSO: Bool {
         switch self {
         case .sso, .ssoAndPassword:
+            return true
+        default:
+            return false
+        }
+    }
+    
+    var providesDelegatedOIDCCompatibility: Bool {
+        switch self {
+        case .sso(_, providesDelegatedOIDCCompatibility: true):
             return true
         default:
             return false

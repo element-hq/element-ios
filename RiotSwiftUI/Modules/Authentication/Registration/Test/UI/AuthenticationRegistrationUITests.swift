@@ -15,6 +15,7 @@ class AuthenticationRegistrationUITests: MockScreenTestCase {
         let state = "matrix.org"
         validateRegistrationFormIsVisible(for: state)
         validateSSOButtonsAreShown(for: state)
+        validateSunsetBannersAreHidden(for: state)
         validateFallbackButtonIsHidden(for: state)
         
         validateUnknownUsernameAvailability(for: state)
@@ -27,6 +28,7 @@ class AuthenticationRegistrationUITests: MockScreenTestCase {
         let state = "a password only server"
         validateRegistrationFormIsVisible(for: state)
         validateSSOButtonsAreHidden(for: state)
+        validateSunsetBannersAreHidden(for: state)
         validateFallbackButtonIsHidden(for: state)
         
         validateNextButtonIsDisabled(for: state)
@@ -41,6 +43,7 @@ class AuthenticationRegistrationUITests: MockScreenTestCase {
         let state = "a password only server with credentials entered"
         validateRegistrationFormIsVisible(for: state)
         validateSSOButtonsAreHidden(for: state)
+        validateSunsetBannersAreHidden(for: state)
         validateFallbackButtonIsHidden(for: state)
         
         validateNextButtonIsEnabled(for: state)
@@ -55,6 +58,7 @@ class AuthenticationRegistrationUITests: MockScreenTestCase {
         let state = "a password only server with an invalid username"
         validateRegistrationFormIsVisible(for: state)
         validateSSOButtonsAreHidden(for: state)
+        validateSunsetBannersAreHidden(for: state)
         validateFallbackButtonIsHidden(for: state)
         
         validateNextButtonIsDisabled(for: state)
@@ -67,6 +71,7 @@ class AuthenticationRegistrationUITests: MockScreenTestCase {
         let state = "an SSO only server"
         validateRegistrationFormIsHidden(for: state)
         validateSSOButtonsAreShown(for: state)
+        validateSunsetBannersAreHidden(for: state)
         validateFallbackButtonIsHidden(for: state)
     }
     
@@ -76,7 +81,18 @@ class AuthenticationRegistrationUITests: MockScreenTestCase {
         let state = "fallback"
         validateRegistrationFormIsHidden(for: state)
         validateSSOButtonsAreHidden(for: state)
+        validateSunsetBannersAreHidden(for: state)
         validateFallbackButtonIsShown(for: state)
+    }
+    
+    func testSunsetBanner() {
+        app.goToScreenWithIdentifier(MockAuthenticationRegistrationScreenState.mas.title)
+        
+        let state = "mas"
+        validateRegistrationFormIsHidden(for: state)
+        validateSSOButtonsAreHidden(for: state)
+        validateSunsetBannersAreShown(for: state)
+        validateFallbackButtonIsShown(for: state, isEnabled: false)
     }
     
     /// Checks that the username and password text fields are shown along with the next button.
@@ -108,12 +124,27 @@ class AuthenticationRegistrationUITests: MockScreenTestCase {
         XCTAssertFalse(fallbackButton.exists, "The fallback button should not be shown for \(state).")
     }
 
-    /// Checks that the fallback button is hidden.
-    func validateFallbackButtonIsShown(for state: String) {
+    /// Checks that the fallback button is shown.
+    func validateFallbackButtonIsShown(for state: String, isEnabled: Bool = true) {
         let fallbackButton = app.buttons["fallbackButton"]
 
         XCTAssertTrue(fallbackButton.exists, "The fallback button should be shown for \(state).")
-        XCTAssertTrue(fallbackButton.isEnabled, "The fallback button should be enabled for \(state).")
+        XCTAssertEqual(fallbackButton.isEnabled, isEnabled, "The fallback button should be \(isEnabled ? "enabled" : "disabled") for \(state).")
+    }
+    
+    /// Checks that the sunset banners are hidden.
+    func validateSunsetBannersAreHidden(for state: String) {
+        let downloadBanner = app.buttons["sunsetBanners"]
+
+        XCTAssertFalse(downloadBanner.exists, "The sunset banners should not be shown for \(state).")
+    }
+
+    /// Checks that the sunset banners are shown.
+    func validateSunsetBannersAreShown(for state: String) {
+        let downloadBanner = app.buttons["sunsetBanners"]
+
+        XCTAssertTrue(downloadBanner.exists, "The sunset banners should be shown for \(state).")
+        XCTAssertTrue(downloadBanner.isEnabled, "The sunset banners should be enabled for \(state).")
     }
     
     /// Checks that there is at least one SSO button shown on the screen.

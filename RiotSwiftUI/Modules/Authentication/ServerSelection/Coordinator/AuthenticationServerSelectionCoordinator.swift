@@ -6,6 +6,7 @@
 //
 
 import CommonKit
+import StoreKit
 import SwiftUI
 
 struct AuthenticationServerSelectionCoordinatorParameters {
@@ -90,6 +91,8 @@ final class AuthenticationServerSelectionCoordinator: Coordinator, Presentable {
                 self.useHomeserver(homeserverAddress)
             case .dismiss:
                 self.callback?(.dismiss)
+            case .downloadReplacementApp(let replacementApp):
+                Task { await self.showReplacementAppStorePage(replacementApp) }
             }
         }
     }
@@ -119,17 +122,32 @@ final class AuthenticationServerSelectionCoordinator: Coordinator, Presentable {
                 stopLoading()
                 
                 callback?(.updated)
+            } catch RegistrationError.delegatedOIDCRequiresReplacementApp where BuildSettings.replacementApp != nil {
+                stopLoading()
+                authenticationServerSelectionViewModel.displayError(.requiresReplacementApp)
+            } catch let registrationError as RegistrationError {
+                stopLoading()
+                authenticationServerSelectionViewModel.displayError(.footerMessage(registrationError.localizedDescription))
             } catch {
                 stopLoading()
                 
-                if let error = error as? RegistrationError {
-                    authenticationServerSelectionViewModel.displayError(.footerMessage(error.localizedDescription))
-                } else {
-                    // Show the MXError message if possible otherwise use a generic server error
-                    let message = MXError(nsError: error)?.error ?? VectorL10n.authenticationServerSelectionGenericError
-                    authenticationServerSelectionViewModel.displayError(.footerMessage(message))
-                }
+                // Show the MXError message if possible otherwise use a generic server error
+                let message = MXError(nsError: error)?.error ?? VectorL10n.authenticationServerSelectionGenericError
+                authenticationServerSelectionViewModel.displayError(.footerMessage(message))
             }
+        }
+    }
+    
+    /// Presets the App Store page for the replacement app as a sheet.
+    @MainActor private func showReplacementAppStorePage(_ replacementApp: BuildSettings.ReplacementApp) async {
+        do {
+            let storeViewController = SKStoreProductViewController()
+            try await storeViewController.loadProduct(withParameters: [SKStoreProductParameterITunesItemIdentifier: replacementApp.productID])
+            authenticationServerSelectionHostingController.present(storeViewController, animated: true)
+        } catch {
+            // Open the app store URL outside of the app as a fallback.
+            MXLog.warning("Unable to open the in-app store product page: \(error)")
+            await UIApplication.shared.open(replacementApp.appStoreURL)
         }
     }
 }
