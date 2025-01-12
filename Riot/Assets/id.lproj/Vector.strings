@@ -2982,3 +2982,11 @@
 "wysiwyg_composer_action_maximise_action" = "Luaskan komposer";
 "room_action_report" = "Laporkan ruangan";
 "call_unsupported_matrix_rtc_call" = "Panggilan tidak didukung. Aplikasi Element X diperlukan untuk bergabung ke panggilan ini.";
+"sunset_delegated_oidc_registration_not_supported_message" = "Unduh %1$@ untuk menggunakan %2$@ untuk akun Anda atau pilih homeserver yang lain.";
+"sunset_download_banner_title" = "Unduh %1$@";
+"sunset_download_banner_message" = "Lebih cepat, lebih aman, dan lengkap dengan peralatan kolaborasi yang lebih berdaya.";
+"sunset_download_banner_learn_more" = "Pelajari lebih lanjut";
+
+// MARK: Sunset
+"sunset_delegated_oidc_registration_not_supported_title" = "Anda sudah tidak bisa lagi membuat akun dengan %1$s menggunakan aplikasi ini";
+"sunset_delegated_oidc_registration_not_supported_generic_error" = "Anda sudah tidak bisa lagi membuat akun dengan homeserver yang ditentukan menggunakan aplikasi ini";
