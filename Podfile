@@ -24,7 +24,6 @@ end
 
 def import_SwiftUI_pods
     pod 'Introspect', '~> 0.1'
-    pod 'DSBottomSheet', '~> 0.3'
     pod 'ZXingObjC', '~> 3.6.9'
 end
 

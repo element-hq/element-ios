@@ -18,7 +18,6 @@ PODS:
   - BlueECC (1.2.5)
   - BlueRSA (1.0.200)
   - Down (0.11.0)
-  - DSBottomSheet (0.3.0)
   - DSWaveformImage (6.1.1)
   - FLEX (5.22.10)
   - FlowCommoniOS (1.12.2)
@@ -86,7 +85,6 @@ PODS:
 
 DEPENDENCIES:
   - Down (~> 0.11.0)
-  - DSBottomSheet (~> 0.3)
   - DSWaveformImage (~> 6.1.1)
   - FLEX (~> 5.22.10)
   - FlowCommoniOS (~> 1.12.0)
@@ -119,7 +117,6 @@ SPEC REPOS:
     - BlueECC
     - BlueRSA
     - Down
-    - DSBottomSheet
     - DSWaveformImage
     - FLEX
     - FlowCommoniOS
@@ -163,7 +160,6 @@ SPEC CHECKSUMS:
   BlueECC: 0d18e93347d3ec6d41416de21c1ffa4d4cd3c2cc
   BlueRSA: dfeef51db96bcc4edec654956c1581adbda4e6a3
   Down: b6ba1bc985c9d2f4e15e3b293d2207766fa12612
-  DSBottomSheet: ca0ac37eb5af2dd54663f86b84382ed90a59be2a
   DSWaveformImage: 3c718a0cf99291887ee70d1d0c18d80101d3d9ce
   FLEX: f21ee4f498eed3f8a1eded66b21939fd3b7a22ce
   FlowCommoniOS: ca92071ab526dc89905495a37844fd7e78d1a7f2
@@ -179,7 +175,7 @@ SPEC CHECKSUMS:
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   LoggerAPI: ad9c4a6f1e32f518fdb43a1347ac14d765ab5e3d
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
-  MatrixSDK: e3096b0b47f8a0bde6ae3f614f9c49e7e92b03ea
+  MatrixSDK: 33d348122df228efa234d7b353c33620fc420a59
   MatrixSDKCrypto: 27bee960e0e8b3a3039f3f3e93dd2ec88299c77e
   ReadMoreTextView: 19147adf93abce6d7271e14031a00303fe28720d
   Realm: 9ca328bd7e700cc19703799785e37f77d1a130f2
@@ -198,6 +194,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-PODFILE CHECKSUM: 9148246fffa2c32e3c9b29a51cae4bb037497056
+PODFILE CHECKSUM: 50ea16fe614e202ee198f2378d85dca5b2cf21a8
 
-COCOAPODS: 1.14.3
+COCOAPODS: 1.15.2
