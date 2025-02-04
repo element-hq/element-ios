@@ -2727,3 +2727,11 @@
 "wysiwyg_composer_action_minimise_action" = "Peida tekstitoimeti";
 "wysiwyg_composer_action_maximise_action" = "Ava tekstitoimeti";
 "call_unsupported_matrix_rtc_call" = "See kõne pole toetatud. Kõnega liitumiseks palun kasuta uut Element X rakendust.";
+"sunset_delegated_oidc_registration_not_supported_message" = "%2$@ teenuse kasutamiseks võta kasutusele %1$@ või vali mõni muu koduserver.";
+"sunset_delegated_oidc_registration_not_supported_generic_error" = "Selle rakendusega enam ei saa luua kasutajakontot sisestatud koduserveris";
+"sunset_download_banner_title" = "Laadi alla %1$@";
+"sunset_download_banner_message" = "Kiirem, turvalisem ja sisaldab palju võimsaid ühistöövahendeid.";
+"sunset_download_banner_learn_more" = "Lisateave";
+
+// MARK: Sunset
+"sunset_delegated_oidc_registration_not_supported_title" = "Selle rakendusega enam ei saa luua kasutajakontot teenuses %1$@";

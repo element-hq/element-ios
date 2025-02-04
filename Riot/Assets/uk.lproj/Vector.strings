@@ -2980,3 +2980,11 @@
 // MARK: - WYSIWYG Composer
 "wysiwyg_composer_action_minimise_action" = "Зменшити редактор";
 "call_unsupported_matrix_rtc_call" = "Непідтримуваний виклик. Потрібен застосунок Element X, щоб приєднатися до цього виклику.";
+"sunset_delegated_oidc_registration_not_supported_generic_error" = "Ви більше не можете створити обліковий запис із введеним домашнім сервером за допомогою цього застосунку";
+"sunset_download_banner_title" = "Завантажте %1$@";
+"sunset_download_banner_learn_more" = "Докладніше";
+
+// MARK: Sunset
+"sunset_delegated_oidc_registration_not_supported_title" = "Ви більше не можете створити обліковий запис з %1$@ за допомогою цього застосунку";
+"sunset_delegated_oidc_registration_not_supported_message" = "Завантажте %1$@, щоб використовувати %2$@ для свого облікового запису або оберіть інший домашній сервер.";
+"sunset_download_banner_message" = "Швидший, безпечніший і з потужними інструментами для спільної роботи.";
