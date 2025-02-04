@@ -2722,3 +2722,11 @@
 // MARK: - WYSIWYG Composer
 "wysiwyg_composer_action_minimise_action" = "Krymp redigerare";
 "call_unsupported_matrix_rtc_call" = "Samtal stöds inte. Nya Element X-appen behövs för att gå med i det här samtalet.";
+
+// MARK: Sunset
+"sunset_delegated_oidc_registration_not_supported_title" = "Du kan inte längre skapa ett konto med %1$@ med den här appen";
+"sunset_delegated_oidc_registration_not_supported_generic_error" = "Du kan inte längre skapa ett konto med den angivna hemservern med den här appen";
+"sunset_download_banner_title" = "Ladda ner %1$@";
+"sunset_download_banner_message" = "Snabbare, säkrare och fullproppad med kraftfulla samarbetsverktyg.";
+"sunset_download_banner_learn_more" = "Läs mer";
+"sunset_delegated_oidc_registration_not_supported_message" = "Ladda ner %1$@ för att använda %2$@ för ditt konto eller välj en annan hemserver.";

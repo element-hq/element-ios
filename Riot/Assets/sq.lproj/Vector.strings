@@ -2765,3 +2765,11 @@
 "wysiwyg_composer_action_minimise_action" = "Tkurre hartuesin";
 "wysiwyg_composer_action_maximise_action" = "Zgjeroje hartuesin";
 "call_unsupported_matrix_rtc_call" = "Thirrje që s’mbulohet. Për të marrë pjesë në këtë thirrje, lypset aplikacioni i ri Element X.";
+"sunset_delegated_oidc_registration_not_supported_message" = "Që të përdorni %2$@ për llogarinë tuaj, shkarkoni %1$@, ose zgjidhni një tjetër shërbyes Home.";
+"sunset_delegated_oidc_registration_not_supported_generic_error" = "S’mund të krijoni më një llogari me shërbyesin Home që dhatë, duke përdorur këtë aplikacion";
+"sunset_download_banner_title" = "Shkarkoni %1$@";
+
+// MARK: Sunset
+"sunset_delegated_oidc_registration_not_supported_title" = "S’mund të krijoni më një llogari me %1$@ duke përdorur këtë aplikacion";
+"sunset_download_banner_message" = "Më i shpejtë, më i siguruar dhe plot me mjete të fuqishme bashkëpunimi.";
+"sunset_download_banner_learn_more" = "Mësoni më tepër";
