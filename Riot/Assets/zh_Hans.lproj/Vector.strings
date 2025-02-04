@@ -2428,3 +2428,10 @@
 "key_verification_scan_qr_code_title" = "扫描 QR Code";
 "room_action_report" = "举报房间";
 "pill_message_from" = "来自 %@ 的消息";
+"call_unsupported_matrix_rtc_call" = "不支持的通话类型，你需要新的 Element X 软件以加入该通话。";
+"room_action_report_prompt_reason" = "举报该房间的原因";
+"room_command_discard_session_description" = "强制当前已在加密房间中的外部群组会话失效";
+"call_jitsi_unable_to_start" = "无法开始会议通话";
+"room_suggestion_settings_screen_title" = "将房间设置为该空间中的建议房间";
+"room_suggestion_settings_screen_message" = "向空间成员推荐建议房间";
+"key_backup_recover_from_private_key_progress" = "完成 %@%%";

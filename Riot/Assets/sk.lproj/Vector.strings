@@ -2978,3 +2978,11 @@
 // MARK: - WYSIWYG Composer
 "wysiwyg_composer_action_minimise_action" = "Zmenšiť editor";
 "call_unsupported_matrix_rtc_call" = "Nepodporovaný hovor. Na pripojenie k tomuto hovoru je potrebná nová aplikácia Element X.";
+"sunset_delegated_oidc_registration_not_supported_generic_error" = "Pomocou tejto aplikácie už nie je možné vytvoriť konto so zadaným domovským serverom";
+"sunset_download_banner_title" = "Stiahnuť %1$@";
+"sunset_download_banner_message" = "Rýchlejší, bezpečnejší a vybavený výkonnými nástrojmi na spoluprácu.";
+"sunset_download_banner_learn_more" = "Zistiť viac";
+
+// MARK: Sunset
+"sunset_delegated_oidc_registration_not_supported_title" = "Pomocou tejto aplikácie si už nemôžete vytvoriť účet %1$@";
+"sunset_delegated_oidc_registration_not_supported_message" = "Stiahnite si %1$@ a používajte %2$@ pre svoje konto alebo si vyberte iný domovský server.";

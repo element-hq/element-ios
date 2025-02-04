@@ -1,11 +1,10 @@
 //
 // Copyright 2021-2024 New Vector Ltd.
 //
-// SPDX-License-Identifier: AGPL-3.0-only
-// Please see LICENSE in the repository root for full details.
+// SPDX-License-Identifier: AGPL-3.0-only OR LicenseRef-Element-Commercial
+// Please see LICENSE files in the repository root for full details.
 //
 
-import DSBottomSheet
 import SwiftUI
 
 struct LiveLocationSharingViewer: View {
@@ -16,9 +15,7 @@ struct LiveLocationSharingViewer: View {
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
     @Environment(\.openURL) var openURL
-    
-    @State private var isBottomSheetExpanded = false
-    
+        
     var bottomSheetCollapsedHeight: CGFloat = 150.0
     
     // MARK: Public
@@ -111,7 +108,19 @@ struct LiveLocationSharingViewer: View {
         }
         .accentColor(theme.colors.accent)
         .background(theme.colors.system.ignoresSafeArea())
-        .bottomSheet(sheet, if: viewModel.viewState.isBottomSheetVisible)
+        .sheet(isPresented: .constant(viewModel.viewState.isBottomSheetVisible)) {
+            if #available(iOS 16.4, *) {
+                userLocationList
+                    .presentationBackgroundInteraction(.enabled)
+                    .presentationBackground(theme.colors.background)
+                    .presentationDragIndicator(.visible)
+                    .presentationDetents([.height(bottomSheetCollapsedHeight), .large])
+                    .interactiveDismissDisabled()
+            } else {
+                userLocationList
+                    .interactiveDismissDisabled()
+            }
+        }
         .actionSheet(isPresented: $viewModel.showMapCreditsSheet) {
             MapCreditsActionSheet(openURL: { url in
                 openURL(url)
@@ -130,8 +139,6 @@ struct LiveLocationSharingViewer: View {
                     LiveLocationListItem(viewData: viewData, onStopSharingAction: {
                         viewModel.send(viewAction: .stopSharing)
                     }, onBackgroundTap: { userId in
-                        // Push bottom sheet down on item tap
-                        isBottomSheetExpanded = false
                         viewModel.send(viewAction: .tapListItem(userId))
                     })
                 }
@@ -139,34 +146,6 @@ struct LiveLocationSharingViewer: View {
             .padding()
         }
         .background(theme.colors.background.ignoresSafeArea())
-    }
-}
-
-// MARK: - Bottom sheet
-
-extension LiveLocationSharingViewer {
-    var sheetStyle: BottomSheetStyle {
-        var bottomSheetStyle = BottomSheetStyle.standard
-
-        bottomSheetStyle.snapRatio = 0.16
-        
-        let backgroundColor = theme.colors.background
-
-        let handleStyle = BottomSheetHandleStyle(backgroundColor: backgroundColor, dividerColor: backgroundColor)
-        bottomSheetStyle.handleStyle = handleStyle
-
-        return bottomSheetStyle
-    }
-
-    var sheet: some BottomSheetView {
-        BottomSheet(
-            isExpanded: $isBottomSheetExpanded,
-            minHeight: .points(bottomSheetCollapsedHeight),
-            maxHeight: .available,
-            style: sheetStyle
-        ) {
-            userLocationList
-        }
     }
 }
 

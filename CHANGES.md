@@ -1,3 +1,8 @@
+## Changes in 1.11.24 (2025-02-04)
+
+No significant changes.
+
+
 ## Changes in 1.11.23 (2025-01-10)
 
 🙌 Improvements
