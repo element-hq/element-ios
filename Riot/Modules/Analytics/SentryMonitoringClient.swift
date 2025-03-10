@@ -39,7 +39,7 @@ struct SentryMonitoringClient {
             // Disabled as it seems to report a lot of false positives
             options.enableAppHangTracking = false
             
-            // Most of the network requests are made Rust side, this is useless
+            // Disable unnecessary network tracking
             options.enableNetworkBreadcrumbs = false
             
             // Doesn't seem to work at all well with SwiftUI
