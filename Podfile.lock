@@ -60,9 +60,9 @@ PODS:
     - Reusable/View (= 4.1.2)
   - Reusable/Storyboard (4.1.2)
   - Reusable/View (4.1.2)
-  - Sentry (8.30.1):
-    - Sentry/Core (= 8.30.1)
-  - Sentry/Core (8.30.1)
+  - Sentry (8.46.0):
+    - Sentry/Core (= 8.46.0)
+  - Sentry/Core (8.46.0)
   - SideMenu (6.5.0)
   - SwiftBase32 (0.9.0)
   - SwiftFormat/CLI (0.54.5)
@@ -97,7 +97,7 @@ DEPENDENCIES:
   - MatrixSDK/JingleCallStack (from `matrix-ios-sdk/MatrixSDK.podspec`)
   - ReadMoreTextView (~> 3.0.1)
   - Reusable (~> 4.1)
-  - Sentry (~> 8.30.0)
+  - Sentry (~> 8.46.0)
   - SideMenu (~> 6.5)
   - SwiftBase32 (~> 0.9.0)
   - SwiftFormat/CLI
@@ -181,7 +181,7 @@ SPEC CHECKSUMS:
   ReadMoreTextView: 19147adf93abce6d7271e14031a00303fe28720d
   Realm: 9ca328bd7e700cc19703799785e37f77d1a130f2
   Reusable: 6bae6a5e8aa793c9c441db0213c863a64bce9136
-  Sentry: 514a3ea653886e9a48c6287d8b7bf05ec24bf3be
+  Sentry: da60d980b197a46db0b35ea12cb8f39af48d8854
   SideMenu: f583187d21c5b1dd04c72002be544b555a2627a2
   SwiftBase32: 9399c25a80666dc66b51e10076bf591e3bbb8f17
   SwiftFormat: 543a7b1ab4a6ce2d88bd5616a17903446ca3dc5c
@@ -195,6 +195,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-PODFILE CHECKSUM: e33e3d2d1eba3aec676fb3d9da4d4b4e2b2b1a60
+PODFILE CHECKSUM: 60f4fe3695f2304b9bba734acf38d59c79678ac1
 
-COCOAPODS: 1.16.2
+COCOAPODS: 1.15.2
