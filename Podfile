@@ -1,4 +1,4 @@
-source 'https://cdn.cocoapods.org/'
+source 'https://github.com/CocoaPods/Specs.git'
 
 # Uncomment this line to define a global platform for your project
 platform :ios, '15.0'
@@ -34,7 +34,7 @@ abstract_target 'RiotPods' do
   pod 'KeychainAccess', '~> 4.2.2'
   pod 'WeakDictionary', '~> 2.0'
 
-  pod 'Sentry', '~> 7.15.0'
+  pod 'Sentry', '~> 8.35.0'
 
   pod 'zxcvbn-ios'
 

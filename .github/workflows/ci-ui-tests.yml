@@ -12,7 +12,7 @@ env:
 jobs:
   tests:
     name: UI Tests
-    runs-on: macos-14
+    runs-on: macos-15
     
     concurrency:
       # Only allow a single run of this workflow on each branch, automatically cancelling older runs.
@@ -26,13 +26,13 @@ jobs:
 
       # Common cache
       # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
-      - uses: actions/cache@v2
+      - uses: actions/cache@v4
         with:
           path: Pods
           key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-pods-
-      - uses: actions/cache@v2
+      - uses: actions/cache@v4
         with:
           path: vendor/bundle
           key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}

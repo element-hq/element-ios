@@ -17,7 +17,7 @@ jobs:
     if: contains(github.event.pull_request.labels.*.name, 'Trigger-PR-Build')
 
     name: Release
-    runs-on: macos-14
+    runs-on: macos-15
     
     concurrency:
       # Only allow a single run of this workflow on each branch, automatically cancelling older runs.
@@ -32,7 +32,7 @@ jobs:
       # Common cache
       # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
       - name: Cache CocoaPods libraries
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: Pods
           key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
@@ -40,7 +40,7 @@ jobs:
             ${{ runner.os }}-pods-
 
       - name: Cache Ruby gems
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: vendor/bundle
           key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
