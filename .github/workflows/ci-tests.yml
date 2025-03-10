@@ -16,7 +16,7 @@ env:
 jobs:
   tests:
     name: Tests
-    runs-on: macos-14
+    runs-on: macos-15
     
     concurrency:
       # When running on develop, use the sha to allow all runs of this workflow to run concurrently.
