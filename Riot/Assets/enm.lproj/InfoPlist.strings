@@ -1,0 +1,9 @@
+
+
+"NSPhotoLibraryUsageDescription" = "السماح بالوصول إلى الصور لتحميل الصور ومقاطع الفيديو من مكتبتك.";
+"NSMicrophoneUsageDescription" = "يحتاج المنت إلى الوصول إلى الميكروفون الخاص بك لإجراء واستقبال المكالمات، والتقاط مقاطع الفيديو، وتسجيل الرسائل الصوتية.";
+"NSCalendarsUsageDescription" = "شاهد اجتماعاتك المجدولة في التطبيق.";
+"NSFaceIDUsageDescription" = "يتم استخدام Face ID للوصول إلى تطبيقك.";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "عند مشاركة موقعك مع الأشخاص، يحتاج Element إلى الوصول لإظهار الخريطة لهم.";
+"NSContactsUsageDescription" = "سيتم مشاركتها مع خادم الهوية الخاص بك للمساعدة في العثور على جهات الاتصال الخاصة بك على Matrix.";
+"NSLocationWhenInUseUsageDescription" = "عند مشاركة موقعك مع الأشخاص، يحتاج Element إلى الوصول لإظهار الخريطة لهم.";
