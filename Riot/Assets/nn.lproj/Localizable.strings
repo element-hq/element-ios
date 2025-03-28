@@ -1,1 +1,10 @@
 
+
+
+/** Notification messages **/
+
+/* New message indicator on unknown room */
+"MESSAGE" = "Melding";
+
+/* New message indicator from a DM */
+"MESSAGE_FROM_X" = "Melding frå %@";

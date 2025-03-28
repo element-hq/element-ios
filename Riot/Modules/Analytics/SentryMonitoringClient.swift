@@ -28,9 +28,25 @@ struct SentryMonitoringClient {
             options.sampleRate = 0.1
             options.tracesSampleRate = 0.1
             
+            // Sentry swizzling shows up quite often as the heaviest stack trace when profiling
+            // We don't need any of the features it powers (see docs)
+            options.enableSwizzling = false
+            
+            // WatchdogTermination is currently the top issue but we've had zero complaints
+            // so it might very well just all be false positives
+            options.enableWatchdogTerminationTracking = false
+            
+            // Disabled as it seems to report a lot of false positives
+            options.enableAppHangTracking = false
+            
             // Disable unnecessary network tracking
             options.enableNetworkBreadcrumbs = false
-            options.enableNetworkTracking = false
+            
+            // Doesn't seem to work at all well with SwiftUI
+            options.enableAutoBreadcrumbTracking = false
+            
+            // Experimental. Stitches stack traces of asynchronous code together
+            options.swiftAsyncStacktraces = true
             
             options.beforeSend = { event in
                 // Use the actual error message as issue fingerprint

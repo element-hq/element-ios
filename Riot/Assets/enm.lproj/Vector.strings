@@ -1,0 +1,444 @@
+
+
+"store_promotional_text" = "تطبيق دردشة وتعاون يحافظ على الخصوصية، على شبكة مفتوحة. لا مركزي ليمنحك السيطرة. لا يوجد استخراج بيانات، ولا أبواب خلفية ولا وصول من طرف ثالث.";
+
+// Titles
+"title_home" = "الصفحة الرئيسية";
+"title_favourites" = "المفضلة";
+"title_people" = "الناس";
+"title_rooms" = "الغرف";
+"title_groups" = "المجتمعات";
+"warning" = "تحذير";
+
+// Actions
+"view" = "عرض";
+"next" = "التالي";
+"back" = "خلف";
+"continue" = "استمر";
+"create" = "انشاء";
+"start" = "يبدأ";
+"leave" = "يغادر";
+"remove" = "إزالة";
+"retry" = "إعادة المحاولة";
+"on" = "On";
+"off" = "غير شغال";
+"enable" = "تمكين";
+"cancel" = "يلغي";
+"save" = "يحفظ";
+"decline" = "رفض";
+"accept" = "يقبل";
+"preview" = "معاينة";
+"camera" = "كاميرا";
+"voice" = "صوت";
+"video" = "فيديو";
+"active_call" = "اتصال نشط";
+"later" = "لاحقاً";
+"rename" = "إعادة تسمية";
+"collapse" = "ينهار";
+"send_to" = "أرسل إلى %@";
+"close" = "يغلق";
+"skip" = "تخطي";
+"joining" = "الانضمام";
+"joined" = "انضم";
+"switch" = "تبديل";
+"less" = "اقل";
+"open" = "فتح";
+"done" = "منتهي";
+"private" = "خاص";
+"public" = "عام";
+"stop" = "توقف";
+"add" = "إضافة";
+"ok" = "OK";
+"error" = "خطأ";
+"edit" = "تحرير";
+"confirm" = "تأكيد";
+"invite_to" = "دعوة إلى %@";
+"sending" = "ارسال";
+"saving" = "حفظ";
+
+// Call Bar
+"callbar_only_single_active" = "انقر للعودة إلى المكالمة (%@)";
+"suggest" = "إقتراح";
+"callbar_only_single_paused" = "تم إيقاف المكالمة مؤقتًا";
+"callbar_only_multiple_paused" = "%@ مكالمات متوقفة مؤقتًا";
+"callbar_return" = "العودة";
+
+// Accessibility
+"accessibility_checkbox_label" = "مربع الاختيار";
+"accessibility_button_label" = "زر";
+"accessibility_selected" = "محددة";
+
+// MARK: Sunset
+"sunset_delegated_oidc_registration_not_supported_title" = "لم يعد بإمكانك إنشاء حساب مع %1$@ باستخدام هذا التطبيق";
+"sunset_delegated_oidc_registration_not_supported_generic_error" = "لم يعد بإمكانك إنشاء حساب بالخادم المنزلي الذي أدخلته باستخدام هذا التطبيق";
+"sunset_download_banner_title" = "تنزيل %1$@";
+"sunset_download_banner_message" = "أسرع وأكثر أمانًا ومزود بأدوات تعاون قوية.";
+"sunset_download_banner_learn_more" = "تعلم أكثر";
+
+// MARK: Onboarding
+"onboarding_splash_register_button_title" = "إنشاء حساب";
+"onboarding_splash_page_1_title" = "كن مالكًا لمحادثاتك.";
+"onboarding_splash_page_2_title" = "أنت المسيطر.";
+"onboarding_splash_page_2_message" = "اختر مكان حفظ محادثاتك، مما يمنحك التحكم والاستقلالية. متصل عبر Matrix.";
+"onboarding_splash_page_3_title" = "مراسلة آمنة";
+"onboarding_splash_page_4_title_no_pun" = "الرسائل لفريقك.";
+"onboarding_use_case_title" = "من ستتحدث معه أكثر؟";
+"onboarding_use_case_message" = "سنساعدك على الاتصال";
+"onboarding_use_case_personal_messaging" = "الأصدقاء والعائلة";
+"onboarding_use_case_work_messaging" = "الفرق";
+"onboarding_use_case_community_messaging" = "المجتمعات";
+/* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
+"onboarding_use_case_not_sure_yet" = "لست متأكدا بعد؟ %@";
+"onboarding_use_case_skip_button" = "تخطي هذا السؤال";
+"onboarding_use_case_existing_server_message" = "هل ترغب في الانضمام إلى خادم موجود؟";
+"onboarding_use_case_existing_server_button" = "الاتصال بالخادم";
+"onboarding_congratulations_title" = "مبروك!";
+/* The placeholder string contains the user's matrix ID */
+"onboarding_congratulations_message" = "تم إنشاء حسابك %@";
+"onboarding_congratulations_home_button" = "خذنى إلى المنزل";
+"onboarding_personalization_save" = "حفظ ومتابعة";
+"onboarding_personalization_skip" = "تخطي هذه الخطوة";
+"onboarding_display_name_title" = "اختر اسم العرض";
+"onboarding_display_name_placeholder" = "اسم العرض";
+"onboarding_display_name_hint" = "يمكنك تغيير هذا لاحقًا";
+"onboarding_avatar_title" = "أضف صورة شخصية";
+"onboarding_avatar_message" = "حان الوقت لوضع وجه للاسم";
+"onboarding_avatar_accessibility_label" = "الصورة الشخصية";
+"onboarding_celebration_title" = "تبدو جيدة!";
+"onboarding_celebration_button" = "دعنا نذهب";
+
+// MARK: Authentication
+"authentication_registration_title" = "إنشاء حسابك";
+"authentication_registration_username" = "اسم المستخدم";
+"authentication_registration_username_footer" = "لا يمكنك تغيير هذا لاحقًا";
+"authentication_registration_password_footer" = "يجب أن يكون 8 أحرف أو أكثر";
+"authentication_server_info_title" = "أين ستعيش محادثاتك";
+"authentication_login_title" = "مرحبًا بعودتك!";
+"authentication_login_username" = "اسم المستخدم / البريد الإلكتروني / الهاتف";
+"authentication_login_forgot_password" = "هل نسيت كلمة السر";
+"authentication_server_info_title_login" = "أين تعيش محادثاتك";
+"authentication_server_selection_login_title" = "الاتصال بالخادم الرئيسي";
+"authentication_server_selection_login_message" = "ما هو عنوان الخادم الخاص بك؟";
+"authentication_server_selection_register_title" = "حدد الخادم الرئيسي الخاص بك";
+"authentication_server_selection_server_url" = "عنوان URL الخادم الرئيسي";
+"authentication_server_selection_generic_error" = "لا يمكن العثور على خادم على عنوان URL هذا، يرجى التأكد من صحته.";
+"authentication_verify_email_input_title" = "أدخل بريدك الإلكتروني";
+/* The placeholder will show the homeserver's domain */
+"authentication_verify_email_input_message" = "%@ يحتاج إلى التحقق من حسابك";
+"authentication_verify_email_text_field_placeholder" = "بريد إلكتروني";
+"authentication_verify_email_waiting_title" = "التحقق من بريدك الإلكتروني.";
+"authentication_verify_email_waiting_hint" = "لم تتلق بريدا إلكترونيا؟";
+"authentication_verify_email_waiting_button" = "إعادة إرسال البريد الإلكتروني";
+"authentication_forgot_password_input_title" = "أدخل بريدك الإلكتروني";
+/* The placeholder will show the homeserver's domain */
+"authentication_forgot_password_input_message" = "%@ سوف يرسل لك رابط التحقق";
+"authentication_forgot_password_text_field_placeholder" = "بريد إلكتروني";
+"authentication_forgot_password_waiting_title" = "تحقق من بريدك الإلكتروني.";
+"authentication_choose_password_input_title" = "اختر كلمة مرور جديدة";
+"authentication_choose_password_input_message" = "تأكد من أن عدد الأحرف 8 أو أكثر";
+"authentication_choose_password_signout_all_devices" = "تسجيل الخروج من جميع الأجهزة";
+"authentication_choose_password_submit_button" = "إعادة تعيين كلمة المرور";
+"authentication_choose_password_not_verified_title" = "البريد الإلكتروني غير محقق";
+"authentication_verify_msisdn_input_title" = "أدخل رقم هاتفك";
+/* The placeholder will show the homeserver's domain */
+"authentication_verify_msisdn_input_message" = "%@ يحتاج إلى التحقق من حسابك";
+"authentication_verify_msisdn_text_field_placeholder" = "رقم الهاتف";
+"authentication_verify_msisdn_otp_text_field_placeholder" = "رمز التأكيد";
+"authentication_verify_msisdn_waiting_title" = "التحقق من رقم هاتفك";
+"authentication_verify_msisdn_waiting_button" = "إعادة إرسال الرمز";
+"authentication_verify_msisdn_invalid_phone_number" = "رقم الهاتف غير صالح";
+"authentication_terms_title" = "سياسات الخصوصية";
+/* The placeholder will show the homeserver's domain */
+"authentication_terms_message" = "يرجى قراءة شروط وسياسات %@";
+"authentication_recaptcha_title" = "هل أنت إنسان؟";
+"authentication_qr_login_start_title" = "مسح رمز الاستجابة السريعة";
+"authentication_qr_login_start_step1" = "افتح Element على جهازك الآخر";
+"authentication_qr_login_start_step2" = "انتقل إلى الإعدادات -> الأمان والخصوصية";
+"authentication_qr_login_start_step3" = "حدد \"ربط جهاز\"";
+"authentication_qr_login_start_need_alternative" = "هل تحتاج إلى طريقة بديلة؟";
+"authentication_qr_login_start_display_qr" = "إظهار رمز الاستجابة السريعة على هذا الجهاز";
+"authentication_qr_login_display_title" = "ربط جهاز";
+"authentication_qr_login_scan_title" = "مسح رمز الاستجابة السريعة";
+"authentication_qr_login_scan_subtitle" = "ضع رمز الاستجابة السريعة في المربع أدناه";
+"authentication_qr_login_confirm_title" = "تم إنشاء اتصال آمن";
+"authentication_qr_login_loading_connecting_device" = "الاتصال بالجهاز";
+"authentication_qr_login_loading_waiting_signin" = "في انتظار قيام الجهاز بتسجيل الدخول.";
+"authentication_qr_login_loading_signed_in" = "لقد قمت الآن بتسجيل الدخول على جهازك الآخر.";
+"authentication_qr_login_failure_title" = "فشل الربط";
+"authentication_qr_login_failure_device_not_supported" = "لا يتم دعم الارتباط بهذا الجهاز.";
+"authentication_qr_login_failure_invalid_qr" = "رمز الاستجابة السريعة غير صالح.";
+"authentication_qr_login_failure_request_denied" = "تم رفض الطلب على الجهاز الآخر.";
+"authentication_qr_login_failure_request_timed_out" = "لم يتم إكمال الربط في الوقت المطلوب.";
+"password_validation_error_header" = "كلمة المرور المقدمة لا تفي بالمعايير أدناه:";
+/* The placeholder will show a number */
+"password_validation_error_min_length" = "على الأقل %d حرفًا.";
+/* The placeholder will show a number */
+"password_validation_error_max_length" = "لا يتجاوز %d حرفًا.";
+"password_validation_error_contain_lowercase_letter" = "تحتوي على حرف صغير.";
+"password_validation_error_contain_uppercase_letter" = "تحتوي على حرف كبير.";
+"password_validation_error_contain_number" = "تحتوي على رقم.";
+"password_validation_error_contain_symbol" = "تحتوي على رمز.";
+"password_policy_pwd_in_dict_error" = "لقد تم العثور على هذه الكلمة المرورية في القاموس، وهي غير مسموح بها.";
+
+// MARK: Legacy Authentication
+"auth_login" = "تسجيل الدخول";
+"auth_register" = "تسجيل";
+"auth_submit" = "تقديم";
+"auth_skip" = "تخطي";
+"auth_login_single_sign_on" = "تسجيل الدخول";
+"auth_send_reset_email" = "إرسال بريد إلكتروني لإعادة التعيين";
+"auth_return_to_login" = "العودة إلى شاشة تسجيل الدخول";
+"auth_user_id_placeholder" = "البريد الإلكتروني أو اسم المستخدم";
+"auth_password_placeholder" = "كلمة المرور";
+"auth_new_password_placeholder" = "كلمة المرور الجديدة";
+"auth_optional_email_placeholder" = "عنوان البريد الإلكتروني (اختياري)";
+"auth_email_placeholder" = "عنوان البريد الإلكتروني";
+"auth_phone_placeholder" = "رقم الهاتف";
+"auth_repeat_password_placeholder" = "كرر كلمة المرور";
+"auth_identity_server_placeholder" = "عنوان URL (على سبيل المثال http://vector.im)";
+"auth_invalid_login_param" = "اسم المستخدم و/أو كلمة المرور غير صحيحة";
+"auth_invalid_password" = "كلمة المرور قصيرة جدًا (الحد الأدنى 6)";
+"auth_invalid_phone" = "لا يبدو أن هذا رقم هاتف صالح";
+"auth_missing_password" = "كلمة المرور مفقودة";
+"auth_missing_email" = "عنوان البريد الإلكتروني مفقود";
+"auth_missing_phone" = "رقم الهاتف مفقود";
+"auth_email_in_use" = "هذا عنوان البريد الإلكتروني قيد الاستخدام بالفعل";
+"auth_phone_in_use" = "رقم الهاتف هذا قيد الاستخدام بالفعل";
+"auth_untrusted_id_server" = "خادم الهوية غير موثوق به";
+"auth_password_dont_match" = "كلمات المرور لا تتطابق";
+"auth_username_in_use" = "اسم المستخدم قيد الاستخدام";
+"auth_forgot_password" = "هل نسيت كلمة مرور حساب ماتريكس؟";
+"auth_forgot_password_error_no_configured_identity_server" = "لم يتم تكوين خادم الهوية: أضف واحدًا لإعادة تعيين كلمة مرور حساب Matrix الخاص بك.";
+"auth_use_server_options" = "استخدام خيارات الخادم المخصصة (متقدمة)";
+"auth_email_validation_message" = "يرجى التحقق من بريدك الإلكتروني لمواصلة التسجيل";
+"auth_msisdn_validation_title" = "التحقق معلق";
+"auth_msisdn_validation_error" = "غير قادر على التحقق من رقم الهاتف.";
+"auth_recaptcha_message" = "يرغب الخادم الرئيسي هذا في التأكد من أنك لست روبوتًا";
+"auth_reset_password_missing_email" = "يجب إدخال عنوان البريد الإلكتروني المرتبط بحسابك.";
+"auth_reset_password_missing_password" = "يجب إدخال كلمة مرور جديدة.";
+"auth_reset_password_next_step_button" = "لقد قمت بالتحقق من عنوان بريدي الإلكتروني";
+"auth_reset_password_error_unauthorized" = "فشل التحقق من عنوان البريد الإلكتروني: تأكد من النقر فوق الرابط الموجود في البريد الإلكتروني";
+"auth_reset_password_success_message" = "لقد تم إعادة تعيين كلمة مرور حساب Matrix الخاص بك.\n\nلقد تم تسجيل خروجك من جميع الجلسات ولن تتلقى إشعارات فورية بعد الآن. لإعادة تمكين الإشعارات، أعد تسجيل الدخول على كل جهاز.";
+"auth_accept_policies" = "يرجى مراجعة وقبول سياسات هذا الخادم الرئيسي:";
+"auth_autodiscover_invalid_response" = "استجابة اكتشاف الخادم الرئيسي غير صالحة";
+"auth_softlogout_signed_out" = "لقد قمت بتسجيل الخروج";
+"auth_softlogout_sign_in" = "تسجيل الدخول";
+"auth_softlogout_reason" = "لقد قام مسؤول خادمك الرئيسي (%1$@) بتسجيل خروجك من حسابك %2$@ (%3$@).";
+"auth_softlogout_clear_data" = "مسح البيانات الشخصية";
+"auth_softlogout_clear_data_button" = "مسح كافة البيانات";
+"auth_softlogout_clear_data_sign_out_title" = "هل أنت متأكد؟";
+"auth_softlogout_clear_data_sign_out_msg" = "هل أنت متأكد من أنك تريد مسح جميع البيانات المخزنة حاليًا على هذا الجهاز؟ قم بتسجيل الدخول مرة أخرى للوصول إلى بيانات حسابك والرسائل.";
+"auth_softlogout_clear_data_sign_out" = "تسجيل الخروج";
+"social_login_list_title_sign_in" = "أو";
+"social_login_list_title_sign_up" = "أو";
+"social_login_button_title_continue" = "متابعة مع %@";
+"social_login_button_title_sign_in" = "تسجيل الدخول باستخدام %@";
+
+// Chat creation
+"room_creation_title" = "محادثة جديدة";
+"room_creation_account" = "حساب";
+"room_creation_appearance" = "مظهر";
+"room_creation_appearance_name" = "اسم";
+"room_creation_appearance_picture" = "صورة المحادثه (اختياري)";
+"room_creation_privacy" = "خصوصية";
+"room_creation_private_room" = "هذه المحادثة خاصة";
+"room_creation_public_room" = "هذه المحادثة عامة";
+"room_creation_make_public" = "جعلها عامة";
+"room_creation_make_public_prompt_title" = "هل تريد جعل هذه المحادثة عامة؟";
+"room_creation_make_private" = "جعل خاص";
+"room_creation_wait_for_creation" = "يتم إنشاء الغرفة بالفعل. يرجى الانتظار.";
+"room_creation_invite_another_user" = "معرف المستخدم أو الاسم أو البريد الإلكتروني";
+"room_creation_only_one_email_invite" = "لا يمكنك دعوة سوى بريد إلكتروني واحد في كل مرة";
+"room_creation_user_not_found_prompt_title" = "تأكيد";
+"room_creation_user_not_found_prompt_message" = "تعذر العثور على ملفات تعريف لمعرف Matrix هذا. هل ترغب في بدء رسالة مباشرة على أي حال؟";
+"room_creation_user_not_found_prompt_invite_action" = "ابدأ DM على أي حال";
+
+// Room recents
+"room_recents_directory_section" = "دليل الغرف";
+"room_recents_favourites_section" = "المفضلة";
+"room_recents_people_section" = "الناس";
+"room_recents_conversations_section" = "الغرف";
+"room_recents_no_conversation" = "لا يوجد غرف";
+"room_recents_low_priority_section" = "أولوية منخفضة";
+"room_recents_invites_section" = "دعوات";
+"room_recents_suggested_rooms_section" = "الغرف المقترحة";
+"room_recents_start_chat_with" = "ابدأ المحادثة";
+"room_recents_create_empty_room" = "إنشاء غرفة";
+"room_recents_join_room" = "انضم إلى الغرفة";
+"room_recents_join_room_title" = "انضم إلى غرفة";
+
+// People tab
+"people_invites_section" = "دعوات";
+"people_conversation_section" = "المحادثات";
+"people_no_conversation" = "لا محادثات";
+"people_empty_view_title" = "الناس";
+
+// Rooms tab
+"room_directory_no_public_room" = "لا توجد غرف عامة متاحة";
+"rooms_empty_view_title" = "الغرف";
+
+// Groups tab
+"group_invite_section" = "دعوات";
+"group_section" = "المجتمعات";
+
+// Search
+"search_rooms" = "الغرف";
+"search_messages" = "رسائل";
+"search_people" = "الناس";
+"search_files" = "الملفات";
+"search_default_placeholder" = "بحث";
+"search_filter_placeholder" = "عامل التصفية";
+"search_people_placeholder" = "البحث حسب معرف المستخدم أو الاسم أو البريد الإلكتروني";
+"search_no_result" = "لا توجد نتائج";
+"search_in_progress" = "جاري البحث…";
+
+// Directory
+"directory_cell_title" = "تصفح الدليل";
+"directory_cell_description" = "%tu الغرف";
+"directory_search_results_title" = "تصفح نتائج الدليل";
+"directory_searching_title" = "جاري البحث في الدليل…";
+"directory_search_fail" = "فشل في جلب البيانات";
+
+// Contacts
+"contacts_address_book_section" = "جهات الاتصال المحلية";
+/* The placeholder %1$tu will be replaced with a number and %2$@ with the user's search terms. */
+"directory_search_results" = "تم العثور على %1$tu نتيجة ل %2$@";
+"contacts_address_book_no_contact" = "لا توجد اتصالات محلية";
+"contacts_address_book_permission_required" = "مطلوب إذن للوصول إلى جهات الاتصال المحلية";
+"contacts_address_book_matrix_users_toggle" = "مستخدمي Matrix فقط";
+"contacts_address_book_permission_denied_alert_title" = "تم تعطيل جهات الاتصال";
+"contacts_address_book_permission_denied_alert_message" = "لتفعيل جهات الاتصال، انتقل إلى إعدادات جهازك.";
+"contacts_user_directory_section" = "دليل المستخدم";
+"find_your_contacts_title" = "ابدأ بإدراج جهات الاتصال الخاصة بك";
+"find_your_contacts_button_title" = "ابحث عن جهات الاتصال الخاصة بك";
+"find_your_contacts_footer" = "يمكن تعطيل هذه الميزة في أي وقت من الإعدادات.";
+"find_your_contacts_identity_service_error" = "غير قادر على الاتصال بخادم الهوية.";
+
+// Chat participants
+"room_participants_title" = "مشاركون";
+"room_participants_add_participant" = "إضافة مشارك";
+"room_participants_one_participant" = "1 مشارك";
+"room_participants_multi_participants" = "%d مشارك";
+"room_participants_leave_prompt_title" = "اترك الغرفة";
+"room_participants_leave_prompt_title_for_dm" = "يغادر";
+"room_participants_leave_prompt_msg_for_dm" = "هل أنت متأكد أنك تريد المغادرة؟";
+"room_participants_leave_processing" = "مغادرة";
+"room_participants_leave_success" = "الغرفة اليسرى";
+"room_participants_remove_prompt_title" = "تأكيد";
+"room_participants_remove_third_party_invite_prompt_msg" = "هل أنت متأكد أنك تريد إلغاء هذه الدعوة؟";
+"room_participants_invite_prompt_title" = "تأكيد";
+"room_participants_invite_anyway" = "دعوة على أية حال";
+"room_participants_filter_room_members" = "أعضاء غرفة التصفية";
+"room_participants_filter_room_members_for_dm" = "تصفية الأعضاء";
+"room_participants_invite_another_user" = "البحث / الدعوة عن طريق معرف المستخدم أو الاسم أو البريد الإلكتروني";
+"room_participants_invited_section" = "مدعو";
+"room_participants_online" = "متصل";
+"room_participants_offline" = "غير متصل";
+"room_participants_unknown" = "مجهول";
+"room_participants_now" = "الآن";
+"room_participants_ago" = "منذ";
+
+// Activities
+"loading" = "جاري التحميل";
+"authentication_qr_login_start_step4" = "حدد \"إظهار رمز الاستجابة السريعة على هذا الجهاز\"";
+"callbar_active_and_single_paused" = "1 مكالمة نشطة (%@) · 1 مكالمة متوقفة مؤقتًا";
+"authentication_qr_login_display_subtitle" = "قم بمسح رمز الاستجابة السريعة أدناه باستخدام جهازك الذي قمت بتسجيل الخروج منه.";
+"callbar_active_and_multiple_paused" = "1 مكالمة نشطة (%@) · %@ مكالمات متوقفة مؤقتًا";
+"authentication_qr_login_display_step1" = "افتح Element على جهازك الآخر";
+"callbar_only_single_active_group" = "انقر للانضمام إلى المكالمة الجماعية (%@)";
+"authentication_qr_login_display_step2" = "حدد \"تسجيل الدخول باستخدام رمز الاستجابة السريعة\"";
+"sunset_delegated_oidc_registration_not_supported_message" = "قم بتنزيل %1$@ لاستخدام %2$@ لحسابك أو اختر خادمًا رئيسيًا مختلفًا.";
+"authentication_qr_login_confirm_subtitle" = "تأكد من أن الكود أدناه يتطابق مع جهازك الآخر:";
+"onboarding_splash_login_button_title" = "لديك حساب بالفعل";
+"authentication_qr_login_confirm_alert" = "يرجى التأكد من معرفة أصل هذا الرمز. من خلال ربط الأجهزة، ستوفر لشخص ما إمكانية الوصول الكامل إلى حسابك.";
+"onboarding_splash_page_1_message" = "اتصال آمن ومستقل يمنحك نفس مستوى الخصوصية الذي تتمتع به أثناء المحادثة وجهاً لوجه في منزلك.";
+"authentication_qr_login_failure_retry" = "حاول ثانية";
+"onboarding_splash_page_3_message" = "تشفير من البداية إلى النهاية ولا يتطلب رقم هاتف. لا إعلانات أو استخراج بيانات.";
+
+// MARK: Password Validation
+"password_validation_info_header" = "يجب أن تتوافق كلمة المرور الخاصة بك مع المعايير أدناه:";
+// String for App Store
+"store_short_description" = "دردشة/VoIP آمنة ولامركزية";
+"onboarding_splash_page_4_message" = "يُعد Element أيضًا رائعًا لمكان العمل، فهو موثوق به من قبل أكثر المؤسسات أمانًا في العالم.";
+
+// MARK: Password policy errors
+"password_policy_too_short_pwd_error" = "كلمة المرور قصيرة جدًا";
+"onboarding_congratulations_personalize_button" = "تخصيص الملف الشخصي";
+"password_policy_weak_pwd_error" = "هذه كلمة المرور ضعيفة للغاية. يجب أن تحتوي على 8 أحرف على الأقل، مع حرف واحد على الأقل من كل نوع: أحرف كبيرة، أحرف صغيرة، أرقام وحرف خاص.";
+"find_your_contacts_message" = "اسمح ل %@ بإظهار جهات الاتصال الخاصة بك حتى تتمكن من البدء بسرعة في المحادثة مع الأشخاص الذين تعرفهم بشكل أفضل.";
+"onboarding_display_name_message" = "سيتم عرض هذا عند إرسال الرسائل.";
+"auth_user_name_placeholder" = "اسم المستخدم";
+"room_participants_leave_prompt_msg" = "هل أنت متأكد أنك تريد مغادرة الغرفة؟";
+"onboarding_display_name_max_length" = "يجب أن يكون اسم العرض الخاص بك أقل من 256 حرفًا";
+"auth_optional_phone_placeholder" = "رقم الهاتف (اختياري)";
+"room_participants_remove_prompt_msg" = "هل أنت متأكد أنك تريد إزالة %@ من هذه المحادثة؟";
+"store_full_description" = "Element هو نوع جديد من تطبيقات المراسلة والتعاون التي:\n\n1. تمنحك القدرة على التحكم للحفاظ على خصوصيتك\n2. تتيح لك التواصل مع أي شخص في شبكة Matrix، وحتى أبعد من ذلك من خلال التكامل مع تطبيقات مثل Slack\n3. تحميك من الإعلانات واستخراج البيانات والثغرات الأمنية والحدائق المسورة\n4. تؤمنك من خلال التشفير من البداية إلى النهاية، مع التوقيع المتبادل للتحقق من الآخرين\n\nElement مختلف تمامًا عن تطبيقات المراسلة والتعاون الأخرى لأنه لامركزي ومفتوح المصدر.\n\nيتيح لك Element الاستضافة الذاتية - أو اختيار مضيف - بحيث تتمتع بالخصوصية والملكية والتحكم في بياناتك ومحادثاتك. يمنحك الوصول إلى شبكة مفتوحة؛ لذلك لن تكون عالقًا في التحدث إلى مستخدمي Element الآخرين فقط. وهو آمن للغاية.\n\nElement قادر على القيام بكل هذا لأنه يعمل على Matrix - المعيار للاتصال المفتوح واللامركزي.\n\nيمنحك Element القدرة على التحكم من خلال السماح لك باختيار من يستضيف محادثاتك.  من تطبيق Element، يمكنك اختيار الاستضافة بطرق مختلفة:\n\n1. احصل على حساب مجاني على الخادم العام matrix.org\n2. استضف حسابك بنفسك من خلال تشغيل خادم على أجهزتك الخاصة\n3. اشترك في حساب على خادم مخصص من خلال الاشتراك ببساطة في منصة استضافة Element Matrix Services\n\nلماذا تختار Element؟\n\nامتلك بياناتك: أنت تقرر مكان حفظ بياناتك ورسائلك. أنت تملكها وتتحكم فيها، وليس شركة MEGACORP تستخرج بياناتك أو تمنح أطرافًا ثالثة حق الوصول إليها.\n\nالمراسلة المفتوحة والتعاون: يمكنك الدردشة مع أي شخص آخر في شبكة Matrix، سواء كانوا يستخدمون Element أو تطبيق Matrix آخر، وحتى إذا كانوا يستخدمون نظام مراسلة مختلفًا مثل Slack أو IRC أو XMPP.\n\nأمان فائق: تشفير حقيقي من البداية إلى النهاية (فقط أولئك الموجودون في المحادثة يمكنهم فك تشفير الرسائل)، والتوقيع المتبادل للتحقق من أجهزة المشاركين في المحادثة.\n\n التواصل الكامل: الرسائل، والمكالمات الصوتية والمرئية، ومشاركة الملفات، ومشاركة الشاشة، ومجموعة كاملة من التكاملات، والروبوتات والأدوات. قم ببناء الغرف والمجتمعات، والبقاء على اتصال، وإنجاز المهام.\n\nأينما كنت: ابقَ على اتصال أينما كنت مع سجل الرسائل المتزامن بالكامل عبر جميع أجهزتك وعلى الويب على https://element.io/app.";
+"onboarding_celebration_message" = "انتقل إلى الإعدادات في أي وقت لتحديث ملفك الشخصي";
+"auth_repeat_new_password_placeholder" = "قم بتأكيد كلمة مرور حساب Matrix الجديد الخاص بك";
+"room_participants_invite_prompt_msg" = "هل أنت متأكد أنك تريد دعوة %@ إلى هذه المحادثة؟";
+"invite" = "دعوة";
+/* The placeholder will show the full Matrix ID that has been entered. */
+"authentication_registration_username_footer_available" = "يمكن للآخرين اكتشافك %@";
+"auth_home_server_placeholder" = "عنوان URL (على سبيل المثال http://matrix.org)";
+"room_participants_invite_prompt_to_msg" = "هل أنت متأكد أنك تريد دعوة %@ إلى %@؟";
+"join" = "ينضم";
+"authentication_login_with_qr" = "تسجيل الدخول باستخدام رمز الاستجابة السريعة";
+"auth_invalid_user_name" = "لا يجوز أن تحتوي أسماء المستخدمين إلا على أحرف وأرقام ونقاط وواصلات وشرطات سفلية";
+"room_participants_invite_unknown_participant_prompt_to_msg" = "تعذر العثور على ملفات تعريف لمعرف المصفوفة هذا. هل أنت متأكد من أنك تريد دعوة %@ إلى %@؟";
+"active_call_details" = "مكالمة نشطة (%@)";
+"authentication_server_selection_register_message" = "ما هو عنوان الخادم الخاص بك؟ هذا هو بمثابة موطن لجميع بياناتك";
+"auth_invalid_email" = "لا يبدو أن هذا عنوان بريد إلكتروني صالح";
+"room_participants_invite_malformed_id_title" = "خطأ في الدعوة";
+"more" = "أكثر";
+"authentication_cancel_flow_confirmation_message" = "لم يتم إنشاء حسابك بعد. هل تريد إيقاف عملية التسجيل؟";
+"auth_add_email_message_2" = "قم بتعيين بريد إلكتروني لاسترداد الحساب، ويمكن اكتشافه لاحقًا بشكل اختياري من قبل الأشخاص الذين يعرفونك.";
+"room_participants_start_new_chat_error_using_user_email_without_identity_server" = "لم يتم تكوين خادم الهوية، لذا لا يمكنك بدء محادثة مع جهة اتصال باستخدام البريد الإلكتروني.";
+"new_word" = "جديد";
+/* The placeholder will show the email address that was entered. */
+"authentication_verify_email_waiting_message" = "اتبع التعليمات المرسلة إلى %@";
+"auth_add_phone_message_2" = "قم بتعيين هاتف، ثم قم بتمكينه لاحقًا من اكتشافه بشكل اختياري من قبل الأشخاص الذين يعرفونك.";
+"existing" = "موجود";
+/* The placeholder will show the email address that was entered. */
+"authentication_forgot_password_waiting_message" = "اتبع التعليمات المرسلة إلى %@";
+"auth_add_email_phone_message_2" = "قم بتعيين بريد إلكتروني لاسترداد الحساب. استخدم بريدك الإلكتروني أو رقم هاتفك لاحقًا حتى يتمكن الأشخاص الذين يعرفونك من اكتشافك.";
+"authentication_forgot_password_waiting_button" = "إعادة إرسال البريد الإلكتروني";
+"auth_missing_email_or_phone" = "عنوان البريد الإلكتروني أو رقم الهاتف مفقود";
+"authentication_choose_password_text_field_placeholder" = "كلمة المرور الجديدة";
+"auth_email_is_required" = "لم يتم تكوين أي خادم هوية، لذا لن تتمكن من إضافة عنوان بريد إلكتروني لإعادة تعيين كلمة مرور حساب Matrix الخاص بك في المستقبل.";
+"authentication_choose_password_not_verified_message" = "تحقق من صندوق الوارد الخاص بك";
+"auth_phone_is_required" = "لم يتم تكوين أي خادم هوية، لذا لن تتمكن من إضافة رقم هاتف لإعادة تعيين كلمة مرور حساب Matrix الخاص بك في المستقبل.";
+/* The placeholder will show the phone number that was entered. */
+"authentication_verify_msisdn_waiting_message" = "تم إرسال الرمز إلى %@";
+"auth_email_not_found" = "فشل في إرسال البريد الإلكتروني: لم يتم العثور على عنوان البريد الإلكتروني هذا";
+"authentication_terms_policy_url_error" = "تعذر العثور على السياسة المحددة. يرجى المحاولة مرة أخرى لاحقًا.";
+"auth_msisdn_validation_message" = "لقد أرسلنا لك رسالة نصية قصيرة تحتوي على رمز التفعيل. الرجاء إدخال هذا الرمز أدناه.";
+"authentication_qr_login_start_subtitle" = "استخدم الكاميرا الموجودة على هذا الجهاز لمسح رمز الاستجابة السريعة (QR) الظاهر على جهازك الآخر:";
+"auth_reset_password_message" = "لإعادة تعيين كلمة مرور حساب المصفوفة الخاص بك، أدخل عنوان البريد الإلكتروني المرتبط بحسابك:";
+"auth_reset_password_email_validation_message" = "لقد تم إرسال بريد إلكتروني إلى %@. بمجرد اتباع الرابط الذي يحتوي عليه، انقر أدناه.";
+"auth_reset_password_error_not_found" = "لا يبدو أن عنوان بريدك الإلكتروني مرتبط بمعرف Matrix على هذا الخادم الرئيسي.";
+"auth_reset_password_error_is_required" = "لم يتم تكوين أي خادم هوية: أضف واحدًا في خيارات الخادم لإعادة تعيين كلمة مرور حساب Matrix الخاص بك.";
+"auth_add_email_and_phone_warning" = "لا يُدعم التسجيل باستخدام البريد الإلكتروني ورقم الهاتف في آن واحد حتى تتوفر واجهة برمجة التطبيقات. سيتم أخذ رقم الهاتف فقط في الاعتبار. يمكنك إضافة بريدك الإلكتروني إلى ملفك الشخصي في الإعدادات.";
+"auth_softlogout_recover_encryption_keys" = "قم بتسجيل الدخول لاستعادة مفاتيح التشفير المخزنة حصريًا على هذا الجهاز. فأنت بحاجة إليها لقراءة جميع رسائلك الآمنة على أي جهاز.";
+"auth_softlogout_clear_data_message_1" = "تحذير: لا تزال بياناتك الشخصية (بما في ذلك مفاتيح التشفير) مخزنة على هذا الجهاز.";
+"auth_softlogout_clear_data_message_2" = "قم بمسحها إذا انتهيت من استخدام هذا الجهاز، أو إذا كنت تريد تسجيل الدخول إلى حساب آخر.";
+
+// Social login
+
+"social_login_list_title_continue" = "تابع مع";
+"social_login_button_title_sign_up" = "سجل باستخدام %@";
+
+// Errors
+"error_user_already_logged_in" = "يبدو أنك تحاول الاتصال بخادم رئيسي آخر. هل تريد تسجيل الخروج؟";
+"room_creation_make_public_prompt_msg" = "هل أنت متأكد من أنك تريد جعل هذه المحادثة عامة؟ يمكن لأي شخص قراءة رسائلك والانضمام إلى المحادثة.";
+"room_creation_error_invite_user_by_email_without_identity_server" = "لم يتم تكوين خادم الهوية، لذا لا يمكنك إضافة مشارك باستخدام البريد الإلكتروني.";
+"room_creation_dm_error" = "لم نتمكن من إنشاء رسالتك المباشرة. يرجى التحقق من المستخدمين الذين تريد دعوتهم ثم المحاولة مرة أخرى.";
+"room_recents_server_notice_section" = "تنبيهات النظام";
+"room_recents_join_room_prompt" = "اكتب معرف الغرفة أو الاسم المستعار للغرفة";
+"room_recents_unknown_room_error_message" = "لا يمكن العثور على هذه الغرفة. تأكد من وجودها";
+"people_empty_view_information" = "قم بالمحادثة بشكل آمن مع أي شخص. اضغط على + لبدء إضافة الأشخاص.";
+"rooms_empty_view_information" = "الغرف رائعة لأي محادثة جماعية، سواء كانت خاصة أو عامة. انقر على + للعثور على غرف موجودة أو إنشاء غرف جديدة.";
+/* The placeholder %1$tu will be replaced with a number and %2$@ with the user's search terms. Note the > at the start indicates "more than 20 results". */
+"directory_search_results_more_than" = ">تم العثور على %1$tu نتائج ل %2$@";
+"contacts_address_book_no_identity_server" = "لم يتم تكوين خادم الهوية";
+"contacts_address_book_permission_denied" = "لم تسمح ل %@ بالوصول إلى جهات الاتصال المحلية الخاصة بك";
+"contacts_user_directory_offline_section" = "دليل المستخدم (غير متصل)";
