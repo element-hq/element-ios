@@ -1,3 +1,8 @@
+## Changes in 1.11.27 (2025-03-28)
+
+No significant changes.
+
+
 ## Changes in 1.11.26 (2025-03-28)
 
 No significant changes.
