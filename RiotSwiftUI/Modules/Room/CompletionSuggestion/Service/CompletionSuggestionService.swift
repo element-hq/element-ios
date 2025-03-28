@@ -120,6 +120,8 @@ class CompletionSuggestionService: CompletionSuggestionServiceProtocol {
             currentTextTriggerSubject.send(nil)
         case .slash:
             currentTextTriggerSubject.send(TextTrigger(key: .slash, text: suggestionPattern.text))
+        case .custom:
+            break
         }
     }
     
