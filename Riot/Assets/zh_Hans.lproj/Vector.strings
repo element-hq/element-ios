@@ -2368,7 +2368,7 @@
 "room_details_polls" = "投票历史";
 "settings_labs_enable_new_app_layout" = "新版应用布局";
 "room_details_access_row_title" = "访问";
-"room_access_settings_screen_restricted_message" = "让空间中的任何人都能找到并加入。\n将要求你确认哪些空间。";
+"room_access_settings_screen_restricted_message" = "」让空间中的任何人都能找到并加入。\n将要求你确认哪些空间。";
 "room_access_settings_screen_upgrade_required" = "需要升级";
 "room_participants_invite_unknown_participant_prompt_to_msg" = "未找到该 Matrix ID 的配置文件。您确定要邀请 %@ 到 %@？";
 "room_access_settings_screen_upgrade_alert_auto_invite_switch" = "自动邀请成员到新房间";
