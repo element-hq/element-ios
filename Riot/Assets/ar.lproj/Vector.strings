@@ -2313,3 +2313,5 @@
 "key_backup_recover_from_passphrase_recover_action" = "فتح التاريخ";
 "device_verification_emoji_mushroom" = "فطر";
 "device_verification_emoji_moon" = "القمر";
+"key_backup_recover_from_passphrase_passphrase_placeholder" = "أدخل العبارة";
+"deactivate_account_informations_part3" = "\n\nإلغاء تنشيط حسابك ";
