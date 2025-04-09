@@ -118,3 +118,5 @@
 
 /* New file message from a specific person, not referencing a room. */
 "LOCATION_FROM_USER" = "%@ compartilhou a localização dela(e)";
+"VOICE_BROADCAST_FROM_USER" = "%@ iniciou uma transmissão de voz";
+"UNSUPPORTED_CALL" = "Chamada não suportada";
