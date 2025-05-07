@@ -4,6 +4,7 @@ gem "xcode-install"
 gem "fastlane"
 gem "cocoapods", '~>1.16.2'
 gem "slather"
+gem "abbrev" # see https://github.com/fastlane/fastlane/issues/21942
 
 plugins_path = File.join(File.dirname(__FILE__), 'fastlane', 'Pluginfile')
 eval_gemfile(plugins_path) if File.exist?(plugins_path)
