@@ -8,7 +8,7 @@ inhibit_all_warnings!
 
 # Use frameworks to allow usage of pods written in Swift
 use_frameworks!
-
+# 修改source源
 # Method to import the MatrixSDK
 def import_MatrixSDK
   pod 'MatrixSDK', :path => 'matrix-ios-sdk/MatrixSDK.podspec', :inhibit_warnings => false
