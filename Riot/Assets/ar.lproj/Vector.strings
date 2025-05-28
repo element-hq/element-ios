@@ -2315,7 +2315,6 @@
 "key_backup_recover_from_passphrase_passphrase_placeholder" = "أدخل العبارة";
 "deactivate_account_informations_part3" = "\n\nإلغاء تنشيط حسابك ";
 "user_verification_sessions_list_user_trust_level_unknown_title" = "غير معروف";
-"room_invite_to_space_option_title" = "ل ٪@";
 "spaces_coming_soon_detail" = "لم تُطبّق هذه الميزة هنا، ولكنها في طريقها. حاليًا، يمكنك القيام بذلك باستخدام %@ على جهاز الكمبيوتر.";
 "space_feature_unavailable_subtitle" = "لم يتم إطلاق Spaces على نظام التشغيل iOS بعد، ولكن يمكنك استخدامها الآن على الويب وسطح المكتب";
 "space_feature_unavailable_information" = "المساحات وسيلة جديدة لتجميع الغرف والأشخاص.\n\nستتوفر قريبًا. حاليًا، إذا انضممت إلى واحدة عبر منصة أخرى، ستتمكن من الوصول إلى أي غرف تنضم إليها هنا.";
