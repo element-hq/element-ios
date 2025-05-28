@@ -2283,7 +2283,6 @@
 "device_verification_emoji_book" = "كتاب";
 "key_backup_setup_success_from_recovery_key_make_copy_action" = "اصنع نسخة";
 "key_backup_setup_passphrase_setup_recovery_key_action" = "(متقدم) الإعداد باستخدام مفتاح الأمان";
-"key_backup_recover_from_private_key_progress" = "٪@٪٪ مكتمل";
 "device_verification_emoji_fish" = "سمكة";
 "device_verification_emoji_corn" = "حبوب ذرة";
 "device_verification_emoji_robot" = "روبوت";
@@ -2375,7 +2374,6 @@
 "spaces_explore_rooms" = "استكشاف الغرف";
 "device_verification_emoji_bell" = "جرس";
 "device_verification_emoji_pin" = "دبوس";
-"pin_protection_settings_section_header_with_biometrics" = "دبوس & ٪@";
 "space_feature_unavailable_title" = "المساحات ليست هنا بعد";
 "spaces_explore_rooms_format" = "يستكشف ٪@";
 "key_verification_bootstrap_not_setup_message" = "يجب عليك أولاً تمهيد التوقيع المتبادل.";
@@ -2530,7 +2528,6 @@
 "user_other_session_filter_menu_verified" = "تم التحقق";
 "user_other_session_no_inactive_sessions" = "لم يتم العثور على جلسات غير نشطة.";
 "device_verification_emoji_hat" = "قبعة";
-"room_intro_cell_information_room_with_topic_sentence2" = "موضوع: ٪@";
 "space_beta_announce_badge" = "بيتا (تجريبي)";
 "spaces_creation_new_rooms_title" = "ما هي بعض المناقشات التي ستجريها؟";
 "spaces_creation_invite_by_username_title" = "ادعُ فريقك";
@@ -2606,7 +2603,6 @@
 "voice_message_remaining_recording_time" = "%@s متبقية";
 "spaces_creation_sharing_type_title" = "مع من تعمل؟";
 "side_menu_action_feedback" = "تعليق";
-"location_sharing_loading_map_error_title" = "تعذر تحميل الخريطة. يُرجى المحاولة لاحقًا.";
 "user_session_unverified" = "جلسة غير مُتحققة";
 "user_other_session_security_recommendation_title" = "جلسات أخرى";
 "user_session_details_application_version" = "إصدار";
