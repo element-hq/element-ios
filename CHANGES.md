@@ -1,3 +1,10 @@
+## Changes in 1.11.28 (2025-05-28)
+
+🙌 Improvements
+
+- Support for experimental MSC4286 during event rendering. ([#7927](https://github.com/element-hq/element-ios/pull/7927))
+
+
 ## Changes in 1.11.27 (2025-03-28)
 
 No significant changes.

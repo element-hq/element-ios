@@ -23,6 +23,16 @@ public extension DTHTMLElement {
             // Remove any attachments to fix rendering.
             textAttachment = nil
             
+            // Handle special case for span with data-mx-external-payment-details
+            // This could be based on Storefront.current.countryCode to show the link
+            // content in unrestricted countries. e.g. currently USA
+            if name == "span",
+               let attributes = attributes as? [String: String],
+               attributes["data-msc4286-external-payment-details"] != nil {
+                parent.removeChildNode(self)
+                return
+            }
+            
             // If the element has plain text content show that,
             // otherwise prevent the tag from displaying.
             if let stringContent = attributedString()?.string,
