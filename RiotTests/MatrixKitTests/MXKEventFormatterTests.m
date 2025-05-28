@@ -239,6 +239,24 @@ Please see LICENSE in the repository root for full details.
     XCTAssertFalse(hasAttachment, @"iFrame attachments should be removed as they're not included in the allowedHTMLTags array.");
 }
 
+- (void)testMxExternalPaymentDetailsRemoved
+{
+    // Given an HTML string containing a <span> with data-mx-external-payment-details.
+    NSString *html = @"This is visible<span data-msc4286-external-payment-details>. But text is hidden <a href=\"https://matrix.org\">and this link too</a></span>";
+    
+    // When rendering this string as an attributed string.
+    NSAttributedString *attributedString = [eventFormatter renderHTMLString:html
+                                                                   forEvent:anEvent
+                                                              withRoomState:nil
+                                                         andLatestRoomState:nil];
+
+    // Then the attributed string should have the <span> stripped and not include any attachments.
+    XCTAssertEqualObjects(attributedString.string, @"This is visible", @"The <span data-msc4286-external-payment-details> tag content should be removed.");
+
+    BOOL hasAttachment = [attributedString containsAttachmentsInRange:NSMakeRange(0, attributedString.length)];
+    XCTAssertFalse(hasAttachment, @"span attachments should be removed as they're not included in the allowedHTMLTags array.");
+}
+
 - (void)testRenderHTMLStringWithMXReply
 {
     // Given an HTML string representing a matrix reply.

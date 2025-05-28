@@ -2754,3 +2754,10 @@
 "wysiwyg_composer_action_maximise_action" = "Espandi il compositore";
 "room_action_report" = "Segnala stanza";
 "room_action_report_prompt_reason" = "Motivo della segnalazione della stanza";
+"call_unsupported_matrix_rtc_call" = "Chiamata non supportata. Per unirsi a questa chiamata è necessaria la nuova app Element X.";
+"sunset_delegated_oidc_registration_not_supported_title" = "Non puoi più creare un account con %1$@ usando quest'app";
+"sunset_delegated_oidc_registration_not_supported_message" = "Scarica %1$@ per utilizzare %2$@ per il tuo account o scegli un homeserver differente.";
+"sunset_download_banner_title" = "Scarica %1$@";
+"sunset_download_banner_message" = "Più veloce, più sicura, e piena di potenti strumenti di collaborazione.";
+"sunset_download_banner_learn_more" = "Per saperne di più";
+"sunset_delegated_oidc_registration_not_supported_generic_error" = "Non puoi più creare un account con l'homeserver indicato usando quest'app";

@@ -167,3 +167,5 @@
 /** General **/
 
 "Notification" = "إشعار";
+"VOICE_BROADCAST_FROM_USER" = "%@ بدأ بثًا صوتيًا";
+"UNSUPPORTED_CALL" = "مكالمة غير مدعومة";
