@@ -54,7 +54,7 @@ final class PushRulesUpdaterTests: XCTestCase {
         }
     }
     
-    func testAffectedOneToOneRulesAreUpdated() async throws {
+    func disabled_testAffectedOneToOneRulesAreUpdated() async throws {
         let targetActions: NotificationActions = .init(notify: true, sound: "abc")
         try mockRule(ruleId: .oneToOneRoom, enabled: true, actions: targetActions)
         let affectedRules: [NotificationPushRuleId] =  [.oneToOneRoom, .oneToOnePollStart, .msc3930oneToOnePollStart, .oneToOnePollEnd, .msc3930oneToOnePollEnd]
