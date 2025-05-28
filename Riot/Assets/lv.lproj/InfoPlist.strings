@@ -3,3 +3,4 @@
 "NSPhotoLibraryUsageDescription" = "Foto bibliotēka tiek izmantota, lai nosūtītu fotoattēlus un video.";
 "NSMicrophoneUsageDescription" = "Mikrofons tiek izmantots, lai uzņemtu video un veiktu zvanus.";
 "NSContactsUsageDescription" = "Kontaktu grāmata tiek izmantota, lai meklētu lietotājus pēc epasta adreses vai telefona numura Riot aplikācijā.";
+"NSFaceIDUsageDescription" = "Face ID tiek izmantots, lai piekļūtu lietotnei.";
