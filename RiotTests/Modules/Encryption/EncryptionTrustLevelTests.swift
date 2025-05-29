@@ -25,7 +25,8 @@ class EncryptionTrustLevelTests: XCTestCase {
                 identity: .other(
                     userId: "Bob",
                     masterKey: "MSK",
-                    selfSigningKey: "SSK"
+                    selfSigningKey: "SSK",
+                    hasVerificationViolation: false
                 ),
                 isVerified: isVerified
             )
