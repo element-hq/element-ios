@@ -1390,6 +1390,24 @@ static NSString *const kRepliedTextPattern = @"<mx-reply>.*<blockquote>.*<br>(.*
                         // Build the attributed string with the right font and color for the event
                         attributedDisplayText = [self renderString:body forEvent:event];
                     }
+                    
+                    // Issue in height calculation for RTL text when there is headIndent and firstlineheadIndent.
+                    if(attributedDisplayText != nil) {
+                        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", @"(?s).*\\p{Arabic}.*"];
+                        if ([predicate evaluateWithObject:body]) {
+                            NSMutableAttributedString *attString = [[NSMutableAttributedString alloc] initWithAttributedString:attributedDisplayText];
+
+                            NSMutableParagraphStyle *paragraphStyle = [attributedDisplayText attribute:NSParagraphStyleAttributeName atIndex:0 effectiveRange:nil];
+                            if (paragraphStyle) {
+                                paragraphStyle.baseWritingDirection = NSWritingDirectionRightToLeft;
+                                paragraphStyle.alignment = NSTextAlignmentJustified;
+                                paragraphStyle.headIndent = 0;
+                                paragraphStyle.firstLineHeadIndent = 0;
+                                [attString addAttributes:@{NSParagraphStyleAttributeName : paragraphStyle} range:NSMakeRange(0, attString.length)];
+                                attributedDisplayText = [[NSAttributedString alloc] initWithAttributedString:attString];
+                            }
+                        }
+                    }
 
                     // Build the full emote string after the body message formatting
                     if ([msgtype isEqualToString:kMXMessageTypeEmote])
