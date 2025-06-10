@@ -38,17 +38,17 @@
 /* Incoming one-to-one video call */
 "VIDEO_CALL_FROM_USER" = "Gọi video từ %@";
 /* Incoming unnamed voice conference invite from a specific person */
-"VOICE_CONF_FROM_USER" = "Gọi nhóm từ %@";
+"VOICE_CONF_FROM_USER" = "Cuộc gọi nhóm từ %@";
 /* Incoming unnamed video conference invite from a specific person */
-"VIDEO_CONF_FROM_USER" = "Gọi video nhóm từ %@";
+"VIDEO_CONF_FROM_USER" = "Cuộc gọi truyền hình nhóm từ %@";
 /* Incoming named voice conference invite from a specific person */
-"VOICE_CONF_NAMED_FROM_USER" = "Gọi nhóm từ %@: '%@'";
+"VOICE_CONF_NAMED_FROM_USER" = "Cuộc gọi nhóm từ %@: '%@'";
 /* Incoming named video conference invite from a specific person */
-"VIDEO_CONF_NAMED_FROM_USER" = "Gọi video nhóm từ %@: '%@'";
+"VIDEO_CONF_NAMED_FROM_USER" = "Cuộc gọi video nhóm từ %@: '%@'";
 
 /** Key verification **/
 
-"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ muốn xác minh";
+"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ muốn xác thực";
 
 /* Group call from user, CallKit caller name */
 "GROUP_CALL_FROM_USER" = "%@ (cuộc gọi nhóm)";
@@ -60,7 +60,7 @@
 "USER_MEMBERSHIP_UPDATED" = "%@ đã cập nhật hồ sơ";
 
 /* A user has change their avatar */
-"USER_UPDATED_AVATAR" = "%@ đã đổi avatar";
+"USER_UPDATED_AVATAR" = "%@ đã đổi ảnh đại diện";
 
 /* A user has change their name to a new name which we don't know */
 "GENERIC_USER_UPDATED_DISPLAYNAME" = "%@ đã đổi tên";
@@ -71,7 +71,7 @@
 "USER_UPDATED_DISPLAYNAME" = "%@ đã đổi tên sang %@";
 
 /* A user has reacted to a message, but the reaction content is unknown */
-"GENERIC_REACTION_FROM_USER" = "%@ đã gửi một tương tác";
+"GENERIC_REACTION_FROM_USER" = "%@ đã bày tỏ cảm xúc";
 
 /** Reactions **/
 
@@ -96,10 +96,10 @@
 "STICKER_FROM_USER" = "%@ đã gửi một sticker";
 
 /* A single unread message */
-"SINGLE_UNREAD" = "Bạn đã nhận một tin nhắn";
+"SINGLE_UNREAD" = "Bạn nhận được một tin nhắn";
 
 /* A single unread message in a room */
-"SINGLE_UNREAD_IN_ROOM" = "Bạn đã nhận một tin nhắn trong %@";
+"SINGLE_UNREAD_IN_ROOM" = "Bạn nhận được một tin nhắn trong %@";
 
 /* New file message from a specific person, not referencing a room. */
 "FILE_FROM_USER" = "%@ đã gửi một tệp %@";
@@ -131,3 +131,6 @@
 /** General **/
 
 "Notification" = "Thông báo";
+"VOICE_BROADCAST_FROM_USER" = "%@ bắt đầu phát thanh";
+"UNSUPPORTED_CALL" = "Cuộc gọi không được hỗ trợ";
+"LOCATION_FROM_USER" = "%@ đã chia sẻ vị trí của họ";
