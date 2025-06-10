@@ -1,3 +1,8 @@
+## Changes in 1.11.30 (2025-06-10)
+
+No significant changes.
+
+
 ## Changes in 1.11.29 (2025-05-29)
 
 No significant changes.
