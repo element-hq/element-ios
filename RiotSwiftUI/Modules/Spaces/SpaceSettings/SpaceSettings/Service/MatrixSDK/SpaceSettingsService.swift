@@ -150,12 +150,12 @@ class SpaceSettingsService: SpaceSettingsServiceProtocol {
         return allowedParentIds
     }
     
-    private func isField(ofType notification: String, editableWith powerLevels: MXRoomPowerLevels?) -> Bool {
-        guard let powerLevels = powerLevels else {
+    private func isField(ofType notification: String, editableWith roomState: MXRoomState) -> Bool {
+        guard let powerLevels = roomState.powerLevels else {
             return false
         }
         
-        let userPowerLevel = powerLevels.powerLevelOfUser(withUserID: session.myUserId)
+        let userPowerLevel = roomState.powerLevelOfUser(withUserID: session.myUserId)
         return userPowerLevel >= powerLevels.minimumPowerLevel(forNotifications: notification, defaultPower: powerLevels.stateDefault)
     }
     
@@ -226,11 +226,11 @@ class SpaceSettingsService: SpaceSettingsServiceProtocol {
             avatarUrl: roomState.avatar,
             visibility: visibility(with: roomState),
             allowedParentIds: allowedParentIds(with: roomState),
-            isAvatarEditable: isField(ofType: kMXEventTypeStringRoomAvatar, editableWith: roomState.powerLevels),
-            isNameEditable: isField(ofType: kMXEventTypeStringRoomName, editableWith: roomState.powerLevels),
-            isTopicEditable: isField(ofType: kMXEventTypeStringRoomTopic, editableWith: roomState.powerLevels),
-            isAddressEditable: isField(ofType: kMXEventTypeStringRoomAliases, editableWith: roomState.powerLevels),
-            isAccessEditable: isField(ofType: kMXEventTypeStringRoomJoinRules, editableWith: roomState.powerLevels)
+            isAvatarEditable: isField(ofType: kMXEventTypeStringRoomAvatar, editableWith: roomState),
+            isNameEditable: isField(ofType: kMXEventTypeStringRoomName, editableWith: roomState),
+            isTopicEditable: isField(ofType: kMXEventTypeStringRoomTopic, editableWith: roomState),
+            isAddressEditable: isField(ofType: kMXEventTypeStringRoomAliases, editableWith: roomState),
+            isAccessEditable: isField(ofType: kMXEventTypeStringRoomJoinRules, editableWith: roomState)
         )
     }
     

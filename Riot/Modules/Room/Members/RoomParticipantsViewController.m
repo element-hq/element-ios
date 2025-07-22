@@ -716,8 +716,8 @@ Please see LICENSE in the repository root for full details.
         {
             // Order first by power levels (admins then moderators then others)
             MXRoomPowerLevels *powerLevels = [roomState powerLevels];
-            NSInteger powerLevelA = [powerLevels powerLevelOfUserWithUserID:contactA.mxMember.userId];
-            NSInteger powerLevelB = [powerLevels powerLevelOfUserWithUserID:contactB.mxMember.userId];
+            NSInteger powerLevelA = [roomState powerLevelOfUserWithUserID:contactA.mxMember.userId];
+            NSInteger powerLevelB = [roomState powerLevelOfUserWithUserID:contactB.mxMember.userId];
             
             if (powerLevelA == powerLevelB)
             {
@@ -981,7 +981,7 @@ Please see LICENSE in the repository root for full details.
                 
                 // Update member power level
                 MXRoomPowerLevels *powerLevels = [roomState powerLevels];
-                NSInteger powerLevel = [powerLevels powerLevelOfUserWithUserID:contact.mxMember.userId];
+                NSInteger powerLevel = [roomState powerLevelOfUserWithUserID:contact.mxMember.userId];
                 
                 RoomPowerLevel roomPowerLevel = [RoomPowerLevelHelper roomPowerLevelFrom:powerLevel];
                 

@@ -163,12 +163,13 @@ final class RoomParticipantsInviteCoordinatorBridgePresenter: NSObject {
         }
 
         room.state { roomState in
-            guard let powerLevels = roomState?.powerLevels else {
+            guard let roomState,
+                let powerLevels = roomState.powerLevels else {
                 MXLog.error("[RoomParticipantsInviteCoordinatorBridgePresenter] canInvite: room powerLevels not found")
                 completion(false)
                 return
             }
-            let userPowerLevel = powerLevels.powerLevelOfUser(withUserID: userId)
+            let userPowerLevel = roomState.powerLevelOfUser(withUserID: userId)
             
             completion(userPowerLevel >= powerLevels.invite)
         }

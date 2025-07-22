@@ -158,8 +158,9 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
     // Check if user can send beacon info state event
     private func canShareLiveLocation() -> Bool {
         guard let myUserId = parameters.roomDataSource.mxSession.myUserId,
-              let roomPowerLevels = parameters.roomDataSource.roomState.powerLevels,
-              let userPowerLevel = RoomPowerLevel(rawValue: roomPowerLevels.powerLevelOfUser(withUserID: myUserId)) else {
+              let roomState = parameters.roomDataSource.roomState,
+              let roomPowerLevels = roomState.powerLevels,
+              let userPowerLevel = RoomPowerLevel(rawValue: roomState.powerLevelOfUser(withUserID: myUserId)) else {
             return false
         }
         
