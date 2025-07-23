@@ -988,6 +988,9 @@ Please see LICENSE in the repository root for full details.
                 NSString *powerLevelText;
                 
                 switch (roomPowerLevel) {
+                    case RoomPowerLevelOwner:
+                        powerLevelText = [VectorL10n roomMemberPowerLevelShortOwner];
+                        break;
                     case RoomPowerLevelAdmin:
                         powerLevelText = [VectorL10n roomMemberPowerLevelShortAdmin];
                         break;

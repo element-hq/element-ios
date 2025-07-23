@@ -6171,6 +6171,10 @@ public class VectorL10n: NSObject {
   public static var roomMemberPowerLevelShortModerator: String { 
     return VectorL10n.tr("Vector", "room_member_power_level_short_moderator") 
   }
+  /// Owner
+  public static var roomMemberPowerLevelShortOwner: String { 
+    return VectorL10n.tr("Vector", "room_member_power_level_short_owner") 
+  }
   /// Editing
   public static var roomMessageEditing: String { 
     return VectorL10n.tr("Vector", "room_message_editing") 

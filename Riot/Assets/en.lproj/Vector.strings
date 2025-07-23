@@ -523,6 +523,7 @@ Tap the + to start adding people.";
 "room_member_power_level_moderator_in" = "Moderator in %@";
 "room_member_power_level_custom_in" = "Custom (%@) in %@";
 
+"room_member_power_level_short_owner" = "Owner";
 "room_member_power_level_short_admin" = "Admin";
 "room_member_power_level_short_moderator" = "Mod";
 "room_member_power_level_short_custom" = "Custom";
