@@ -519,6 +519,7 @@ Tap the + to start adding people.";
 "room_participants_security_information_room_encrypted" = "Messages in this room are end-to-end encrypted.\n\nYour messages are secured with locks and only you and the recipient have the unique keys to unlock them.";
 "room_participants_security_information_room_encrypted_for_dm" = "Messages here are end-to-end encrypted.\n\nYour messages are secured with locks and only you and the recipient have the unique keys to unlock them.";
 
+"room_member_power_level_owner_in" = "Owner in %@";
 "room_member_power_level_admin_in" = "Admin in %@";
 "room_member_power_level_moderator_in" = "Moderator in %@";
 "room_member_power_level_custom_in" = "Custom (%@) in %@";
