@@ -329,11 +329,12 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
         spaceRoom.state { [weak self] roomState in
             guard let self = self else { return }
             
-            guard let powerLevels = roomState?.powerLevels, let userId = session.myUserId else {
+            guard let roomState,
+                let powerLevels = roomState.powerLevels, let userId = session.myUserId else {
                 MXLog.error("[SpaceMembersCoordinator] spaceMemberListCoordinatorShowInvite: failed to find powerLevels for room")
                 return
             }
-            let userPowerLevel = powerLevels.powerLevelOfUser(withUserID: userId)
+            let userPowerLevel = roomState.powerLevelOfUser(withUserID: userId)
             
             guard userPowerLevel >= powerLevels.invite else {
                 let alert = UIAlertController(title: VectorL10n.spacesInvitePeople, message: VectorL10n.spaceInviteNotEnoughPermission, preferredStyle: .alert)

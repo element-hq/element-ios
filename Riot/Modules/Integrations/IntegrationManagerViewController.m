@@ -489,7 +489,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
         MXJSONModelSetBoolean(isState, requestData[@"is_state"]);
 
         MXRoomPowerLevels *powerLevels = roomState.powerLevels;
-        NSInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:self->mxSession.myUser.userId];
+        NSInteger userPowerLevel = [roomState powerLevelOfUserWithUserID:self->mxSession.myUser.userId];
 
         BOOL canSend = NO;
 

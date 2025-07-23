@@ -1200,7 +1200,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     if (self.roomDataSource.roomState)
     {
         MXRoomPowerLevels *powerLevels = self.roomDataSource.roomState.powerLevels;
-        NSInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
+        NSInteger userPowerLevel = [self.roomDataSource.roomState powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
         
         BOOL canSend = (userPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsMessage:kMXEventTypeStringRoomMessage]);
         BOOL isRoomObsolete = self.roomDataSource.roomState.isObsolete;
@@ -1856,7 +1856,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 {
     MXRoomPowerLevels *powerLevels = [self.roomDataSource.roomState powerLevels];
     NSInteger requiredPower = [powerLevels minimumPowerLevelForSendingEventAsStateEvent:eventTypeString];
-    NSInteger myPower = [powerLevels powerLevelOfUserWithUserID:self.roomDataSource.mxSession.myUserId];
+    NSInteger myPower = [self.roomDataSource.roomState powerLevelOfUserWithUserID:self.roomDataSource.mxSession.myUserId];
     return myPower >= requiredPower;
 }
 

@@ -123,7 +123,7 @@ Please see LICENSE in the repository root for full details.
                         MXStrongifyAndReturnIfNil(self);
 
                         MXRoomPowerLevels *powerLevels = [roomState powerLevels];
-                        NSInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:self->mxSession.myUser.userId];
+                        NSInteger userPowerLevel = [roomState powerLevelOfUserWithUserID:self->mxSession.myUser.userId];
                         if (powerLevels.redact)
                         {
                             if (userPowerLevel >= powerLevels.redact)

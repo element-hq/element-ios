@@ -162,8 +162,10 @@ private class CompletionSuggestionCoordinatorRoomMemberProvider: RoomMembersProv
     /// Gets the power levels for the room to update suggestions accordingly.
     func updateWithPowerLevels() {
         room.state { [weak self] state in
-            guard let self, let powerLevels = state?.powerLevels else { return }
-            let userPowerLevel = powerLevels.powerLevelOfUser(withUserID: self.userID)
+            guard let self,
+                  let state,
+                  let powerLevels = state.powerLevels else { return }
+            let userPowerLevel = state.powerLevelOfUser(withUserID: self.userID)
             let mentionRoomPowerLevel = powerLevels.minimumPowerLevel(forNotifications: kMXRoomPowerLevelNotificationsRoomKey,
                                                                       defaultPower: kMXRoomPowerLevelNotificationsRoomDefault)
             self.canMentionRoom = userPowerLevel >= mentionRoomPowerLevel
@@ -208,9 +210,11 @@ private class CompletionSuggestionCoordinatorCommandProvider: CommandsProviderPr
 
     func updateWithPowerLevels() {
         room.state { [weak self] state in
-            guard let self, let powerLevels = state?.powerLevels else { return }
+            guard let self,
+                  let state,
+                  let powerLevels = state.powerLevels else { return }
 
-            let userPowerLevel = powerLevels.powerLevelOfUser(withUserID: self.userID)
+            let userPowerLevel = state.powerLevelOfUser(withUserID: self.userID)
             self.isRoomAdmin = RoomPowerLevel(rawValue: userPowerLevel) == .admin
         }
     }

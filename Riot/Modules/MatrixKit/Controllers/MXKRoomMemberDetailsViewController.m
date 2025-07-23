@@ -639,9 +639,10 @@ Please see LICENSE in the repository root for full details.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Check user's power level before allowing an action (kick, ban, ...)
+    MXRoomState *roomState = self.mxRoomLiveTimeline.state;
     MXRoomPowerLevels *powerLevels = [self.mxRoomLiveTimeline.state powerLevels];
-    NSInteger memberPowerLevel = [powerLevels powerLevelOfUserWithUserID:_mxRoomMember.userId];
-    NSInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
+    NSInteger memberPowerLevel = [roomState powerLevelOfUserWithUserID:_mxRoomMember.userId];
+    NSInteger oneSelfPowerLevel = [roomState powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
     
     [actionsArray removeAllObjects];
     
@@ -894,14 +895,14 @@ Please see LICENSE in the repository root for full details.
 
 - (void)setPowerLevel:(NSInteger)value promptUser:(BOOL)promptUser
 {
-    NSInteger currentPowerLevel = [self.mxRoomLiveTimeline.state.powerLevels powerLevelOfUserWithUserID:_mxRoomMember.userId];
+    NSInteger currentPowerLevel = [self.mxRoomLiveTimeline.state powerLevelOfUserWithUserID:_mxRoomMember.userId];
     
     // check if the power level has not yet been set to 0
     if (value != currentPowerLevel)
     {
         __weak typeof(self) weakSelf = self;
 
-        if (promptUser && value == [self.mxRoomLiveTimeline.state.powerLevels powerLevelOfUserWithUserID:self.mainSession.myUser.userId])
+        if (promptUser && value == [self.mxRoomLiveTimeline.state powerLevelOfUserWithUserID:self.mainSession.myUser.userId])
         {
             // If the user is setting the same power level as his to another user, ask him for a confirmation
             if (currentAlert)
@@ -999,7 +1000,7 @@ Please see LICENSE in the repository root for full details.
         typeof(self) self = weakSelf;
         
         textField.secureTextEntry = NO;
-        textField.text = [NSString stringWithFormat:@"%ld", (long)[self.mxRoomLiveTimeline.state.powerLevels powerLevelOfUserWithUserID:self.mxRoomMember.userId]];
+        textField.text = [NSString stringWithFormat:@"%ld", (long)[self.mxRoomLiveTimeline.state powerLevelOfUserWithUserID:self.mxRoomMember.userId]];
         textField.placeholder = nil;
         textField.keyboardType = UIKeyboardTypeDecimalPad;
     }];
