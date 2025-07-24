@@ -6155,6 +6155,10 @@ public class VectorL10n: NSObject {
   public static func roomMemberPowerLevelModeratorIn(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "room_member_power_level_moderator_in", p1)
   }
+  /// Owner in %@
+  public static func roomMemberPowerLevelOwnerIn(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_member_power_level_owner_in", p1)
+  }
   /// You will not be able to undo this change as you are promoting the user to have the same power level as yourself.\nAre you sure?
   public static var roomMemberPowerLevelPrompt: String { 
     return VectorL10n.tr("Vector", "room_member_power_level_prompt") 
@@ -6170,6 +6174,10 @@ public class VectorL10n: NSObject {
   /// Mod
   public static var roomMemberPowerLevelShortModerator: String { 
     return VectorL10n.tr("Vector", "room_member_power_level_short_moderator") 
+  }
+  /// Owner
+  public static var roomMemberPowerLevelShortOwner: String { 
+    return VectorL10n.tr("Vector", "room_member_power_level_short_owner") 
   }
   /// Editing
   public static var roomMessageEditing: String { 

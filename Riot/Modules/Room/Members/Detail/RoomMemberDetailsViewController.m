@@ -356,6 +356,10 @@ Please see LICENSE in the repository root for full details.
             RoomPowerLevel roomPowerLevel = [RoomPowerLevelHelper roomPowerLevelFrom:powerLevel];
             
             switch (roomPowerLevel) {
+                case RoomPowerLevelOwner:
+                    self.roomMemberPowerLevelLabel.text = [VectorL10n roomMemberPowerLevelOwnerIn:self.mxRoom.summary.displayName];
+                    self.roomMemberPowerLevelContainerView.hidden = NO;
+                    break;
                 case RoomPowerLevelAdmin:
                     self.roomMemberPowerLevelLabel.text = [VectorL10n roomMemberPowerLevelAdminIn:self.mxRoom.summary.displayName];
                     self.roomMemberPowerLevelContainerView.hidden = NO;
