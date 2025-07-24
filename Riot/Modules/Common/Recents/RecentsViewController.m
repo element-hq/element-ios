@@ -1144,8 +1144,10 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                 if (weakSelf)
                 {
                     typeof(self) self = weakSelf;
-                    [self presentViewController:isLastOwnerPrompt animated:YES completion:nil];
-                    self->currentAlert = isLastOwnerPrompt;
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self presentViewController:isLastOwnerPrompt animated:YES completion:nil];
+                        self->currentAlert = isLastOwnerPrompt;
+                    });
                 }
             }
             else
@@ -1243,8 +1245,10 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                 if (weakSelf)
                 {
                     typeof(self) self = weakSelf;
-                    [self presentViewController:leavePrompt animated:YES completion:nil];
-                    self->currentAlert = leavePrompt;
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self presentViewController:leavePrompt animated:YES completion:nil];
+                        self->currentAlert = leavePrompt;
+                    });
                 }
             }
         }];
