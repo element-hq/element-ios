@@ -2624,23 +2624,6 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
 }
 
-- (void)leaveRoom
-{
-    [self startActivityIndicator];
-    
-    [self.roomDataSource.room leave:^{
-        
-        [self stopActivityIndicator];
-        [self notifyDelegateOnLeaveRoomIfNecessary];
-        
-    } failure:^(NSError *error) {
-        
-        [self stopActivityIndicator];
-        MXLogDebug(@"[RoomVC] Failed to reject an invited room (%@) failed", self.roomDataSource.room.roomId);
-        
-    }];
-}
-
 - (void)notifyDelegateOnLeaveRoomIfNecessary {
     if (isRoomLeft) {
         return;
