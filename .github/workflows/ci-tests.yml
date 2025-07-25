@@ -52,6 +52,8 @@ jobs:
       # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
       - name: Brew bundle
         run: brew bundle
+      - name: Install Xcodegen
+        run: mint install yonaskolb/XcodeGen@2.39.0
       - name: Bundle install
         run: |
           bundle config path vendor/bundle
