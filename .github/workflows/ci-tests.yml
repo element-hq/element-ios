@@ -54,6 +54,8 @@ jobs:
         run: brew bundle
       - name: Install Xcodegen
         run: mint install yonaskolb/XcodeGen@2.39.0
+      - name: Run Xcodegen
+        run: xcodegen
       - name: Bundle install
         run: |
           bundle config path vendor/bundle

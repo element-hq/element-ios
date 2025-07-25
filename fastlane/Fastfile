@@ -133,7 +133,6 @@ platform :ios do
 
   desc "Run tests"
   lane :test do
-    xcodegen(spec: "project.yml")
     cocoapods
 
     run_tests(
