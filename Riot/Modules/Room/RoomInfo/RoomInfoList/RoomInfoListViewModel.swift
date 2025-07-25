@@ -63,6 +63,9 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
         self.room = room
         super.init()
         startObservingSummaryChanges()
+        Task {
+            isLastOwner = (try? await room.isLastOwner()) == true
+        }
     }
     
     deinit {
