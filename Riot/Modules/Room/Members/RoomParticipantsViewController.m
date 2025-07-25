@@ -1382,7 +1382,7 @@ Please see LICENSE in the repository root for full details.
     MXWeakify(self);
     
     [self.mxRoom isLastOwnerWithCompletionHandler:^(BOOL isLastOnwer, NSError* error) {
-        if (isLastOnwer)
+        if (isLastOwner)
         {
             MXStrongifyAndReturnIfNil(self);
             self->currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n error]
