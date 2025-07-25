@@ -220,7 +220,7 @@ Please see LICENSE in the repository root for full details.
             }
             case MXKRoomMemberDetailsActionLeave:
             {
-                __weak typeof(self) weakSelf = self;
+                MXWeakify(self);
                 [self.mxRoom isLastOwnerWithCompletionHandler:^(BOOL isLastOwner, NSError* error){
                     if (isLastOwner)
                     {
@@ -231,43 +231,34 @@ Please see LICENSE in the repository root for full details.
                         [isLastOwnerPrompt addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                                                               style:UIAlertActionStyleCancel
                                                                             handler:^(UIAlertAction * action) {
-                            if (weakSelf)
-                            {
-                                typeof(self) self = weakSelf;
-                                self->currentAlert = nil;
-                            }
+                            MXStrongifyAndReturnIfNil(self);
+                            self->currentAlert = nil;
                         }]];
                         
-                        if (weakSelf)
-                        {
-                            typeof(self) self = weakSelf;
-                            dispatch_async(dispatch_get_main_queue(), ^{
-                                [self presentViewController:isLastOwnerPrompt animated:YES completion:nil];
-                                self->currentAlert = isLastOwnerPrompt;
-                            });
-                        }
+                        MXStrongifyAndReturnIfNil(self);
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [self presentViewController:isLastOwnerPrompt animated:YES completion:nil];
+                            self->currentAlert = isLastOwnerPrompt;
+                        });
                     }
                     else
                     {
-                        if (weakSelf)
-                        {
-                            typeof(self) self = weakSelf;
-                            [self addPendingActionMask];
-                            [self.mxRoom leave:^{
-                                
-                                [self removePendingActionMask];
-                                [self withdrawViewControllerAnimated:YES completion:nil];
-                                
-                            } failure:^(NSError *error) {
-                                
-                                [self removePendingActionMask];
-                                MXLogDebug(@"[MXKRoomMemberDetailsVC] Leave room %@ failed", self->mxRoom.roomId);
-                                // Notify MatrixKit user
-                                NSString *myUserId = self.mainSession.myUser.userId;
-                                [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
-                                
-                            }];
-                        }
+                        MXStrongifyAndReturnIfNil(self);
+                        [self addPendingActionMask];
+                        [self.mxRoom leave:^{
+                            
+                            [self removePendingActionMask];
+                            [self withdrawViewControllerAnimated:YES completion:nil];
+                            
+                        } failure:^(NSError *error) {
+                            
+                            [self removePendingActionMask];
+                            MXLogDebug(@"[MXKRoomMemberDetailsVC] Leave room %@ failed", self->mxRoom.roomId);
+                            // Notify MatrixKit user
+                            NSString *myUserId = self.mainSession.myUser.userId;
+                            [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
+                            
+                        }];
                     }
                 }];
                 break;

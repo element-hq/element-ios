@@ -22,8 +22,15 @@ extension MXRoom {
             return false
         }
         
-        return joinedMembers.contains { member in
-            member.userId != userID && state.powerLevelOfUser(withUserID: member.userId) >= requiredPowerLevel.rawValue
+        var areOtherMembers = false
+        for member in joinedMembers where member.userId != userID {
+            // User is not the last member in the whole room.
+            areOtherMembers = true
+            // If there are other owners/admins the user can leave
+            if state.powerLevelOfUser(withUserID: member.userId) >= requiredPowerLevel.rawValue {
+                return false
+            }
         }
+        return areOtherMembers
     }
 }

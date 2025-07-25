@@ -139,21 +139,20 @@ class RoomContextActionService: NSObject, RoomContextActionServiceProtocol {
         
         Task {
             if try await room.isLastOwner() {
-                let alertController = await UIAlertController(title: VectorL10n.error, message: VectorL10n.roomParticipantsLeaveNotAllowedForLastOwnerMsg, preferredStyle: .alert)
-                await alertController.addAction(UIAlertAction(title: VectorL10n.ok, style: .cancel, handler: nil))
                 await MainActor.run {
+                    let alertController = UIAlertController(title: VectorL10n.error, message: VectorL10n.roomParticipantsLeaveNotAllowedForLastOwnerMsg, preferredStyle: .alert)
+                    alertController.addAction(UIAlertAction(title: VectorL10n.ok, style: .cancel, handler: nil))
                     self.delegate?.roomContextActionService(self, presentAlert: alertController)
                 }
             } else {
                 let title = room.isDirect ? VectorL10n.roomParticipantsLeavePromptTitleForDm : VectorL10n.roomParticipantsLeavePromptTitle
                 let message = room.isDirect ? VectorL10n.roomParticipantsLeavePromptMsgForDm : VectorL10n.roomParticipantsLeavePromptMsg
-                
-                let alertController = await UIAlertController(title: title, message: message, preferredStyle: .alert)
-                await alertController.addAction(UIAlertAction(title: VectorL10n.cancel, style: .cancel, handler: nil))
-                await alertController.addAction(UIAlertAction(title: VectorL10n.leave, style: .default, handler: { action in
-                    self.leaveRoom()
-                }))
                 await MainActor.run {
+                    let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                    alertController.addAction(UIAlertAction(title: VectorL10n.cancel, style: .cancel, handler: nil))
+                    alertController.addAction(UIAlertAction(title: VectorL10n.leave, style: .default, handler: { [weak self] action in
+                        self?.leaveRoom()
+                    }))
                     self.delegate?.roomContextActionService(self, presentAlert: alertController)
                 }
             }

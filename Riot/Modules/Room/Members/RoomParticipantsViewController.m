@@ -1381,7 +1381,7 @@ Please see LICENSE in the repository root for full details.
 - (void)leaveRoom {
     MXWeakify(self);
     
-    [self.mxRoom isLastOwnerWithCompletionHandler:^(BOOL isLastOnwer, NSError* error) {
+    [self.mxRoom isLastOwnerWithCompletionHandler:^(BOOL isLastOwner, NSError* error) {
         if (isLastOwner)
         {
             MXStrongifyAndReturnIfNil(self);
