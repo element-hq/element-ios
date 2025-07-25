@@ -1420,6 +1420,7 @@ Please see LICENSE in the repository root for full details.
                                                                message:message
                                                         preferredStyle:UIAlertControllerStyleAlert];
             
+            MXWeakify(self);
             [self->currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                              style:UIAlertActionStyleCancel
                                                            handler:^(UIAlertAction * action) {

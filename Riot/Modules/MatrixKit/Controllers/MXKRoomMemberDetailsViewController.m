@@ -245,13 +245,14 @@ Please see LICENSE in the repository root for full details.
                     {
                         MXStrongifyAndReturnIfNil(self);
                         [self addPendingActionMask];
+                        MXWeakify(self);
                         [self.mxRoom leave:^{
-                            
+                            MXStrongifyAndReturnIfNil(self);
                             [self removePendingActionMask];
                             [self withdrawViewControllerAnimated:YES completion:nil];
                             
                         } failure:^(NSError *error) {
-                            
+                            MXStrongifyAndReturnIfNil(self);
                             [self removePendingActionMask];
                             MXLogDebug(@"[MXKRoomMemberDetailsVC] Leave room %@ failed", self->mxRoom.roomId);
                             // Notify MatrixKit user

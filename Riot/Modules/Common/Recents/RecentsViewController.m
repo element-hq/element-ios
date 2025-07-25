@@ -1118,42 +1118,34 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     if (editedRoomId)
     {
         NSString *currentRoomId = editedRoomId;
-        __weak typeof(self) weakSelf = self;
-        
+        MXWeakify(self);
         MXRoom *room = [self.mainSession roomWithRoomId:currentRoomId];
         __weak typeof(room) weakRoom = room;
         [room isLastOwnerWithCompletionHandler:^(BOOL isLastOwner, NSError* error){
             if (isLastOwner)
             {
                 UIAlertController *isLastOwnerPrompt = [UIAlertController alertControllerWithTitle:[VectorL10n error]
-                                                                                     message:[VectorL10n roomParticipantsLeaveNotAllowedForLastOwnerMsg]
-                                                                              preferredStyle:UIAlertControllerStyleAlert];
+                                                                                           message:[VectorL10n roomParticipantsLeaveNotAllowedForLastOwnerMsg]
+                                                                                    preferredStyle:UIAlertControllerStyleAlert];
                 
                 [isLastOwnerPrompt addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
-                                                                style:UIAlertActionStyleCancel
-                                                              handler:^(UIAlertAction * action) {
-                    
-                    if (weakSelf)
-                    {
-                        typeof(self) self = weakSelf;
-                        self->currentAlert = nil;
-                    }
-                    
+                                                                      style:UIAlertActionStyleCancel
+                                                                    handler:^(UIAlertAction * action) {
+                    MXStrongifyAndReturnIfNil(self);
+                    self->currentAlert = nil;
                 }]];
                 
-                if (weakSelf)
-                {
-                    typeof(self) self = weakSelf;
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self presentViewController:isLastOwnerPrompt animated:YES completion:nil];
-                        self->currentAlert = isLastOwnerPrompt;
-                    });
-                }
+                MXStrongifyAndReturnIfNil(self);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self presentViewController:isLastOwnerPrompt animated:YES completion:nil];
+                    self->currentAlert = isLastOwnerPrompt;
+                });
             }
             else
             {
                 NSString *title, *message;
-                if ([weakSelf.mainSession roomWithRoomId:currentRoomId].isDirect)
+                MXStrongifyAndReturnIfNil(self);
+                if ([self.mainSession roomWithRoomId:currentRoomId].isDirect)
                 {
                     title = [VectorL10n roomParticipantsLeavePromptTitleForDm];
                     message = [VectorL10n roomParticipantsLeavePromptMsgForDm];
@@ -1169,87 +1161,70 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                                                      message:message
                                                                               preferredStyle:UIAlertControllerStyleAlert];
                 
+                MXWeakify(self);
                 [leavePrompt addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                                 style:UIAlertActionStyleCancel
                                                               handler:^(UIAlertAction * action) {
                     
-                    if (weakSelf)
-                    {
-                        typeof(self) self = weakSelf;
-                        self->currentAlert = nil;
-                    }
-                    
+                    MXStrongifyAndReturnIfNil(self);
+                    self->currentAlert = nil;
                 }]];
                 
                 [leavePrompt addAction:[UIAlertAction actionWithTitle:[VectorL10n leave]
                                                                 style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                    MXStrongifyAndReturnIfNil(self);
+                    self->currentAlert = nil;
                     
-                    if (weakSelf)
+                    // Check whether the user didn't leave the room yet
+                    // TODO: Handle multi-account
+                    if (weakRoom)
                     {
-                        typeof(self) self = weakSelf;
-                        self->currentAlert = nil;
+                        [self startActivityIndicatorWithLabel:[VectorL10n roomParticipantsLeaveProcessing]];
+                        // cancel pending uploads/downloads
+                        // they are useless by now
+                        [MXMediaManager cancelDownloadsInCacheFolder:weakRoom.roomId];
                         
-                        // Check whether the user didn't leave the room yet
-                        // TODO: Handle multi-account
-                        if (weakRoom)
-                        {
-                            [self startActivityIndicatorWithLabel:[VectorL10n roomParticipantsLeaveProcessing]];
-                            // cancel pending uploads/downloads
-                            // they are useless by now
-                            [MXMediaManager cancelDownloadsInCacheFolder:weakRoom.roomId];
+                        // TODO GFO cancel pending uploads related to this room
+                        
+                        MXLogDebug(@"[RecentsViewController] Leave room (%@)", weakRoom.roomId);
+                        
+                        MXWeakify(self);
+                        [weakRoom leave:^{
+                            MXStrongifyAndReturnIfNil(self);
+                            [self stopActivityIndicator];
+                            [self.userIndicatorStore presentSuccessWithLabel:[VectorL10n roomParticipantsLeaveSuccess]];
+                            // Force table refresh
+                            [self cancelEditionMode:YES];
                             
-                            // TODO GFO cancel pending uploads related to this room
+                        } failure:^(NSError *error) {
                             
-                            MXLogDebug(@"[RecentsViewController] Leave room (%@)", weakRoom.roomId);
+                            MXLogDebug(@"[RecentsViewController] Failed to leave room");
+                            MXStrongifyAndReturnIfNil(self);
+                            // Notify the end user
+                            NSString *userId = room.mxSession.myUser.userId;
+                            [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification
+                                                                                object:error
+                                                                              userInfo:userId ? @{kMXKErrorUserIdKey: userId} : nil];
                             
-                            [weakRoom leave:^{
-                                
-                                if (weakSelf)
-                                {
-                                    typeof(self) self = weakSelf;
-                                    [self stopActivityIndicator];
-                                    [self.userIndicatorStore presentSuccessWithLabel:[VectorL10n roomParticipantsLeaveSuccess]];
-                                    // Force table refresh
-                                    [self cancelEditionMode:YES];
-                                }
-                                
-                            } failure:^(NSError *error) {
-                                
-                                MXLogDebug(@"[RecentsViewController] Failed to leave room");
-                                if (weakSelf)
-                                {
-                                    typeof(self) self = weakSelf;
-                                    // Notify the end user
-                                    NSString *userId = room.mxSession.myUser.userId;
-                                    [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification
-                                                                                        object:error
-                                                                                      userInfo:userId ? @{kMXKErrorUserIdKey: userId} : nil];
-                                    
-                                    [self stopActivityIndicator];
-                                    
-                                    // Leave editing mode
-                                    [self cancelEditionMode:self->isRefreshPending];
-                                }
-                                
-                            }];
-                        }
-                        else
-                        {
+                            [self stopActivityIndicator];
+                            
                             // Leave editing mode
                             [self cancelEditionMode:self->isRefreshPending];
-                        }
+                            
+                        }];
+                    }
+                    else
+                    {
+                        // Leave editing mode
+                        [self cancelEditionMode:self->isRefreshPending];
                     }
                     
                 }]];
                 [leavePrompt mxk_setAccessibilityIdentifier:@"LeaveEditedRoomAlert"];
-                if (weakSelf)
-                {
-                    typeof(self) self = weakSelf;
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self presentViewController:leavePrompt animated:YES completion:nil];
-                        self->currentAlert = leavePrompt;
-                    });
-                }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self presentViewController:leavePrompt animated:YES completion:nil];
+                    self->currentAlert = leavePrompt;
+                });
             }
         }];
     }
