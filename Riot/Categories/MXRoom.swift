@@ -12,7 +12,9 @@ extension MXRoom {
         let userID = mxSession.myUserId
         let state = try await state()
         
-        guard RoomPowerLevelHelper.roomPowerLevel(from: state.powerLevelOfUser(withUserID: userID)) == .owner else {
+        let requiredPowerLevel: RoomPowerLevel = state.isMSC4289Supported() ? .owner : .admin
+        
+        guard state.powerLevelOfUser(withUserID: userID) >= requiredPowerLevel.rawValue else {
             return false
         }
         
@@ -23,8 +25,8 @@ extension MXRoom {
         var isLastMember = true
         for member in joinedMembers where member.userId != userID {
             isLastMember = false
-            // If there are other owners they can leave
-            if RoomPowerLevelHelper.roomPowerLevel(from: state.powerLevelOfUser(withUserID: member.userId)) == .owner {
+            // If there are other owners/admins the user can leave
+            if state.powerLevelOfUser(withUserID: member.userId) >= requiredPowerLevel.rawValue {
                 return false
             }
         }
