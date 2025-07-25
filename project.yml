@@ -3,10 +3,8 @@ attributes:
   ORGANIZATIONNAME: matrix.org
 
 configs:
-  Debug:
-    type: debug
-  Release:
-    type: release
+  Debug: debug
+  Release: release
 
 fileGroups:
     - README.md
