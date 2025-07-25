@@ -331,6 +331,7 @@ DEPENDENCIES
   fastlane-plugin-xcodegen
   slather
   xcode-install
+  xcodeproj (~> 1.21)
 
 BUNDLED WITH
    2.3.20
