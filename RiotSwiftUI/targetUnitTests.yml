@@ -49,7 +49,6 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: org.matrix.$(PRODUCT_NAME:rfc1034identifier)
         PRODUCT_NAME: RiotSwiftUnitTests
       configs:
-        Debug:
         Release:
           PROVISIONING_PROFILE: $(RIOT_PROVISIONING_PROFILE)
           PROVISIONING_PROFILE_SPECIFIER: $(RIOT_PROVISIONING_PROFILE_SPECIFIER)
