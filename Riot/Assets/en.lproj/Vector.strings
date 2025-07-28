@@ -479,6 +479,7 @@ Tap the + to start adding people.";
 "room_participants_invite_malformed_id" = "Malformed ID. Should be an email address or a Matrix ID like '@localpart:domain'";
 "room_participants_invited_section" = "INVITED";
 "room_participants_start_new_chat_error_using_user_email_without_identity_server" = "No identity server is configured so you cannot start a chat with a contact using an email.";
+"room_participants_leave_not_allowed_for_last_owner_msg" = "You can't leave the room since you're the only owner of it.";
 
 "room_participants_online" = "Online";
 "room_participants_offline" = "Offline";
@@ -519,10 +520,12 @@ Tap the + to start adding people.";
 "room_participants_security_information_room_encrypted" = "Messages in this room are end-to-end encrypted.\n\nYour messages are secured with locks and only you and the recipient have the unique keys to unlock them.";
 "room_participants_security_information_room_encrypted_for_dm" = "Messages here are end-to-end encrypted.\n\nYour messages are secured with locks and only you and the recipient have the unique keys to unlock them.";
 
+"room_member_power_level_owner_in" = "Owner in %@";
 "room_member_power_level_admin_in" = "Admin in %@";
 "room_member_power_level_moderator_in" = "Moderator in %@";
 "room_member_power_level_custom_in" = "Custom (%@) in %@";
 
+"room_member_power_level_short_owner" = "Owner";
 "room_member_power_level_short_admin" = "Admin";
 "room_member_power_level_short_moderator" = "Mod";
 "room_member_power_level_short_custom" = "Custom";

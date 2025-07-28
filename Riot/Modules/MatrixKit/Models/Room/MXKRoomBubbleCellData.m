@@ -691,7 +691,7 @@ Please see LICENSE in the repository root for full details.
 - (BOOL)canInvitePeople
 {
     NSInteger requiredLevel = roomDataSource.roomState.powerLevels.invite;
-    NSInteger myLevel = [roomDataSource.roomState.powerLevels powerLevelOfUserWithUserID:roomDataSource.mxSession.myUserId];
+    NSInteger myLevel = [roomDataSource.roomState powerLevelOfUserWithUserID:roomDataSource.mxSession.myUserId];
     return myLevel >= requiredLevel;
 }
 

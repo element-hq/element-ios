@@ -75,6 +75,17 @@ final class RoomInfoListViewController: UIViewController {
         return controller
     }()
     
+    private lazy var isLastOwnerAlertController: UIAlertController = {
+        let title = VectorL10n.error
+        let message = VectorL10n.roomParticipantsLeaveNotAllowedForLastOwnerMsg
+        let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        controller.addAction(UIAlertAction(title: VectorL10n.ok, style: .default, handler: nil))
+        controller.mxk_setAccessibilityIdentifier("RoomSettingsVCLastOwnerAlert")
+        
+        return controller
+    }()
+    
     private enum RowType {
         case `default`
         case destructive
@@ -216,7 +227,11 @@ final class RoomInfoListViewController: UIViewController {
             VectorL10n.roomParticipantsLeavePromptTitleForDm :
             VectorL10n.roomParticipantsLeavePromptTitle
         let rowLeave = Row(type: .destructive, icon: Asset.Images.roomActionLeave.image, text: leaveTitle, accessoryType: .none) {
-            self.present(self.leaveAlertController, animated: true, completion: nil)
+            if viewData.isLastOwner {
+                self.present(self.isLastOwnerAlertController, animated: true, completion: nil)
+            } else {
+                self.present(self.leaveAlertController, animated: true, completion: nil)
+            }
         }
         let sectionLeave = Section(header: nil,
                                    rows: [rowLeave],

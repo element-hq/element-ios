@@ -166,7 +166,7 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
         if let spaceRoom = self.spaceRoom {
             spaceRoom.state { roomState in
                 self.powerLevels = roomState?.powerLevels
-                self.powerLevelOfCurrentUser = self.powerLevels?.powerLevelOfUser(withUserID: self.session.myUserId)
+                self.powerLevelOfCurrentUser = roomState?.powerLevelOfUser(withUserID: self.session.myUserId)
                 
             }
         }

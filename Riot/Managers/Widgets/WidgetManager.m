@@ -345,7 +345,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
 
         // Check user's power in the room
         MXRoomPowerLevels *powerLevels = roomState.powerLevels;
-        NSInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:room.mxSession.myUser.userId];
+        NSInteger oneSelfPowerLevel = [roomState powerLevelOfUserWithUserID:room.mxSession.myUser.userId];
 
         // The user must be able to send state events to manage widgets
         if (oneSelfPowerLevel < powerLevels.stateDefault)

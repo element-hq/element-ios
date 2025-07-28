@@ -94,7 +94,7 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
     {
         // Check user's power in the room
         MXRoomPowerLevels *powerLevels = roomState.powerLevels;
-        NSInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:session.myUser.userId];
+        NSInteger oneSelfPowerLevel = [roomState powerLevelOfUserWithUserID:session.myUser.userId];
 
         // The user must be able to send state events to manage widgets
         if (oneSelfPowerLevel >= powerLevels.stateDefault)

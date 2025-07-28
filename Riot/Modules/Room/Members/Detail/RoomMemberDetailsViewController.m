@@ -351,11 +351,15 @@ Please see LICENSE in the repository root for full details.
             MXStrongifyAndReturnIfNil(self);
 
             MXRoomPowerLevels *powerLevels = [roomState powerLevels];
-            NSInteger powerLevel = [powerLevels powerLevelOfUserWithUserID:self.mxRoomMember.userId];
+            NSInteger powerLevel = [roomState powerLevelOfUserWithUserID:self.mxRoomMember.userId];
             
             RoomPowerLevel roomPowerLevel = [RoomPowerLevelHelper roomPowerLevelFrom:powerLevel];
             
             switch (roomPowerLevel) {
+                case RoomPowerLevelOwner:
+                    self.roomMemberPowerLevelLabel.text = [VectorL10n roomMemberPowerLevelOwnerIn:self.mxRoom.summary.displayName];
+                    self.roomMemberPowerLevelContainerView.hidden = NO;
+                    break;
                 case RoomPowerLevelAdmin:
                     self.roomMemberPowerLevelLabel.text = [VectorL10n roomMemberPowerLevelAdminIn:self.mxRoom.summary.displayName];
                     self.roomMemberPowerLevelContainerView.hidden = NO;
@@ -500,8 +504,8 @@ Please see LICENSE in the repository root for full details.
     
     // Check user's power level before allowing an action (kick, ban, ...)
     MXRoomPowerLevels *powerLevels = [self.mxRoom.dangerousSyncState powerLevels];
-    NSInteger memberPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mxRoomMember.userId];
-    NSInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
+    NSInteger memberPowerLevel = [self.mxRoom.dangerousSyncState powerLevelOfUserWithUserID:self.mxRoomMember.userId];
+    NSInteger oneSelfPowerLevel = [self.mxRoom.dangerousSyncState powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
     
     [adminActionsArray removeAllObjects];
     [otherActionsArray removeAllObjects];
