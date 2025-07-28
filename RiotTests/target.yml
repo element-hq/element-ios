@@ -52,7 +52,6 @@ targets:
         SWIFT_OBJC_BRIDGING_HEADER: RiotTests/RiotTests-Bridging-Header.h
         TEST_HOST: $(BUILT_PRODUCTS_DIR)/Element.app/Element
       configs:
-        Debug:
         Release:
           PROVISIONING_PROFILE: $(RIOT_PROVISIONING_PROFILE)
           PROVISIONING_PROFILE_SPECIFIER: $(RIOT_PROVISIONING_PROFILE_SPECIFIER)
