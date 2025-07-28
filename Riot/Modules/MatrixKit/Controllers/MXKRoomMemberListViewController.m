@@ -307,7 +307,7 @@ Please see LICENSE in the repository root for full details.
         if (showInvitationOption && self->dataSource)
         {
             // Check conditions to be able to invite someone
-            NSInteger oneSelfPowerLevel = [roomState.powerLevels powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
+            NSInteger oneSelfPowerLevel = [roomState powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
             if (oneSelfPowerLevel < [roomState.powerLevels invite])
             {
                 showInvitationOption = NO;

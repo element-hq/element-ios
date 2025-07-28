@@ -132,19 +132,31 @@ class RoomContextActionService: NSObject, RoomContextActionServiceProtocol {
     
     func leaveRoom(promptUser: Bool) {
         guard promptUser else {
+            // Only used for declining an invite
             self.leaveRoom()
             return
         }
         
-        let title = room.isDirect ? VectorL10n.roomParticipantsLeavePromptTitleForDm : VectorL10n.roomParticipantsLeavePromptTitle
-        let message = room.isDirect ? VectorL10n.roomParticipantsLeavePromptMsgForDm : VectorL10n.roomParticipantsLeavePromptMsg
-        
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: VectorL10n.cancel, style: .cancel, handler: nil))
-        alertController.addAction(UIAlertAction(title: VectorL10n.leave, style: .default, handler: { action in
-            self.leaveRoom()
-        }))
-        self.delegate?.roomContextActionService(self, presentAlert: alertController)
+        Task {
+            if try await room.isLastOwner() {
+                await MainActor.run {
+                    let alertController = UIAlertController(title: VectorL10n.error, message: VectorL10n.roomParticipantsLeaveNotAllowedForLastOwnerMsg, preferredStyle: .alert)
+                    alertController.addAction(UIAlertAction(title: VectorL10n.ok, style: .cancel, handler: nil))
+                    self.delegate?.roomContextActionService(self, presentAlert: alertController)
+                }
+            } else {
+                let title = room.isDirect ? VectorL10n.roomParticipantsLeavePromptTitleForDm : VectorL10n.roomParticipantsLeavePromptTitle
+                let message = room.isDirect ? VectorL10n.roomParticipantsLeavePromptMsgForDm : VectorL10n.roomParticipantsLeavePromptMsg
+                await MainActor.run {
+                    let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                    alertController.addAction(UIAlertAction(title: VectorL10n.cancel, style: .cancel, handler: nil))
+                    alertController.addAction(UIAlertAction(title: VectorL10n.leave, style: .default, handler: { [weak self] action in
+                        self?.leaveRoom()
+                    }))
+                    self.delegate?.roomContextActionService(self, presentAlert: alertController)
+                }
+            }
+        }
     }
 
     func joinRoom() {

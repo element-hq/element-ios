@@ -716,8 +716,8 @@ Please see LICENSE in the repository root for full details.
         {
             // Order first by power levels (admins then moderators then others)
             MXRoomPowerLevels *powerLevels = [roomState powerLevels];
-            NSInteger powerLevelA = [powerLevels powerLevelOfUserWithUserID:contactA.mxMember.userId];
-            NSInteger powerLevelB = [powerLevels powerLevelOfUserWithUserID:contactB.mxMember.userId];
+            NSInteger powerLevelA = [roomState powerLevelOfUserWithUserID:contactA.mxMember.userId];
+            NSInteger powerLevelB = [roomState powerLevelOfUserWithUserID:contactB.mxMember.userId];
             
             if (powerLevelA == powerLevelB)
             {
@@ -981,13 +981,16 @@ Please see LICENSE in the repository root for full details.
                 
                 // Update member power level
                 MXRoomPowerLevels *powerLevels = [roomState powerLevels];
-                NSInteger powerLevel = [powerLevels powerLevelOfUserWithUserID:contact.mxMember.userId];
+                NSInteger powerLevel = [roomState powerLevelOfUserWithUserID:contact.mxMember.userId];
                 
                 RoomPowerLevel roomPowerLevel = [RoomPowerLevelHelper roomPowerLevelFrom:powerLevel];
                 
                 NSString *powerLevelText;
                 
                 switch (roomPowerLevel) {
+                    case RoomPowerLevelOwner:
+                        powerLevelText = [VectorL10n roomMemberPowerLevelShortOwner];
+                        break;
                     case RoomPowerLevelAdmin:
                         powerLevelText = [VectorL10n roomMemberPowerLevelShortAdmin];
                         break;
@@ -1228,62 +1231,7 @@ Please see LICENSE in the repository root for full details.
         
         if (section == participantsSection && userParticipant && (0 == row) && !currentSearchText.length)
         {
-            // Leave ?
-            MXWeakify(self);
-            
-            NSString *title, *message;
-            if (self.mxRoom.isDirect)
-            {
-                title = [VectorL10n roomParticipantsLeavePromptTitleForDm];
-                message = [VectorL10n roomParticipantsLeavePromptMsgForDm];
-            }
-            else
-            {
-                title = [VectorL10n roomParticipantsLeavePromptTitle];
-                message = [VectorL10n roomParticipantsLeavePromptMsg];
-            }
-            
-            currentAlert = [UIAlertController alertControllerWithTitle:title
-                                                               message:message
-                                                        preferredStyle:UIAlertControllerStyleAlert];
-            
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
-                                                             style:UIAlertActionStyleCancel
-                                                           handler:^(UIAlertAction * action) {
-                                                               
-                                                               MXStrongifyAndReturnIfNil(self);
-                                                               self->currentAlert = nil;
-                                                               
-                                                           }]];
-            
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n leave]
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction * action) {
-                                                               
-                                                               MXStrongifyAndReturnIfNil(self);
-                                                               self->currentAlert = nil;
-                                                               
-                                                               [self addPendingActionMask];
-                                                               MXWeakify(self);
-                                                               [self.mxRoom leave:^{
-                                                                   
-                                                                   MXStrongifyAndReturnIfNil(self);
-                                                                   [self withdrawViewControllerAnimated:YES completion:nil];
-                                                                   
-                                                               } failure:^(NSError *error) {
-                                                                   
-                                                                   MXStrongifyAndReturnIfNil(self);
-                                                                   [self removePendingActionMask];
-                                                                   MXLogDebug(@"[RoomParticipantsVC] Leave room %@ failed", self.mxRoom.roomId);
-                                                                   // Alert user
-                                                                   [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                   
-                                                               }];
-                                                               
-                                                           }]];
-            
-            [currentAlert mxk_setAccessibilityIdentifier:@"RoomParticipantsVCLeaveAlert"];
-            [self presentViewController:currentAlert animated:YES completion:nil];
+            [self leaveRoom];
         }
         else
         {
@@ -1428,6 +1376,90 @@ Please see LICENSE in the repository root for full details.
             }
         }
     }
+}
+
+- (void)leaveRoom {
+    MXWeakify(self);
+    
+    [self.mxRoom isLastOwnerWithCompletionHandler:^(BOOL isLastOwner, NSError* error) {
+        if (isLastOwner)
+        {
+            MXStrongifyAndReturnIfNil(self);
+            self->currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n error]
+                                                               message:[VectorL10n roomParticipantsLeaveNotAllowedForLastOwnerMsg]
+                                                        preferredStyle:UIAlertControllerStyleAlert];
+            
+            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
+                                                             style:UIAlertActionStyleCancel
+                                                           handler:^(UIAlertAction * action) {
+                                                               
+                                                               MXStrongifyAndReturnIfNil(self);
+                                                               self->currentAlert = nil;
+                                                           }]];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self presentViewController:self->currentAlert animated:YES completion:nil];
+            });
+        }
+        else
+        {
+            // Leave ?
+            MXStrongifyAndReturnIfNil(self);
+            NSString *title, *message;
+            if (self.mxRoom.isDirect)
+            {
+                title = [VectorL10n roomParticipantsLeavePromptTitleForDm];
+                message = [VectorL10n roomParticipantsLeavePromptMsgForDm];
+            }
+            else
+            {
+                title = [VectorL10n roomParticipantsLeavePromptTitle];
+                message = [VectorL10n roomParticipantsLeavePromptMsg];
+            }
+            
+            self->currentAlert = [UIAlertController alertControllerWithTitle:title
+                                                               message:message
+                                                        preferredStyle:UIAlertControllerStyleAlert];
+            
+            MXWeakify(self);
+            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
+                                                             style:UIAlertActionStyleCancel
+                                                           handler:^(UIAlertAction * action) {
+                                                               
+                                                               MXStrongifyAndReturnIfNil(self);
+                                                               self->currentAlert = nil;
+                                                               
+                                                           }]];
+            
+            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n leave]
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction * action) {
+                                                               
+                                                               MXStrongifyAndReturnIfNil(self);
+                                                               self->currentAlert = nil;
+                                                               
+                                                               [self addPendingActionMask];
+                                                               MXWeakify(self);
+                                                               [self.mxRoom leave:^{
+                                                                   
+                                                                   MXStrongifyAndReturnIfNil(self);
+                                                                   [self withdrawViewControllerAnimated:YES completion:nil];
+                                                                   
+                                                               } failure:^(NSError *error) {
+                                                                   
+                                                                   MXStrongifyAndReturnIfNil(self);
+                                                                   [self removePendingActionMask];
+                                                                   MXLogDebug(@"[RoomParticipantsVC] Leave room %@ failed", self.mxRoom.roomId);
+                                                                   // Alert user
+                                                                   [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                                   
+                                                               }];
+                                                               
+                                                           }]];
+            
+            [self->currentAlert mxk_setAccessibilityIdentifier:@"RoomParticipantsVCLeaveAlert"];
+            [self presentViewController:self->currentAlert animated:YES completion:nil];
+        }
+    }];
 }
 
 - (void)onCancel:(id)sender

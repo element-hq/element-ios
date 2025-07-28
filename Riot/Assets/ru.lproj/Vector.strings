@@ -2124,7 +2124,7 @@
 "onboarding_use_case_existing_server_message" = "Хотите присоединиться к существующему серверу?";
 "onboarding_use_case_skip_button" = "Пропустить вопрос";
 /* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
-"onboarding_use_case_not_sure_yet" = "Ещё не уверенны? %@";
+"onboarding_use_case_not_sure_yet" = "Ещё не уверены? %@";
 "onboarding_use_case_community_messaging" = "Сообщества";
 "onboarding_use_case_work_messaging" = "Команды";
 "onboarding_use_case_personal_messaging" = "Друзья и семья";

@@ -1598,7 +1598,7 @@
 "accessibility_button_label" = "按钮";
 "enable" = "启用";
 "onboarding_splash_page_1_message" = "独立安全的通信，为您提供与家中面谈相同的私密性。";
-"onboarding_splash_page_1_title" = "掌控你的对话。";
+"onboarding_splash_page_1_title" = "掌控您的对话。";
 
 // Onboarding
 "onboarding_splash_register_button_title" = "注册";
@@ -2086,7 +2086,7 @@
 "room_many_users_are_typing" = "%@、%@和其他人正在输入……";
 /* The placeholder %1$tu will be replaced with a number and %2$@ with the user's search terms. */
 "directory_search_results" = "为%2$@找到%1$tu个结果";
-"onboarding_splash_page_2_title" = "一切都在你的掌控中。";
+"onboarding_splash_page_2_title" = "一切都在您的掌控中。";
 "onboarding_congratulations_personalize_button" = "个性化用户资料";
 /* The placeholder string contains the user's matrix ID */
 "onboarding_congratulations_message" = "你的账户%@已创建";
@@ -2101,7 +2101,7 @@
 "onboarding_use_case_title" = "你会和谁聊得最多？";
 "onboarding_splash_page_4_message" = "Element也很适合工作场所。受世界最安全的组织的信任。";
 "onboarding_splash_page_3_message" = "端到端加密且不要求电话号码。无广告或数据挖掘。";
-"onboarding_splash_page_2_message" = "选择在哪里保存你的对话，给你控制和独立。通过Matrix连接。";
+"onboarding_splash_page_2_message" = "选择在哪里保存您的对话，给您控制和独立。通过Matrix连接。";
 
 // MARK: Reactions
 
@@ -2433,5 +2433,10 @@
 "room_command_discard_session_description" = "强制当前已在加密房间中的外部群组会话失效";
 "call_jitsi_unable_to_start" = "无法开始会议通话";
 "room_suggestion_settings_screen_title" = "将房间设置为该空间中的建议房间";
-"room_suggestion_settings_screen_message" = "向空间成员推荐建议房间";
+"room_suggestion_settings_screen_message" = "向空间成员推荐建议房间。";
 "key_backup_recover_from_private_key_progress" = "完成 %@%%";
+"sunset_download_banner_learn_more" = "了解更多";
+"sunset_delegated_oidc_registration_not_supported_message" = "下载 %1$@ 后才能在您的账户中使用 %2$@，或选择另一个家服务器。";
+"sunset_delegated_oidc_registration_not_supported_generic_error" = "您已无法用该家服务器在本应用中创建账户";
+"sunset_download_banner_title" = "下载 %1$@";
+"sunset_delegated_oidc_registration_not_supported_title" = "您已无法再用 %1$@ 在本应用中创建账户";
