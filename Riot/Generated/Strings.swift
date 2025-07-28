@@ -6447,6 +6447,10 @@ public class VectorL10n: NSObject {
   public static var roomParticipantsInvitedSection: String { 
     return VectorL10n.tr("Vector", "room_participants_invited_section") 
   }
+  /// You can't leave the room since you're the only owner of it.
+  public static var roomParticipantsLeaveNotAllowedForLastOwnerMsg: String { 
+    return VectorL10n.tr("Vector", "room_participants_leave_not_allowed_for_last_owner_msg") 
+  }
   /// Leaving
   public static var roomParticipantsLeaveProcessing: String { 
     return VectorL10n.tr("Vector", "room_participants_leave_processing") 

@@ -220,20 +220,47 @@ Please see LICENSE in the repository root for full details.
             }
             case MXKRoomMemberDetailsActionLeave:
             {
-                [self addPendingActionMask];
-                [self.mxRoom leave:^{
-                    
-                    [self removePendingActionMask];
-                    [self withdrawViewControllerAnimated:YES completion:nil];
-                    
-                } failure:^(NSError *error) {
-                    
-                    [self removePendingActionMask];
-                    MXLogDebug(@"[MXKRoomMemberDetailsVC] Leave room %@ failed", self->mxRoom.roomId);
-                    // Notify MatrixKit user
-                    NSString *myUserId = self.mainSession.myUser.userId;
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
-                    
+                MXWeakify(self);
+                [self.mxRoom isLastOwnerWithCompletionHandler:^(BOOL isLastOwner, NSError* error){
+                    if (isLastOwner)
+                    {
+                        UIAlertController *isLastOwnerPrompt = [UIAlertController alertControllerWithTitle:[VectorL10n error]
+                                                                                                   message:[VectorL10n roomParticipantsLeaveNotAllowedForLastOwnerMsg]
+                                                                                            preferredStyle:UIAlertControllerStyleAlert];
+                        
+                        [isLastOwnerPrompt addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
+                                                                              style:UIAlertActionStyleCancel
+                                                                            handler:^(UIAlertAction * action) {
+                            MXStrongifyAndReturnIfNil(self);
+                            self->currentAlert = nil;
+                        }]];
+                        
+                        MXStrongifyAndReturnIfNil(self);
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [self presentViewController:isLastOwnerPrompt animated:YES completion:nil];
+                            self->currentAlert = isLastOwnerPrompt;
+                        });
+                    }
+                    else
+                    {
+                        MXStrongifyAndReturnIfNil(self);
+                        [self addPendingActionMask];
+                        MXWeakify(self);
+                        [self.mxRoom leave:^{
+                            MXStrongifyAndReturnIfNil(self);
+                            [self removePendingActionMask];
+                            [self withdrawViewControllerAnimated:YES completion:nil];
+                            
+                        } failure:^(NSError *error) {
+                            MXStrongifyAndReturnIfNil(self);
+                            [self removePendingActionMask];
+                            MXLogDebug(@"[MXKRoomMemberDetailsVC] Leave room %@ failed", self->mxRoom.roomId);
+                            // Notify MatrixKit user
+                            NSString *myUserId = self.mainSession.myUser.userId;
+                            [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
+                            
+                        }];
+                    }
                 }];
                 break;
             }

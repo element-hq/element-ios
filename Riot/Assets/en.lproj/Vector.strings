@@ -479,6 +479,7 @@ Tap the + to start adding people.";
 "room_participants_invite_malformed_id" = "Malformed ID. Should be an email address or a Matrix ID like '@localpart:domain'";
 "room_participants_invited_section" = "INVITED";
 "room_participants_start_new_chat_error_using_user_email_without_identity_server" = "No identity server is configured so you cannot start a chat with a contact using an email.";
+"room_participants_leave_not_allowed_for_last_owner_msg" = "You can't leave the room since you're the only owner of it.";
 
 "room_participants_online" = "Online";
 "room_participants_offline" = "Offline";
