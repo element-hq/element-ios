@@ -2988,3 +2988,6 @@
 "sunset_delegated_oidc_registration_not_supported_title" = "Ви більше не можете створити обліковий запис з %1$@ за допомогою цього застосунку";
 "sunset_delegated_oidc_registration_not_supported_message" = "Завантажте %1$@, щоб використовувати %2$@ для свого облікового запису або оберіть інший домашній сервер.";
 "sunset_download_banner_message" = "Швидший, безпечніший і з потужними інструментами для спільної роботи.";
+"room_member_power_level_owner_in" = "Власник у %@";
+"room_member_power_level_short_owner" = "Власник";
+"room_participants_leave_not_allowed_for_last_owner_msg" = "Ви не можете вийти з кімнати, оскільки ви єдиний її власник.";
