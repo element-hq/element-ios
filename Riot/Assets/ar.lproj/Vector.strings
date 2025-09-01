@@ -2085,7 +2085,7 @@
 "room_details_copy_room_url" = "نسخ عنوان URL للغرفة";
 "widget_integration_missing_room_id" = "room_id مفقود في الطلب.";
 "room_access_settings_screen_message" = "قرر من يمكنه العثور على %@ والانضمام إليه.";
-"room_access_settings_screen_upgrade_alert_message_no_param" = "سيتمكن أي شخص في مساحة الوالدين من العثور على هذه الغرفة والانضمام إليها - دون الحاجة إلى دعوة الجميع يدويًا. يمكنك تغيير ذلك في إعدادات الغرفة في أي وقت.";
+"room_access_settings_screen_upgrade_alert_message_no_param" = "سيتمكن أي شخص في مساحة أصل من العثور على هذه الغرفة والانضمام إليها - دون الحاجة إلى دعوة الجميع يدويًا. يمكنك تغيير ذلك في إعدادات الغرفة في أي وقت.";
 "room_access_settings_screen_upgrade_alert_note" = "يرجى ملاحظة أن الترقية ستؤدي إلى إنشاء نسخة جديدة من الغرفة. ستبقى جميع الرسائل الحالية في هذه الغرفة المؤرشفة.";
 "room_access_settings_screen_upgrade_alert_auto_invite_switch" = "دعوة الأعضاء تلقائيًا إلى غرفة جديدة";
 "room_notifs_settings_notify_me_for" = "أعلمني بذلك";
