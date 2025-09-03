@@ -2539,3 +2539,5 @@
 "authentication_choose_password_input_title" = "Elige una nueva contraseña";
 /* The placeholder will show the email address that was entered. */
 "authentication_forgot_password_waiting_message" = "Sigue las instrucciones enviadas a %@";
+"invite_to" = "Invitar a %@";
+"accessibility_selected" = "seleccionado";
