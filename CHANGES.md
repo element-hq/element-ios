@@ -1,3 +1,13 @@
+## Changes in 1.11.32 (2025-10-14)
+
+🙌 Improvements
+
+- Rename the app to Element Classic. ([#7972](https://github.com/element-hq/element-ios/issues/7972))
+
+🧱 Build
+
+- Switch to building the project with Xcode 16.4. ([#7973](https://github.com/element-hq/element-ios/pull/7973))
+
 ## Changes in 1.11.31 (2025-07-28)
 
 ✨ Features

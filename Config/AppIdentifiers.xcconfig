@@ -16,7 +16,7 @@
 
 
 // App identity
-BUNDLE_DISPLAY_NAME = Element
+BUNDLE_DISPLAY_NAME = Element Classic
 BASE_BUNDLE_IDENTIFIER = im.vector.app
 APPLICATION_GROUP_IDENTIFIER = group.im.vector
 APPLICATION_SCHEME = element
