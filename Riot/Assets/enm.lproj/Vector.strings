@@ -442,3 +442,5 @@
 "contacts_address_book_no_identity_server" = "لم يتم تكوين خادم الهوية";
 "contacts_address_book_permission_denied" = "لم تسمح ل %@ بالوصول إلى جهات الاتصال المحلية الخاصة بك";
 "contacts_user_directory_offline_section" = "دليل المستخدم (غير متصل)";
+"contact_mx_users" = "مستخدمو المصفوفة";
+"attachment_unsupported_preview_message" = "هذا النوع من الملفات غير مدعوم.";

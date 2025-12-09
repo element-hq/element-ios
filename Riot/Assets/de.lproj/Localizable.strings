@@ -1,5 +1,5 @@
 /* New message from a specific person, not referencing a room */
-"MSG_FROM_USER" = "Nachricht von %@";
+"MSG_FROM_USER" = "%@ hat eine Nachricht gesendet";
 /* New message from a specific person in a named room */
 "MSG_FROM_USER_IN_ROOM" = "%@ schrieb in %@";
 /* New message from a specific person, not referencing a room. Content included. */
@@ -28,7 +28,7 @@
 /* Look, stuff's happened, alright? Just open the app. */
 "MSGS_IN_TWO_PLUS_ROOMS" = "%@ neue Nachrichten in %@, %@ und anderen";
 /* A user has invited you to a chat */
-"USER_INVITE_TO_CHAT" = "%@ hat dich zum chatten eingeladen";
+"USER_INVITE_TO_CHAT" = "%@ hat dich zum Chatten eingeladen";
 /* A user has invited you to an (unamed) group chat */
 "USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ hat dich in einen Gruppenchat eingeladen";
 /* A user has invited you to a named room */
@@ -40,15 +40,15 @@
 /* Incoming unnamed voice conference invite from a specific person */
 "VOICE_CONF_FROM_USER" = "Gruppen-Anruf von %@";
 /* Incoming unnamed video conference invite from a specific person */
-"VIDEO_CONF_FROM_USER" = "Videogruppenanruf von %@";
+"VIDEO_CONF_FROM_USER" = "Video-Gruppenanruf von %@";
 /* Incoming named voice conference invite from a specific person */
 "VOICE_CONF_NAMED_FROM_USER" = "Gruppen-Anruf von %@: '%@'";
 /* Incoming named video conference invite from a specific person */
-"VIDEO_CONF_NAMED_FROM_USER" = "Videogruppenanruf von %@: '%@'";
+"VIDEO_CONF_NAMED_FROM_USER" = "Video-Gruppenanruf von %@: '%@'";
 /* A single unread message in a room */
-"SINGLE_UNREAD_IN_ROOM" = "Du hast eine Nachricht in %@ bekommen";
+"SINGLE_UNREAD_IN_ROOM" = "Du hast eine Nachricht in %@ erhalten";
 /* A single unread message */
-"SINGLE_UNREAD" = "Du hast eine Nachricht bekommen";
+"SINGLE_UNREAD" = "Du hast eine Nachricht erhalten";
 /* Message title for a specific person in a named room */
 "MSG_FROM_USER_IN_ROOM_TITLE" = "%@ in %@";
 /* Sticker from a specific person, not referencing a room. */
@@ -77,7 +77,7 @@
 /** Membership Updates **/
 
 /* A user has change their name to a new name */
-"USER_UPDATED_DISPLAYNAME" = "%@ hat den Nicknamen zu %@ geändert";
+"USER_UPDATED_DISPLAYNAME" = "%@ hat den Namen zu %@ geändert";
 
 /* A user has reacted to a message, but the reaction content is unknown */
 "GENERIC_REACTION_FROM_USER" = "%@ hat eine Reaktion gesendet";
@@ -114,10 +114,11 @@
 "AUDIO_FROM_USER" = "%@ hat die Audiodatei %@ gesendet";
 
 /* A user's membership has updated in an unknown way */
-"USER_MEMBERSHIP_UPDATED" = "Profil von %@ geupdatet";
+"USER_MEMBERSHIP_UPDATED" = "%@ hat das Profil aktualisiert";
 
 /* New file message from a specific person, not referencing a room. */
 "LOCATION_FROM_USER" = "%@ hat den eigenen Standort geteilt";
 
 /* New voice broadcast from a specific person, not referencing a room. */
-"VOICE_BROADCAST_FROM_USER" = "%@ begann eine Sprachübertragung";
+"VOICE_BROADCAST_FROM_USER" = "%@ hat eine Sprachübertragung gestartet";
+"UNSUPPORTED_CALL" = "Nicht unterstützter Anruf";
