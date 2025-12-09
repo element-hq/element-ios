@@ -99,7 +99,6 @@
 
 // MARK: - MatrixKit
 
-
 "matrix" = "Matrix";
 // Login Screen
 "login_create_account" = "Account anmoakn:";
@@ -213,3 +212,4 @@
 "settings" = "Instelliengn";
 "settings_enable_inapp_notifications" = "In-app-meldiengn inschoakeln";
 "settings_enable_push_notifications" = "Pushmeldiengn inschoakeln";
+"pill_message_in" = "الرسالة في %@";
