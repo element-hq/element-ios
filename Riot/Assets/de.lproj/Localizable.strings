@@ -12,7 +12,7 @@
 "ACTION_FROM_USER_IN_ROOM" = "%@: * %@ %@";
 /* New action message from a specific person, not referencing a room. */
 /* New action message from a specific person in a named room. */
-"IMAGE_FROM_USER_IN_ROOM" = "%@ hat ein Bild in %@ gesendet";
+"IMAGE_FROM_USER_IN_ROOM" = "%@ sendet ein Bild %@ in %@";
 /* Multiple unread messages in a room */
 "UNREAD_IN_ROOM" = "%@ neue Nachrichten in %@";
 /* Multiple unread messages from a specific person, not referencing a room */
