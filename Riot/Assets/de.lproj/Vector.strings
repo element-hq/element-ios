@@ -2781,3 +2781,17 @@
 "settings_manage_account_action" = "Konto verwalten";
 "manage_session_redirect" = "Du wirst zum Authentifizierungsdienst deines Servers weitergeleitet, um das Abmelden abzuschließen.";
 "manage_session_redirect_error" = "Funktion aktuell nicht verfügbar. Bitte kontaktiere deine Home-Server-Administration";
+"room_action_report" = "Raum melden";
+"room_action_report_prompt_reason" = "Grund für die Meldung dieses Raums";
+"sunset_delegated_oidc_registration_not_supported_title" = "Du kannst mit dieser App kein Konto mehr mit %1$@ erstellen";
+"sunset_delegated_oidc_registration_not_supported_message" = "Lade %1$@ herunter, um %2$@ für dein Konto zu verwenden, oder wähle einen anderen Homeserver.";
+"sunset_delegated_oidc_registration_not_supported_generic_error" = "Du kannst mit dieser App kein Konto mehr mit dem eingegebenen Homeserver erstellen";
+"sunset_download_banner_title" = "%1$@ herunterladen";
+"sunset_download_banner_message" = "Schneller, sicherer und voller leistungsstarker Kollaborationstools.";
+"sunset_download_banner_learn_more" = "Mehr erfahren";
+"room_participants_leave_not_allowed_for_last_owner_msg" = "Du kannst den Raum nicht verlassen, da du der einzige Besitzer bist.";
+"room_member_power_level_owner_in" = "Besitzer in %@";
+"room_member_power_level_short_owner" = "Besitzer";
+"call_unsupported_matrix_rtc_call" = "Nicht unterstützter Anruf. Die neue Element X App wird benötigt, um an diesem Anruf teilzunehmen.";
+"wysiwyg_composer_action_minimise_action" = "Editor verkleinern";
+"wysiwyg_composer_action_maximise_action" = "Editor erweitern";

@@ -2992,3 +2992,4 @@
 "sunset_delegated_oidc_registration_not_supported_generic_error" = "Anda sudah tidak bisa lagi membuat akun dengan homeserver yang ditentukan menggunakan aplikasi ini";
 "room_member_power_level_owner_in" = "Pemilik dalam %@";
 "room_member_power_level_short_owner" = "Pemilik";
+"room_participants_leave_not_allowed_for_last_owner_msg" = "Anda tidak dapat meninggalkan ruangan karena Anda adalah pemilik satu-satunya.";
