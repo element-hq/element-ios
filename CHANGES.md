@@ -1,3 +1,9 @@
+## Changes in 1.11.33 (2025-12-09)
+
+Others
+
+- Update the default bug reporting URL. ([#7979](https://github.com/element-hq/element-ios/pull/7979))
+
 ## Changes in 1.11.32 (2025-10-14)
 
 🙌 Improvements
