@@ -196,7 +196,7 @@ final class BuildSettings: NSObject {
     
     
     // MARK: - Bug report
-    static let bugReportEndpointUrlString = "https://riot.im/bugreports"
+    static let bugReportEndpointUrlString = "https://rageshakes.element.io/api"
     // Use the name allocated by the bug report server
     static let bugReportApplicationId = "riot-ios"
     static let bugReportUISIId = "element-auto-uisi"

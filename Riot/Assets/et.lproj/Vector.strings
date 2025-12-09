@@ -2737,3 +2737,4 @@
 "sunset_delegated_oidc_registration_not_supported_title" = "Selle rakendusega enam ei saa luua kasutajakontot teenuses %1$@";
 "room_member_power_level_owner_in" = "„%@“ jututoa omanik";
 "room_member_power_level_short_owner" = "Omanik";
+"room_participants_leave_not_allowed_for_last_owner_msg" = "Kuna oled jututoa ainus omanik, siis sa ei saa siit lahkuda.";

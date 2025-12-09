@@ -2730,3 +2730,6 @@
 "sunset_download_banner_message" = "Snabbare, säkrare och fullproppad med kraftfulla samarbetsverktyg.";
 "sunset_download_banner_learn_more" = "Läs mer";
 "sunset_delegated_oidc_registration_not_supported_message" = "Ladda ner %1$@ för att använda %2$@ för ditt konto eller välj en annan hemserver.";
+"room_member_power_level_short_owner" = "Ägare";
+"room_member_power_level_owner_in" = "Ägare i %@";
+"room_participants_leave_not_allowed_for_last_owner_msg" = "Du kan inte lämna rummet eftersom du är den enda ägaren av det.";
