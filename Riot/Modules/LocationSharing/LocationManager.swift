@@ -24,7 +24,7 @@ class LocationManager: NSObject {
     // MARK: - Constants
     
     private enum Constants {
-        static let distanceFiler: CLLocationDistance = 200.0
+        static let distanceFiler: CLLocationDistance = 10.0
         static let waitForAuthorizationStatusDelay: TimeInterval = 0.5
     }
     
