@@ -6638,7 +6638,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     {
         Widget *jitsiWidget = [self.customizedRoomDataSource jitsiWidget];
         
-        if (jitsiWidget && self.canEditJitsiWidget)
+        if (jitsiWidget && self.canEditJitsiWidget && !self.roomDataSource.room.isDirect)
         {
             [self.removeJitsiWidgetView reset];
             self.removeJitsiWidgetContainer.hidden = NO;
