@@ -124,8 +124,8 @@ final class UserSessionsFlowCoordinator: NSObject, Coordinator, Presentable {
         if sessionInfo.isCurrent {
             self.showLogoutConfirmationForCurrentSession()
         } else {
-            if let authentication = self.parameters.session.homeserverWellknown.authentication {
-                if let logoutURL = authentication.getLogoutDeviceURL(fromID: sessionInfo.id) {
+            if self.parameters.session.hasOAuth2APIEnabled {
+                if let logoutURL = self.parameters.session.getLogoutDeviceURL(fromID: sessionInfo.id) {
                     self.openDeviceLogoutRedirectURL(logoutURL)
                 } else {
                     self.showDeviceLogoutRedirectError()
@@ -180,7 +180,7 @@ final class UserSessionsFlowCoordinator: NSObject, Coordinator, Presentable {
     private func createOtherSessionsCoordinator(sessionInfos: [UserSessionInfo],
                                                 filterBy filter: UserOtherSessionsFilter,
                                                 title: String) -> UserOtherSessionsCoordinator {
-        let shouldShowDeviceLogout = parameters.session.homeserverWellknown.authentication == nil
+        let shouldShowDeviceLogout = !parameters.session.hasOAuth2APIEnabled
         let parameters = UserOtherSessionsCoordinatorParameters(sessionInfos: sessionInfos,
                                                                 filter: filter,
                                                                 title: title,

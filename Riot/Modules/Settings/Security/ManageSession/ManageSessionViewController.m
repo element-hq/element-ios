@@ -647,10 +647,9 @@ enum {
 
 - (void)removeDevice
 {
-    MXWellKnownAuthentication *authentication = self.mainSession.homeserverWellknown.authentication;
-    if (authentication)
+    if (self.mainSession.hasOAuth2APIEnabled)
     {
-        NSURL *logoutURL = [authentication getLogoutDeviceURLFromID:device.deviceId];
+        NSURL *logoutURL = [self.mainSession getLogoutDeviceURLFromID:device.deviceId];
         if (logoutURL)
         {
             [self removeDeviceRedirectWithURL:logoutURL];
