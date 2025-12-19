@@ -390,7 +390,7 @@ SSOAuthenticationPresenterDelegate>
     sectionUserSettings.headerTitle = [VectorL10n settingsUserSettings];
     [tmpSections addObject:sectionUserSettings];
     
-    NSString *manageAccountURL = self.mainSession.accountManagementUri;
+    NSString *manageAccountURL = self.mainSession.accountManagementURI;
     if (manageAccountURL)
     {
         Section *account = [Section sectionWithTag: SECTION_TAG_ACCOUNT];
@@ -3902,7 +3902,7 @@ SSOAuthenticationPresenterDelegate>
 
 - (void)onManageAccountTap
 {
-    NSURL *url = [NSURL URLWithString: self.mainSession.accountManagementUri];
+    NSURL *url = [NSURL URLWithString: self.mainSession.accountManagementURI];
     if (url) {
         SSOAccountService *service = [[SSOAccountService alloc] initWithAccountURL:url];
         SSOAuthenticationPresenter *presenter = [[SSOAuthenticationPresenter alloc] initWithSsoAuthenticationService:service];
