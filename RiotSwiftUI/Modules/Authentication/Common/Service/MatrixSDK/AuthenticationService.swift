@@ -147,12 +147,12 @@ class AuthenticationService: NSObject {
                 homeserver.registrationFlow = try await registrationWizard.registrationFlow()
                 self.registrationWizard = registrationWizard
             } catch {
+                if homeserver.preferredLoginMode.providesDelegatedOIDCCompatibility {
+                    throw RegistrationError.delegatedOIDCRequiresReplacementApp
+                }
+                
                 guard homeserver.preferredLoginMode.hasSSO, error as? RegistrationError == .registrationDisabled else {
-                    if homeserver.preferredLoginMode.providesDelegatedOIDCCompatibility {
-                        throw RegistrationError.delegatedOIDCRequiresReplacementApp
-                    } else {
-                        throw error
-                    }
+                    throw error
                 }
                 
                 // Continue without throwing when registration is disabled but SSO is available.
