@@ -29,18 +29,21 @@ enum MockChangePasswordScreenState: MockScreenState, CaseIterable {
         let viewModel: ChangePasswordViewModel
         switch self {
         case .allEmpty:
-            viewModel = ChangePasswordViewModel()
+            viewModel = ChangePasswordViewModel(passwordRequirements: "The password must contain a 🎪 emoji.")
         case .cannotSubmit:
             viewModel = ChangePasswordViewModel(oldPassword: "12345678",
-                                                newPassword1: "87654321")
+                                                newPassword1: "87654321",
+                                                passwordRequirements: "The password must contain a 🎪 emoji.")
         case .canSubmit:
             viewModel = ChangePasswordViewModel(oldPassword: "12345678",
                                                 newPassword1: "87654321",
-                                                newPassword2: "87654321")
+                                                newPassword2: "87654321",
+                                                passwordRequirements: "The password must contain a 🎪 emoji.")
         case .canSubmitAndSignoutAllDevicesChecked:
             viewModel = ChangePasswordViewModel(oldPassword: "12345678",
                                                 newPassword1: "87654321",
                                                 newPassword2: "87654321",
+                                                passwordRequirements: "The password must contain a 🎪 emoji.",
                                                 signoutAllDevices: true)
         }
         
