@@ -344,7 +344,7 @@ SSOAuthenticationPresenterDelegate>
     Section *sectionUserSettings = [Section sectionWithTag:SECTION_TAG_USER_SETTINGS];
     [sectionUserSettings addRowWithTag:USER_SETTINGS_PROFILE_PICTURE_INDEX];
     [sectionUserSettings addRowWithTag:USER_SETTINGS_DISPLAYNAME_INDEX];
-    if (RiotSettings.shared.settingsScreenShowChangePassword)
+    if (RiotSettings.shared.settingsScreenShowChangePassword && self.mainSession.homeserverCapabilitiesService.canChangePassword)
     {
         [sectionUserSettings addRowWithTag:USER_SETTINGS_CHANGE_PASSWORD_INDEX];
     }
