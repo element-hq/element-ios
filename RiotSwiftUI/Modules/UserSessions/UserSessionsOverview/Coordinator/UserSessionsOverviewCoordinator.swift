@@ -30,7 +30,7 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
         self.parameters = parameters
         service = parameters.service
         
-        let shouldShowDeviceLogout = parameters.session.homeserverWellknown.authentication == nil
+        let shouldShowDeviceLogout = !parameters.session.hasOAuth2APIEnabled
         viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: parameters.service,
                                                   settingsService: RiotSettings.shared,
                                                   showDeviceLogout: shouldShowDeviceLogout)

@@ -1,3 +1,17 @@
+## Changes in 1.11.34 (2026-01-06)
+
+🙌 Improvements
+
+- Update OAuth-awareness to support the stable version of MSC3824. ([#7925](https://github.com/element-hq/element-ios/issues/7925))
+
+🐛 Bugfixes
+
+- Respect the m.change_password capability in the Settings screen. ([#7990](https://github.com/element-hq/element-ios/pull/7990))
+
+🧱 Build
+
+- Stop using SonarCloud on CI. ([#7993](https://github.com/element-hq/element-ios/pull/7993))
+
 ## Changes in 1.11.33 (2025-12-09)
 
 Others
