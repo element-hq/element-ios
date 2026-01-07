@@ -393,6 +393,7 @@ class NotificationService: UNNotificationServiceExtension {
                                     if let accountData = response.value, accountData.virtualRoomInfo.isVirtual {
                                         self.sendReadReceipt(forEvent: event)
                                         ignoreBadgeUpdate = true
+                                        event.content.badge = nil
                                     }
                                     self.validateNotificationContentAndComplete(
                                         notificationTitle: notificationTitle,
