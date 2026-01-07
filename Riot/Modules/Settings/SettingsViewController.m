@@ -344,7 +344,7 @@ SSOAuthenticationPresenterDelegate>
     Section *sectionUserSettings = [Section sectionWithTag:SECTION_TAG_USER_SETTINGS];
     [sectionUserSettings addRowWithTag:USER_SETTINGS_PROFILE_PICTURE_INDEX];
     [sectionUserSettings addRowWithTag:USER_SETTINGS_DISPLAYNAME_INDEX];
-    if (RiotSettings.shared.settingsScreenShowChangePassword)
+    if (RiotSettings.shared.settingsScreenShowChangePassword && self.mainSession.homeserverCapabilitiesService.canChangePassword)
     {
         [sectionUserSettings addRowWithTag:USER_SETTINGS_CHANGE_PASSWORD_INDEX];
     }
@@ -390,7 +390,7 @@ SSOAuthenticationPresenterDelegate>
     sectionUserSettings.headerTitle = [VectorL10n settingsUserSettings];
     [tmpSections addObject:sectionUserSettings];
     
-    NSString *manageAccountURL = self.mainSession.homeserverWellknown.authentication.account;
+    NSString *manageAccountURL = self.mainSession.accountManagementURI;
     if (manageAccountURL)
     {
         Section *account = [Section sectionWithTag: SECTION_TAG_ACCOUNT];
@@ -619,7 +619,7 @@ SSOAuthenticationPresenterDelegate>
         }
     }
     
-    if (BuildSettings.settingsScreenAllowDeactivatingAccount && !self.mainSession.homeserverWellknown.authentication)
+    if (BuildSettings.settingsScreenAllowDeactivatingAccount && !self.mainSession.hasOAuth2APIEnabled)
     {
         Section *sectionDeactivate = [Section sectionWithTag:SECTION_TAG_DEACTIVATE_ACCOUNT];
         [sectionDeactivate addRowWithTag:0];
@@ -3902,7 +3902,7 @@ SSOAuthenticationPresenterDelegate>
 
 - (void)onManageAccountTap
 {
-    NSURL *url = [NSURL URLWithString: self.mainSession.homeserverWellknown.authentication.account];
+    NSURL *url = [NSURL URLWithString: self.mainSession.accountManagementURI];
     if (url) {
         SSOAccountService *service = [[SSOAccountService alloc] initWithAccountURL:url];
         SSOAuthenticationPresenter *presenter = [[SSOAuthenticationPresenter alloc] initWithSsoAuthenticationService:service];

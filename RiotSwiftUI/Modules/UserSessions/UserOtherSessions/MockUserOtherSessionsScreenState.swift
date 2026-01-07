@@ -44,7 +44,7 @@ enum MockUserOtherSessionsScreenState: MockScreenState, CaseIterable {
                                                    settingsService: MockUserSessionSettings())
         case .none:
             viewModel = UserOtherSessionsViewModel(sessionInfos: [],
-                                                   filter: .all,
+                                                   filter: .verified,
                                                    title: VectorL10n.userSessionsOverviewOtherSessionsSectionTitle,
                                                    showDeviceLogout: true,
                                                    settingsService: MockUserSessionSettings())
