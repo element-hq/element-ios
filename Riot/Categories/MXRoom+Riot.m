@@ -663,4 +663,17 @@ Please see LICENSE in the repository root for full details.
     return objc_getAssociatedObject(self, @selector(notificationCenterDidUpdateObserver));
 }
 
++ (BOOL)isRoomIncognitoEnabled:(MXRoomState*)roomState {
+    
+    NSPredicate *customPolicy = [NSPredicate predicateWithFormat:@"type like %@", @"m.room.custom.policy"];
+    NSArray<MXEvent*> *events = [roomState.stateEvents filteredArrayUsingPredicate:customPolicy];
+    NSArray *sortedArray = [events sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        return [[obj1 valueForKey:@"originServerTs"] compare:[obj2 valueForKey:@"originServerTs"]];
+    }];
+    MXEvent *event = sortedArray.lastObject;
+    NSString *incognitoMode = [[event wireContent]
+                            valueForKey:@"incognito"];
+    return [incognitoMode isEqualToString:@"incognito.enabled"];
+}
+
 @end

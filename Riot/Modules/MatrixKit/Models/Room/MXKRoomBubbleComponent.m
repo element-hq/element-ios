@@ -11,6 +11,7 @@ Please see LICENSE in the repository root for full details.
 #import "MXEvent+MatrixKit.h"
 #import "MXKSwiftHeader.h"
 #import <MatrixSDK/MatrixSDK.h>
+#import "MXRoom+Riot.h"
 
 @interface MXKRoomBubbleComponent ()
 
@@ -36,6 +37,27 @@ Please see LICENSE in the repository root for full details.
                                                                        withRoomState:roomState
                                                                   andLatestRoomState:latestRoomState
                                                                                error:&error];
+        
+        if ([MXRoom isRoomIncognitoEnabled:roomState]) {
+            NSArray *excludedEvents = @[
+                                        @(MXEventTypeRoomMember),
+                                        @(MXEventTypeRoomJoinRules),
+                                        @(MXEventTypeRoomPowerLevels),
+                                        @(MXEventTypeRoomHistoryVisibility),
+                                        @(MXEventTypeRoomRedaction),
+                                        @(MXEventTypeRoomThirdPartyInvite)];
+            
+            if ([excludedEvents containsObject:@(event.eventType)]) {
+                return nil;
+            }
+            
+            if (event.wireEventType == MXEventTypeRoomMember) {
+                if ([event.wireContent valueForKey:@"membership"]) {
+                    return nil;
+                }
+                
+            }
+        }
         
         // Store the potential error
         event.mxkEventFormatterError = error;

@@ -20,6 +20,7 @@ Please see LICENSE in the repository root for full details.
 #import "ContactTableViewCell.h"
 
 #import "RageShakeManager.h"
+#import "MXRoom+Riot.h"
 
 @interface RoomParticipantsViewController () <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UIGestureRecognizerDelegate, MXKRoomMemberDetailsViewControllerDelegate, RoomParticipantsInviteCoordinatorBridgePresenterDelegate>
 {
@@ -848,7 +849,15 @@ Please see LICENSE in the repository root for full details.
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     NSInteger count = 0;
-    
+    MXRoomState *roomState = self.mxRoom.dangerousSyncState;
+   // If the room is incognito mode non admin users can't see the list of members
+    if([MXRoom isRoomIncognitoEnabled:roomState]) {
+        MXRoomPowerLevels *powerLevels = [roomState powerLevels];
+        NSInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
+        if(oneSelfPowerLevel < RoomPowerLevelModerator) {
+            return 0;
+        }
+    }
     participantsSection = invitedSection = -1;
     
     if (currentSearchText.length)
