@@ -28,6 +28,7 @@ static NSString * _Nonnull kRCTTextViewClassName = @"RCTTextView";
  */
 static NSString * _Nonnull kJitsiFeatureFlagChatEnabled = @"chat.enabled";
 static NSString * _Nonnull kJitsiFeatureFlagScreenSharingEnabled = @"ios.screensharing.enabled";
+static NSString * _Nonnull kJitsiFeatureFlagHideDisplayName = @"prejoinpage.hideDisplayName";
 
 @interface JitsiViewController () <PictureInPicturable, JitsiMeetViewDelegate>
 
@@ -272,6 +273,7 @@ static NSString * _Nonnull kJitsiFeatureFlagScreenSharingEnabled = @"ios.screens
             builder.token = self.jwtToken;
             [builder setFeatureFlag:kJitsiFeatureFlagChatEnabled withBoolean:NO];
             [builder setFeatureFlag:kJitsiFeatureFlagScreenSharingEnabled withBoolean: YES];
+            [builder setFeatureFlag:kJitsiFeatureFlagHideDisplayName withBoolean: YES];
         }];
         
         [self.jitsiMeetView join:jitsiMeetConferenceOptions];
