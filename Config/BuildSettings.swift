@@ -462,4 +462,8 @@ final class BuildSettings: NSObject {
     /// when it is detected that the homeserver is running Matrix 2.0. Set this to `nil` until you
     /// are ready to migrate your users.
     static let replacementApp: ReplacementApp? = .init()
+    
+    // MARK: - Verification Required Banner
+    
+    static let verificationRequiredBannerLearnMoreURL = URL(string: "https://docs.element.io/latest/element-support/device-verification/how-to-verify-devices")!
 }

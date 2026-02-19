@@ -8,9 +8,6 @@
 import SwiftUI
 
 struct VerificationRequiredBanner: View {
-    // swiftlint:disable:next force_unwrapping
-    static let learnMoreURL = URL(string: "https://docs.element.io/latest/element-support/device-verification/how-to-verify-devices")!
-    
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
     let verifyAction: () -> Void
@@ -26,7 +23,7 @@ struct VerificationRequiredBanner: View {
                 Text(VectorL10n.verificationRequiredBannerDescription)
                     .foregroundStyle(theme.colors.secondaryContent)
                     .font(theme.fonts.subheadline)
-                Link(VectorL10n.verificationRequiredBannerLearnMore, destination: Self.learnMoreURL)
+                Link(VectorL10n.verificationRequiredBannerLearnMore, destination: BuildSettings.verificationRequiredBannerLearnMoreURL)
                     .foregroundStyle(theme.colors.primaryContent)
                     .font(theme.fonts.subheadline.weight(.semibold))
             }
