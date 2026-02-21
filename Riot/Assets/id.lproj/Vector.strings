@@ -2993,3 +2993,7 @@
 "room_member_power_level_owner_in" = "Pemilik dalam %@";
 "room_member_power_level_short_owner" = "Pemilik";
 "room_participants_leave_not_allowed_for_last_owner_msg" = "Anda tidak dapat meninggalkan ruangan karena Anda adalah pemilik satu-satunya.";
+"verification_required_banner_title" = "Verifikasi perangkat ini";
+"verification_required_banner_description" = "Mulai April 2026, perangkat yang belum diverifikasi tidak akan dapat mengirim dan menerima pesan";
+"verification_required_banner_learn_more" = "Pelajari lebih lanjut";
+"verification_required_banner_verify_button" = "Verifikasi sekarang";
