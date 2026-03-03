@@ -847,6 +847,24 @@ extension AllChatsViewController: SplitViewMasterViewControllerProtocol {
 
         presentVerifyCurrentSessionAlert(with: session)
     }
+    
+    func presentVerificationRequiredBanner(with session: MXSession) {
+        guard bannerView == nil else {
+            return
+        }
+        
+        let banner = VerificationRequiredBanner {  AppDelegate.theDelegate().presentCompleteSecurity(for: session) }
+        let hostingController = VectorHostingController(rootView: banner)
+        let bannerView = VerificationRequiredBannerView()
+        bannerView.contentView = hostingController.view
+        presentBannerView(bannerView, animated: true)
+    }
+    
+    func dismissVerificationRequiredBanner() {
+        if bannerView is VerificationRequiredBannerView {
+            dismissBannerView(animated: true)
+        }
+    }
 
     /// Verify others device if needed.
     ///

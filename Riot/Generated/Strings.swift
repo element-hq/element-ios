@@ -9367,6 +9367,22 @@ public class VectorL10n: NSObject {
   public static func userVerificationStartWaitingPartner(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "user_verification_start_waiting_partner", p1)
   }
+  /// As of April 2026 unverified devices will not be able to send and receive messages
+  public static var verificationRequiredBannerDescription: String { 
+    return VectorL10n.tr("Vector", "verification_required_banner_description") 
+  }
+  /// Learn more
+  public static var verificationRequiredBannerLearnMore: String { 
+    return VectorL10n.tr("Vector", "verification_required_banner_learn_more") 
+  }
+  /// Verify this device
+  public static var verificationRequiredBannerTitle: String { 
+    return VectorL10n.tr("Vector", "verification_required_banner_title") 
+  }
+  /// Verify now
+  public static var verificationRequiredBannerVerifyButton: String { 
+    return VectorL10n.tr("Vector", "verification_required_banner_verify_button") 
+  }
   /// We are no longer supporting %@ on iOS %@. To continue using %@ to its full potential, we advise you to upgrade your version of iOS.
   public static func versionCheckBannerSubtitleDeprecated(_ p1: String, _ p2: String, _ p3: String) -> String {
     return VectorL10n.tr("Vector", "version_check_banner_subtitle_deprecated", p1, p2, p3)

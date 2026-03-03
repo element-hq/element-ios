@@ -2615,6 +2615,11 @@ To enable access, tap Settings> Location and select Always";
 "user_session_overview_session_title" = "Session";
 "user_session_overview_session_details_button_title" = "Session details";
 
+// MARK: - Verification Required Banner
+"verification_required_banner_title" = "Verify this device";
+"verification_required_banner_description" = "As of April 2026 unverified devices will not be able to send and receive messages";
+"verification_required_banner_learn_more" = "Learn more";
+"verification_required_banner_verify_button" = "Verify now";
 
 // MARK: - WYSIWYG Composer
 "wysiwyg_composer_action_minimise_action" = "Shrink composer";

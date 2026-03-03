@@ -7,6 +7,7 @@
 
 import Foundation
 import AuthenticationServices
+import MatrixSDK
 
 /// Provides context to target where in an application's UI the authorization view should be shown.
 class SSOAuthenticationSessionContextProvider: NSObject, SSOAuthenticationSessionContextProviding, ASWebAuthenticationPresentationContextProviding {
@@ -60,6 +61,14 @@ final class SSOAuthentificationSession: SSOAuthentificationSessionProtocol {
         
         if let asWebContextProvider = contextProvider as? ASWebAuthenticationPresentationContextProviding {
             authentificationSession.presentationContextProvider = asWebContextProvider
+        }
+        
+        if #available(iOS 17.4, *),
+           let httpAdditionalHeaders = MXSDKOptions.sharedInstance().httpAdditionalHeaders,
+           let userAgent = httpAdditionalHeaders["User-Agent"] {
+            authentificationSession.additionalHeaderFields = [
+                "X-Element-User-Agent": userAgent
+            ]
         }
         
         authentificationSession.start()

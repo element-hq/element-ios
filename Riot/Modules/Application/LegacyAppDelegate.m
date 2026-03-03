@@ -3376,12 +3376,15 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 case MXCrossSigningStateCrossSigningExists:
                     MXLogDebug(@"[AppDelegate] handleAppState: presentVerifyCurrentSessionAlertIfNeededWithSession");
                     [self.masterTabBarController presentVerifyCurrentSessionAlertIfNeededWithSession:mxSession];
+                    [self.masterTabBarController presentVerificationRequiredBannerWithSession:mxSession];
                     break;
                 case MXCrossSigningStateCanCrossSign:
                     MXLogDebug(@"[AppDelegate] handleAppState: presentReviewUnverifiedSessionsAlertIfNeededWithSession");
                     [self.masterTabBarController presentReviewUnverifiedSessionsAlertIfNeededWithSession:mxSession];
+                    [self.masterTabBarController dismissVerificationRequiredBanner];
                     break;
                 default:
+                    [self.masterTabBarController dismissVerificationRequiredBanner];
                     break;
             }
         } failure:^(NSError * _Nonnull error) {
@@ -3567,6 +3570,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         keyVerificationCompletionBlock();
     }
     keyVerificationCompletionBlock = nil;
+    
+    [self checkCrossSigningForSession:self.mxSessions.firstObject];
 }
 
 #pragma mark - New request
