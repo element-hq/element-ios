@@ -1,1 +1,0 @@
-Show a permanent disclaimer banner when unverified.
