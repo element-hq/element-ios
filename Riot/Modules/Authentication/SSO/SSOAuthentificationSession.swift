@@ -63,14 +63,12 @@ final class SSOAuthentificationSession: SSOAuthentificationSessionProtocol {
             authentificationSession.presentationContextProvider = asWebContextProvider
         }
         
-        if #available(iOS 17.4, *) {
-            if let httpAdditionalHeaders = MXSDKOptions.sharedInstance().httpAdditionalHeaders {
-                if let userAgent = httpAdditionalHeaders["User-Agent"] {
-                    authentificationSession.additionalHeaderFields = [
-                        "X-Element-User-Agent": userAgent
-                    ]
-                }
-            }
+        if #available(iOS 17.4, *),
+           let httpAdditionalHeaders = MXSDKOptions.sharedInstance().httpAdditionalHeaders,
+           let userAgent = httpAdditionalHeaders["User-Agent"] {
+            authentificationSession.additionalHeaderFields = [
+                "X-Element-User-Agent": userAgent
+            ]
         }
         
         authentificationSession.start()
