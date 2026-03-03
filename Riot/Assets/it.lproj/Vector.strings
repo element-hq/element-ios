@@ -2761,3 +2761,6 @@
 "sunset_download_banner_message" = "Più veloce, più sicura, e piena di potenti strumenti di collaborazione.";
 "sunset_download_banner_learn_more" = "Per saperne di più";
 "sunset_delegated_oidc_registration_not_supported_generic_error" = "Non puoi più creare un account con l'homeserver indicato usando quest'app";
+"room_participants_leave_not_allowed_for_last_owner_msg" = "Non puoi uscire dalla stanza poiché ne sei l'unico proprietario.";
+"room_member_power_level_owner_in" = "Proprietario in %@";
+"room_member_power_level_short_owner" = "Proprietario";

@@ -1,3 +1,17 @@
+## Changes in 1.11.35 (2026-03-03)
+
+✨ Features
+
+- Show a permanent disclaimer banner when unverified. ([#8004](https://github.com/element-hq/element-ios/pull/8004))
+
+🙌 Improvements
+
+- Jitsi doesn't allow name change now. ([#8003](https://github.com/element-hq/element-ios/pull/8003))
+
+🧱 Build
+
+- Support for building with Xcode 26 ([#8000](https://github.com/element-hq/element-ios/issues/8000))
+
 ## Changes in 1.11.34 (2026-01-06)
 
 🙌 Improvements

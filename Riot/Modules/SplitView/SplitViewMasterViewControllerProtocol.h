@@ -75,6 +75,10 @@
 /// @param session the matrix session.
 - (void)presentVerifyCurrentSessionAlertIfNeededWithSession:(MXSession*)session;
 
+- (void)presentVerificationRequiredBannerWithSession:(MXSession*)session;
+
+- (void)dismissVerificationRequiredBanner;
+
 /// Verify others device if needed.
 ///
 /// @param session the matrix session.

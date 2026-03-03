@@ -21,7 +21,7 @@ platform :ios do
 
   before_all do
     # Ensure used Xcode version
-    xcversion(version: "16.4")
+    xcversion(version: "26.2")
   end
 
   #### Public ####
@@ -456,7 +456,7 @@ platform :ios do
 
     dsym_path = "#{ENV["BUILD_OUTPUT_DIRECTORY"]}/#{ENV["IPA_NAME"]}.app.dSYM.zip"
   
-    sentry_upload_dif(
+    sentry_debug_files_upload(
       auth_token: ENV["SENTRY_AUTH_TOKEN"],
       org_slug: 'element',
       project_slug: 'element-ios',
