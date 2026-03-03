@@ -2773,3 +2773,13 @@
 "sunset_delegated_oidc_registration_not_supported_title" = "S’mund të krijoni më një llogari me %1$@ duke përdorur këtë aplikacion";
 "sunset_download_banner_message" = "Më i shpejtë, më i siguruar dhe plot me mjete të fuqishme bashkëpunimi.";
 "sunset_download_banner_learn_more" = "Mësoni më tepër";
+"room_member_power_level_short_owner" = "I zoti";
+"room_member_power_level_owner_in" = "I zoti i %@";
+"verification_required_banner_description" = "Duke filluar nga prilli i 2026, pajisjet e paverifikuara s’do të jenë në gjendje të dërgojnë dhe marrin mesazhe";
+"verification_required_banner_learn_more" = "Mësoni më tepër";
+"room_participants_leave_not_allowed_for_last_owner_msg" = "S’mund ta braktisni dhomën, ngaqë jeni i zoti i vetëm i saj.";
+"verification_required_banner_verify_button" = "Verifikojeni tani";
+"device_name_mobile" = "%@ Celular";
+"verification_required_banner_title" = "Verifikojeni këtë pajisje";
+"device_name_desktop" = "%@ Desktop";
+"device_name_web" = "%@ Web";
