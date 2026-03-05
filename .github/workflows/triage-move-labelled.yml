@@ -4,6 +4,8 @@ on:
   issues:
     types: [labeled]
 
+permissions: {} # We use ELEMENT_BOT_TOKEN instead
+
 jobs:
   apply_Z-Labs_label:
     name: Add Z-Labs label for features behind labs flags
