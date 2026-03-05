@@ -28,6 +28,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
             submodules: 'true'
+            persist-credentials: false
 
       # Common cache
       # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
