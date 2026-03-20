@@ -963,7 +963,7 @@
 "user_verification_sessions_list_user_trust_level_trusted_title" = "Vertraut";
 "user_verification_sessions_list_user_trust_level_warning_title" = "Warnung";
 "user_verification_sessions_list_user_trust_level_unknown_title" = "Unbekannt";
-"user_verification_sessions_list_information" = "Nachrichten mit diesem Gegenüber sind Ende-zu-Ende verschlüsselt und können nicht von Dritten gelesen werden.";
+"user_verification_sessions_list_information" = "Nachrichten mit diesem Gegenüber in diesem Raum sind Ende-zu-Ende verschlüsselt und können nicht von Dritten gelesen werden.";
 "user_verification_sessions_list_table_title" = "Sitzungen";
 "user_verification_sessions_list_session_trusted" = "Vertraut";
 "user_verification_sessions_list_session_untrusted" = "Nicht vertraut";
@@ -2795,3 +2795,7 @@
 "call_unsupported_matrix_rtc_call" = "Nicht unterstützter Anruf. Die neue Element X App wird benötigt, um an diesem Anruf teilzunehmen.";
 "wysiwyg_composer_action_minimise_action" = "Editor verkleinern";
 "wysiwyg_composer_action_maximise_action" = "Editor erweitern";
+"verification_required_banner_title" = "Dieses Gerät verifizieren";
+"verification_required_banner_description" = "Ab April 2026 können nicht verifizierte Geräte keine Nachrichten mehr senden und empfangen";
+"verification_required_banner_learn_more" = "Mehr erfahren";
+"verification_required_banner_verify_button" = "Jetzt verifizieren";
