@@ -1,7 +1,7 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
 # Uncomment this line to define a global platform for your project
-platform :ios, '15.0'
+platform :ios, '15.1'
 
 # By default, ignore all warnings from any pod
 inhibit_all_warnings!
