@@ -4,6 +4,8 @@ on:
   issues:
     types: [labeled]
 
+permissions: {} # We use ELEMENT_BOT_TOKEN instead
+
 jobs:
   apply_Z-Labs_label:
     name: Add Z-Labs label for features behind labs flags
@@ -20,7 +22,7 @@ jobs:
       contains(github.event.issue.labels.*.name, 'A-Tags') ||
       contains(github.event.issue.labels.*.name, 'A-Rich-Text-Editor')
     steps:
-      - uses: actions/github-script@v5
+      - uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
         with:
           script: |
             github.rest.issues.addLabels({
@@ -42,7 +44,7 @@ jobs:
        contains(github.event.issue.labels.*.name, 'O-Frequent')) ||
        contains(github.event.issue.labels.*.name, 'A11y'))
     steps:
-      - uses: actions/add-to-project@main
+      - uses: actions/add-to-project@244f685bbc3b7adfa8466e08b698b5577571133e # v1.0.2
         with:
           project-url: https://github.com/orgs/element-hq/projects/18
           github-token: ${{ secrets.ELEMENT_BOT_TOKEN }}
@@ -53,7 +55,7 @@ jobs:
     if: >
       contains(github.event.issue.labels.*.name, 'X-Needs-Product')
     steps:
-      - uses: actions/add-to-project@main
+      - uses: actions/add-to-project@244f685bbc3b7adfa8466e08b698b5577571133e # v1.0.2
         with:
           project-url: https://github.com/orgs/element-hq/projects/28
           github-token: ${{ secrets.ELEMENT_BOT_TOKEN }}

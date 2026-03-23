@@ -1,10 +1,11 @@
 name: Build alpha release
 
 on:
-
   # Triggers the workflow on any pull request
   pull_request:
     types: [ labeled, synchronize, opened, reopened ]
+
+permissions: {}
 
 env:
   # Make the git branch for a PR available to our Fastfile
@@ -25,14 +26,15 @@ jobs:
       cancel-in-progress: true
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
             submodules: 'true'
+            persist-credentials: false
 
       # Common cache
       # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
       - name: Cache CocoaPods libraries
-        uses: actions/cache@v4
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
         with:
           path: Pods
           key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
@@ -40,7 +42,7 @@ jobs:
             ${{ runner.os }}-pods-
 
       - name: Cache Ruby gems
-        uses: actions/cache@v4
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
         with:
           path: vendor/bundle
           key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
@@ -62,7 +64,7 @@ jobs:
 
       # Import alpha release private signing certificate
       - name: Import signing certificate
-        uses: apple-actions/import-codesign-certs@v1
+        uses: apple-actions/import-codesign-certs@b610f78488812c1e56b20e6df63ec42d833f2d14 # v6.0.0
         with:
           p12-file-base64: ${{ secrets.ALPHA_CERTIFICATES_P12 }}
           p12-password: ${{ secrets.ALPHA_CERTIFICATES_P12_PASSWORD }}
@@ -80,7 +82,7 @@ jobs:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
 
       - name: Add or update PR comment with Ad-hoc release informations
-        uses: NejcZdovc/comment-pr@v1
+        uses: NejcZdovc/comment-pr@a423635d183a8259308e80593c96fecf31539c26 # v2.1.0
         with:
           message: |
             :iphone: Scan the QR code below to install the build for this PR. 

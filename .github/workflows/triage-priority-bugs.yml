@@ -4,6 +4,8 @@ on:
   issues:
     types: [labeled, unlabeled]
 
+permissions: {} # We use ELEMENT_BOT_TOKEN instead
+
 jobs:
   p1_issues_to_team_workboard:
     runs-on: ubuntu-latest
