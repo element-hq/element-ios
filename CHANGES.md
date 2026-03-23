@@ -1,3 +1,17 @@
+## Changes in 1.11.36 (2026-03-23)
+
+🙌 Improvements
+
+- Update JitsiMeetSDKLite dependency. ([#8012](https://github.com/element-hq/element-ios/pull/8012))
+
+⚠️ API Changes
+
+- Raise the minimum supported OS from 15.0 to 15.1 (as required by Jitsi). ([#8012](https://github.com/element-hq/element-ios/pull/8012))
+
+🧱 Build
+
+- Add zizmor checks on CI. ([#8008](https://github.com/element-hq/element-ios/pull/8008))
+
 ## Changes in 1.11.35 (2026-03-03)
 
 ✨ Features
