@@ -1,3 +1,9 @@
+## Changes in 1.11.37 (2026-04-01)
+
+🙌 Improvements
+
+- Temporarily disable the mandatory verification banner until we have a way to reset from the verification screen. ([#8014](https://github.com/element-hq/element-ios/issues/8014))
+
 ## Changes in 1.11.36 (2026-03-23)
 
 🙌 Improvements
