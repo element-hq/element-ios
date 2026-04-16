@@ -107,7 +107,7 @@ typedef enum : NSUInteger {
  Create a new `MXKRoomBubbleComponent` object based on a `MXEvent` instance.
  
  @param event the event used to compose the bubble component.
- @param roomState the room state when the event occured.
+ @param roomState the room state when the event occurred.
  @param latestRoomState the latest room state of the room containing this event.
  @param eventFormatter object used to format event into displayable string.
  @param session the related matrix session.
