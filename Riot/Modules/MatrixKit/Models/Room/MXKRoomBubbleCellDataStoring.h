@@ -44,12 +44,12 @@ Please see LICENSE in the repository root for full details.
 @property (nonatomic) NSString *roomId;
 
 /**
- The sender display name composed when event occured
+ The sender display name composed when event occurred
  */
 @property (nonatomic) NSString *senderDisplayName;
 
 /**
- The sender avatar url retrieved when event occured
+ The sender avatar url retrieved when event occurred
  */
 @property (nonatomic) NSString *senderAvatarUrl;
 
@@ -59,7 +59,7 @@ Please see LICENSE in the repository root for full details.
 @property (nonatomic) UIImage *senderAvatarPlaceholder;
 
 /**
- The target display name composed when event occured (may be nil)
+ The target display name composed when event occurred (may be nil)
 
  @discussion "target" refers to the room member who is the target of this event (if any), e.g.
  the invitee, the person being banned, etc.
@@ -67,7 +67,7 @@ Please see LICENSE in the repository root for full details.
 @property (nonatomic) NSString *targetDisplayName;
 
 /**
- The target avatar url retrieved when event occured (may be nil)
+ The target avatar url retrieved when event occurred (may be nil)
 
  @discussion "target" refers to the room member who is the target of this event (if any), e.g.
  the invitee, the person being banned, etc.
@@ -221,7 +221,7 @@ Please see LICENSE in the repository root for full details.
  Create a new `MXKRoomBubbleCellDataStoring` object for a new bubble cell.
  
  @param event the event to be displayed in the cell.
- @param roomState the room state when the event occured.
+ @param roomState the room state when the event occurred.
  @param roomDataSource the `MXKRoomDataSource` object that will use this instance.
  @return the newly created instance.
  */
@@ -342,7 +342,7 @@ Update the event because its sent state changed or it is has been redacted.
  Attempt to add a new event to the bubble.
  
  @param event the event to be displayed in the cell.
- @param roomState the room state when the event occured.
+ @param roomState the room state when the event occurred.
  @return YES if the model accepts that the event can concatenated to events already in the bubble.
  */
 - (BOOL)addEvent:(MXEvent*)event andRoomState:(MXRoomState*)roomState;
