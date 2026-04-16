@@ -35,7 +35,7 @@ class URLPreviewService: NSObject {
     ///   - event: The event that the preview is for.
     ///   - session: The session to use to contact the homeserver.
     ///   - success: The closure called when the operation complete. The generated preview data is passed in.
-    ///   - failure: The closure called when something goes wrong. The error that occured is passed in.
+    ///   - failure: The closure called when something goes wrong. The error that occurred is passed in.
     func preview(for url: URL,
                  and event: MXEvent,
                  with session: MXSession,
