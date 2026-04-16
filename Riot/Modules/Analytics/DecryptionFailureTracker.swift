@@ -153,7 +153,7 @@ class DecryptionFailureTracker: NSObject {
     }
     
     /**
-     Mark reported failures that occured before tsNow - GRACE_PERIOD as failures that should be
+     Mark reported failures that occurred before tsNow - GRACE_PERIOD as failures that should be
      tracked.
      */
     @objc
