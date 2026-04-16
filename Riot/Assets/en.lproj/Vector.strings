@@ -906,7 +906,7 @@ Tap the + to start adding people.";
 "settings_discovery_three_pids_management_information_part1" = "Manage which email addresses or phone numbers other users can use to discover you and use to invite you to rooms. Add or remove email addresses or phone numbers from this list in ";
 "settings_discovery_three_pids_management_information_part2" = "User Settings";
 "settings_discovery_three_pids_management_information_part3" = ".";
-"settings_discovery_error_message" = "An error occured. Please retry.";
+"settings_discovery_error_message" = "An error occurred. Please retry.";
 
 "settings_discovery_three_pid_details_title_email" = "Manage email";
 "settings_discovery_three_pid_details_information_email" = "Manage preferences for this email address, which other users can use to discover you and use to invite you to rooms. Add or remove email addresses in Accounts.";
@@ -2968,7 +2968,7 @@ To enable access, tap Settings> Location and select Always";
 "user_id_title" = "User ID:";
 "offline" = "offline";
 "unsent" = "Unsent";
-"error_common_message" = "An error occured. Please try again later.";
+"error_common_message" = "An error occurred. Please try again later.";
 "not_supported_yet" = "Not supported yet";
 "default" = "default";
 "power_level" = "Power Level";
