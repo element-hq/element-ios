@@ -224,7 +224,7 @@ protocol E2EAnalytics {
     /// Track an E2EE error that occurred
     /// - Parameters:
     ///   - reason: The error that occurred.
-    ///   - context: Additional context of the error that occured
+    ///   - context: Additional context of the error that occurred
     func trackE2EEError(_ failure: DecryptionFailure) {
         let event = failure.toAnalyticsEvent()
         capture(event: event)
