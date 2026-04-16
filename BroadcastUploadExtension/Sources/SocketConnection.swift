@@ -104,7 +104,7 @@ extension SocketConnection: StreamDelegate {
                 streamHasSpaceAvailable?()
             }
         case .errorOccurred:
-            MXLog.error("client stream error occured", context: aStream.streamError)
+            MXLog.error("client stream error occurred", context: aStream.streamError)
             close()
             notifyDidClose(error: aStream.streamError)
 
