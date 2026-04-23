@@ -285,6 +285,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         cancellables = [
             hostingViewController.heightPublisher
                 .removeDuplicates()
+                .debounce(for: .milliseconds(150), scheduler: RunLoop.main)
                 .sink(receiveValue: { [weak self] idealHeight in
                     guard let self = self else { return }
                     self.updateToolbarHeight(wysiwygHeight: idealHeight)
