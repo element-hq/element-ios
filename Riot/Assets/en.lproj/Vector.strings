@@ -2617,7 +2617,7 @@ To enable access, tap Settings> Location and select Always";
 
 // MARK: - Verification Required Banner
 "verification_required_banner_title" = "Verify this device";
-"verification_required_banner_description" = "As of April 2026 unverified devices will not be able to send and receive messages";
+"verification_required_banner_description" = "As of October 2026 unverified devices will not be able to send and receive messages";
 "verification_required_banner_learn_more" = "Learn more";
 "verification_required_banner_verify_button" = "Verify now";
 
