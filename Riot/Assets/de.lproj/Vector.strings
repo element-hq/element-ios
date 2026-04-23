@@ -2798,6 +2798,6 @@
 
 // Verification Required Banner
 "verification_required_banner_title" = "Verifiziere dieses Gerät";
-"verification_required_banner_description" = "As of April 2026 unverified devices will not be able to send and receive messages";
+"verification_required_banner_description" = "Ab Oktober 2026 können unverifizierte Geräte keine Nachrichten mehr senden und empfangen.";
 "verification_required_banner_learn_more" = "Mehr erfahren";
-"verification_required_banner_verify_button" = "Verify now";
+"verification_required_banner_verify_button" = "Jetzt verifizieren";
