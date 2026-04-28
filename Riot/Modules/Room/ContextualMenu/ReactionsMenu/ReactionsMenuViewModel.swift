@@ -11,7 +11,7 @@ import Foundation
     
     // MARK: - Properties
     
-    private let reactions = ["👍", "👎", "😄", "🎉", "😕", "❤️", "🚀", "👀"]
+    private let reactions = ["👍", "👎", "😄", "🎉", "🙁", "❤️", "🚀", "👀"]
     private var currentViewDatas: [ReactionMenuItemViewData] = []
     
     // MARK: Private
