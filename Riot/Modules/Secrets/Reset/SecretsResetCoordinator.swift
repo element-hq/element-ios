@@ -38,11 +38,11 @@ final class SecretsResetCoordinator: SecretsResetCoordinatorType {
     
     // MARK: - Setup
     
-    init(session: MXSession) {
+    init(session: MXSession, isCancellable: Bool = true) {
         self.session = session
         
         let secretsResetViewModel = SecretsResetViewModel(session: self.session)
-        let secretsResetViewController = SecretsResetViewController.instantiate(with: secretsResetViewModel)
+        let secretsResetViewController = SecretsResetViewController.instantiate(with: secretsResetViewModel, isCancellable: isCancellable)
         self.secretsResetViewModel = secretsResetViewModel
         self.secretsResetViewController = secretsResetViewController
     }
@@ -59,13 +59,13 @@ final class SecretsResetCoordinator: SecretsResetCoordinatorType {
     
     // MARK: - Private
     
-    private func showAuthentication(with request: AuthenticatedEndpointRequest) {
+    private func showReauthentication(for session: MXAuthenticationSession) {
         
         let reauthenticationCoordinatorParameters =  ReauthenticationCoordinatorParameters(session: self.session,
                                                                                            presenter: self.toPresentable(),
                                                                                            title: nil,
                                                                                            message: VectorL10n.secretsResetAuthenticationMessage,
-                                                                                           authenticatedEndpointRequest: request)
+                                                                                           authenticationSession: session)
         
         let coordinator = ReauthenticationCoordinator(parameters: reauthenticationCoordinatorParameters)
         coordinator.delegate = self
@@ -77,8 +77,8 @@ final class SecretsResetCoordinator: SecretsResetCoordinatorType {
 // MARK: - SecretsResetViewModelCoordinatorDelegate
 extension SecretsResetCoordinator: SecretsResetViewModelCoordinatorDelegate {
     
-    func secretsResetViewModel(_ viewModel: SecretsResetViewModelType, needsToAuthenticateWith request: AuthenticatedEndpointRequest) {
-        self.showAuthentication(with: request)
+    func secretsResetViewModel(_ viewModel: SecretsResetViewModelType, needsToAuthenticateFor session: MXAuthenticationSession) {
+        self.showReauthentication(for: session)
     }
     
     func secretsResetViewModelDidResetSecrets(_ viewModel: SecretsResetViewModelType) {
