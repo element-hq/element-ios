@@ -963,7 +963,7 @@
 "user_verification_sessions_list_user_trust_level_trusted_title" = "Vertraut";
 "user_verification_sessions_list_user_trust_level_warning_title" = "Warnung";
 "user_verification_sessions_list_user_trust_level_unknown_title" = "Unbekannt";
-"user_verification_sessions_list_information" = "Nachrichten mit diesem Gegenüber sind Ende-zu-Ende verschlüsselt und können nicht von Dritten gelesen werden.";
+"user_verification_sessions_list_information" = "Nachrichten mit diesem Gegenüber in diesem Raum sind Ende-zu-Ende verschlüsselt und können nicht von Dritten gelesen werden.";
 "user_verification_sessions_list_table_title" = "Sitzungen";
 "user_verification_sessions_list_session_trusted" = "Vertraut";
 "user_verification_sessions_list_session_untrusted" = "Nicht vertraut";
