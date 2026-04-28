@@ -40,15 +40,17 @@ final class SecretsResetViewController: UIViewController {
     // MARK: Private
 
     private var viewModel: SecretsResetViewModelType!
+    private var isCancellable = true
     private var theme: Theme!
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
     
     // MARK: - Setup
     
-    class func instantiate(with viewModel: SecretsResetViewModelType) -> SecretsResetViewController {
+    class func instantiate(with viewModel: SecretsResetViewModelType, isCancellable: Bool = true) -> SecretsResetViewController {
         let viewController = StoryboardScene.SecretsResetViewController.initialScene.instantiate()
         viewController.viewModel = viewModel
+        viewController.isCancellable = isCancellable
         viewController.theme = ThemeService.shared().theme
         return viewController
     }
@@ -108,11 +110,12 @@ final class SecretsResetViewController: UIViewController {
     }
     
     private func setupViews() {
-        let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
-            self?.cancelButtonAction()
+        if isCancellable {
+            let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
+                self?.cancelButtonAction()
+            }
+            self.navigationItem.rightBarButtonItem = cancelBarButtonItem
         }
-        
-        self.navigationItem.rightBarButtonItem = cancelBarButtonItem
         
         self.title = VectorL10n.secretsResetTitle
         

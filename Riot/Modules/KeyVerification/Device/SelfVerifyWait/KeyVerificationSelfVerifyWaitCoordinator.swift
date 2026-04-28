@@ -76,4 +76,8 @@ extension KeyVerificationSelfVerifyWaitCoordinator: KeyVerificationSelfVerifyWai
     func keyVerificationSelfVerifyWaitViewModel(_ coordinator: KeyVerificationSelfVerifyWaitViewModelType, wantsToRecoverSecretsWith secretsRecoveryMode: SecretsRecoveryMode) {
         self.delegate?.keyVerificationSelfVerifyWaitCoordinator(self, wantsToRecoverSecretsWith: secretsRecoveryMode)
     }
+
+    func keyVerificationSelfVerifyWaitViewModelWantsToResetSecrets(_ viewModel: KeyVerificationSelfVerifyWaitViewModelType) {
+        self.delegate?.keyVerificationSelfVerifyWaitCoordinatorWantsToResetSecrets(self)
+    }
 }

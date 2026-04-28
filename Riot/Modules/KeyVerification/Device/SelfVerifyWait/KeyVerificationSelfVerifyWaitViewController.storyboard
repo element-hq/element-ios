@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="79A-qb-tmk">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="79A-qb-tmk">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -17,13 +17,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="asO-rj-82y">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tIM-sl-gwE">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="562"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="652"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IlB-Ch-LEo">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="562"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="652"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Open Element on your other device" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="aOD-RJ-1qU">
                                                         <rect key="frame" x="20" y="20" width="335" height="67"/>
@@ -73,7 +73,7 @@ Open Element on one of your other devices and follow the instructions.</string>
                                                         </constraints>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="8oJ-o6-DLK">
-                                                        <rect key="frame" x="20" y="329" width="335" height="233"/>
+                                                        <rect key="frame" x="20" y="329" width="335" height="323"/>
                                                         <subviews>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dXT-cL-ukJ">
                                                                 <rect key="frame" x="0.0" y="0.0" width="335" height="114.5"/>
@@ -131,6 +131,35 @@ Open Element on one of your other devices and follow the instructions.</string>
                                                                     <constraint firstItem="OEt-k0-vgM" firstAttribute="leading" secondItem="nf8-Ye-b9r" secondAttribute="leading" id="loc-cf-E6p"/>
                                                                     <constraint firstItem="4Ou-cM-K9C" firstAttribute="leading" secondItem="nf8-Ye-b9r" secondAttribute="leading" constant="20" id="o3E-Q9-7h1"/>
                                                                     <constraint firstAttribute="trailing" secondItem="OEt-k0-vgM" secondAttribute="trailing" id="yQK-YS-7Yr"/>
+                                                                </constraints>
+                                                            </view>
+                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MZS-LD-c5M">
+                                                                <rect key="frame" x="0.0" y="233" width="335" height="90"/>
+                                                                <subviews>
+                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dgm-0y-4Zm">
+                                                                        <rect key="frame" x="20" y="20" width="295" height="50"/>
+                                                                        <constraints>
+                                                                            <constraint firstAttribute="height" constant="50" id="gMu-pN-Qn2"/>
+                                                                        </constraints>
+                                                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                                        <inset key="contentEdgeInsets" minX="20" minY="0.0" maxX="20" maxY="0.0"/>
+                                                                        <state key="normal" title="Forgot or lost all recovery options? Reset everything">
+                                                                            <color key="titleColor" systemColor="darkTextColor"/>
+                                                                        </state>
+                                                                        <state key="disabled">
+                                                                            <color key="titleColor" red="0.47843137250000001" green="0.78823529410000004" blue="0.63137254899999995" alpha="0.5" colorSpace="calibratedRGB"/>
+                                                                        </state>
+                                                                        <connections>
+                                                                            <action selector="resetSecretsButtonAction:" destination="79A-qb-tmk" eventType="touchUpInside" id="z9Y-Vc-Qv6"/>
+                                                                        </connections>
+                                                                    </button>
+                                                                </subviews>
+                                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="bottom" secondItem="dgm-0y-4Zm" secondAttribute="bottom" constant="20" symbolic="YES" id="0RW-EA-zD8"/>
+                                                                    <constraint firstItem="dgm-0y-4Zm" firstAttribute="leading" secondItem="MZS-LD-c5M" secondAttribute="leading" constant="20" symbolic="YES" id="IlA-bw-Ge3"/>
+                                                                    <constraint firstAttribute="trailing" secondItem="dgm-0y-4Zm" secondAttribute="trailing" constant="20" symbolic="YES" id="bXE-8Z-xlt"/>
+                                                                    <constraint firstItem="dgm-0y-4Zm" firstAttribute="top" secondItem="MZS-LD-c5M" secondAttribute="top" constant="20" symbolic="YES" id="n0t-Px-2Gw"/>
                                                                 </constraints>
                                                             </view>
                                                         </subviews>
@@ -197,6 +226,8 @@ Open Element on one of your other devices and follow the instructions.</string>
                         <outlet property="recoverSecretsAvailabilityLoadingLabel" destination="A4x-sK-d5C" id="n5k-IO-RkV"/>
                         <outlet property="recoverSecretsButton" destination="OEt-k0-vgM" id="RHU-ps-4m7"/>
                         <outlet property="recoverSecretsContainerView" destination="nf8-Ye-b9r" id="4az-pe-0Uc"/>
+                        <outlet property="resetSecretsButton" destination="dgm-0y-4Zm" id="5di-fv-zHX"/>
+                        <outlet property="resetSecretsContainerView" destination="MZS-LD-c5M" id="V59-pG-iMb"/>
                         <outlet property="titleLabel" destination="aOD-RJ-1qU" id="qvC-fk-TiU"/>
                     </connections>
                 </viewController>
@@ -208,5 +239,8 @@ Open Element on one of your other devices and follow the instructions.</string>
     <resources>
         <image name="monitor" width="48" height="48"/>
         <image name="smartphone" width="48" height="48"/>
+        <systemColor name="darkTextColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>
