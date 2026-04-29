@@ -80,6 +80,8 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
             case .available(let secretsRecoveryMode):
                 self.coordinatorDelegate?.keyVerificationSelfVerifyWaitViewModel(self, wantsToRecoverSecretsWith: secretsRecoveryMode)
             }
+        case .resetSecrets:
+            self.coordinatorDelegate?.keyVerificationSelfVerifyWaitViewModelWantsToResetSecrets(self)
         }
     }
     

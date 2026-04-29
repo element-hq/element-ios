@@ -37,6 +37,9 @@ final class ReauthenticationCoordinatorBridgePresenter: NSObject {
     // MARK: Private
         
     private var coordinator: ReauthenticationCoordinator?
+    /// Re-authentication dismisses itself automatically, so make sure that the dismiss function
+    /// only takes effect when dismissing an ongoing re-authentication rather than a completed one.
+    private var hasDismissed: Bool = false
     
     // MARK: Public
     
@@ -55,6 +58,7 @@ final class ReauthenticationCoordinatorBridgePresenter: NSObject {
         self.didComplete = success
         self.didCancel = cancel
         self.didFail = failure
+        self.hasDismissed = false
         
         let coordinator = ReauthenticationCoordinator(parameters: parameters)
         coordinator.delegate = self
@@ -69,12 +73,16 @@ final class ReauthenticationCoordinatorBridgePresenter: NSObject {
         guard let coordinator = self.coordinator else {
             return
         }
+        
+        guard !hasDismissed else {
+            self.coordinator = nil
+            completion?()
+            return
+        }
+        
         coordinator.toPresentable().dismiss(animated: animated) {
             self.coordinator = nil
-
-            if let completion = completion {
-                completion()
-            }
+            completion?()
         }
     }
     
@@ -90,14 +98,17 @@ final class ReauthenticationCoordinatorBridgePresenter: NSObject {
 // MARK: - ReauthenticationCoordinatorDelegate
 extension ReauthenticationCoordinatorBridgePresenter: ReauthenticationCoordinatorDelegate {
     func reauthenticationCoordinatorDidComplete(_ coordinator: ReauthenticationCoordinatorType, withAuthenticationParameters authenticationParameters: [String: Any]?) {
+        self.hasDismissed = true
         self.didComplete?(authenticationParameters)
     }
     
     func reauthenticationCoordinatorDidCancel(_ coordinator: ReauthenticationCoordinatorType) {
+        self.hasDismissed = true
         self.didCancel?()
     }
     
     func reauthenticationCoordinator(_ coordinator: ReauthenticationCoordinatorType, didFailWithError error: Error) {
+        self.hasDismissed = true
         self.didFail?(error)
     }
 }
