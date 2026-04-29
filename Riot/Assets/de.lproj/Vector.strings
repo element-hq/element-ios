@@ -2795,7 +2795,9 @@
 "call_unsupported_matrix_rtc_call" = "Nicht unterstützter Anruf. Die neue Element X App wird benötigt, um an diesem Anruf teilzunehmen.";
 "wysiwyg_composer_action_minimise_action" = "Editor verkleinern";
 "wysiwyg_composer_action_maximise_action" = "Editor erweitern";
-"verification_required_banner_title" = "Dieses Gerät verifizieren";
-"verification_required_banner_description" = "Ab April 2026 können nicht verifizierte Geräte keine Nachrichten mehr senden und empfangen";
+
+// Verification Required Banner
+"verification_required_banner_title" = "Verifiziere dieses Gerät";
+"verification_required_banner_description" = "Ab Oktober 2026 können unverifizierte Geräte keine Nachrichten mehr senden und empfangen.";
 "verification_required_banner_learn_more" = "Mehr erfahren";
 "verification_required_banner_verify_button" = "Jetzt verifizieren";
