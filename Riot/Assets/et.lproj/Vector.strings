@@ -2738,3 +2738,4 @@
 "room_member_power_level_owner_in" = "„%@“ jututoa omanik";
 "room_member_power_level_short_owner" = "Omanik";
 "room_participants_leave_not_allowed_for_last_owner_msg" = "Kuna oled jututoa ainus omanik, siis sa ei saa siit lahkuda.";
+"verification_required_banner_title" = "Verifitseeri see seade";
