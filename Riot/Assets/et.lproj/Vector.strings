@@ -2739,3 +2739,6 @@
 "room_member_power_level_short_owner" = "Omanik";
 "room_participants_leave_not_allowed_for_last_owner_msg" = "Kuna oled jututoa ainus omanik, siis sa ei saa siit lahkuda.";
 "verification_required_banner_title" = "Verifitseeri see seade";
+"verification_required_banner_verify_button" = "Verifitseeri kohe";
+"verification_required_banner_description" = "Alates 2026. aasta oktoobrist ei saa verifitseerimata seadmed sõnumeid saata ega neid vastu võtta";
+"verification_required_banner_learn_more" = "Lisateave";
