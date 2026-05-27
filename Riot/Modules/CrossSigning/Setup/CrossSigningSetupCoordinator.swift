@@ -54,7 +54,7 @@ final class CrossSigningSetupCoordinator: CrossSigningSetupCoordinatorType {
     
     // MARK: - Private methods
     
-    private func setupCrossSigning(with authenticationParameters: [String: Any] = [:]) {
+    private func setupCrossSigning(with authenticationParameters: [String: Any] = [:], hasAuthenticated: Bool = false) {
         guard let crossSigning = parameters.session.crypto?.crossSigning else { return }
         
         crossSigning.setup(withAuthParams: authenticationParameters) { [weak self] in
@@ -64,7 +64,8 @@ final class CrossSigningSetupCoordinator: CrossSigningSetupCoordinatorType {
             guard let self else { return }
             
             if let responseData = (error as NSError).userInfo[MXHTTPClientErrorResponseDataKey] as? [AnyHashable: Any],
-               let authenticationSession = MXAuthenticationSession(fromJSON: responseData) {
+               let authenticationSession = MXAuthenticationSession(fromJSON: responseData),
+               !hasAuthenticated { // Don't re-presenting authentication if the user closes the web view without finishing.
                 showReauthentication(authenticationSession: authenticationSession)
             } else {
                 delegate?.crossSigningSetupCoordinator(self, didFailWithError: error)
@@ -93,7 +94,7 @@ final class CrossSigningSetupCoordinator: CrossSigningSetupCoordinatorType {
 extension CrossSigningSetupCoordinator: ReauthenticationCoordinatorDelegate {
         
     func reauthenticationCoordinatorDidComplete(_ coordinator: ReauthenticationCoordinatorType, withAuthenticationParameters authenticationParameters: [String: Any]?) {
-        self.setupCrossSigning(with: authenticationParameters ?? [:])
+        self.setupCrossSigning(with: authenticationParameters ?? [:], hasAuthenticated: true)
     }
     
     func reauthenticationCoordinatorDidCancel(_ coordinator: ReauthenticationCoordinatorType) {

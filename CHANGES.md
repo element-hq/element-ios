@@ -1,3 +1,9 @@
+## Changes in 1.11.38 (2026-05-27)
+
+🐛 Bugfixes
+
+- Hook up the Reset flow to Verification when there is no recovery or other devices. ([#8024](https://github.com/element-hq/element-ios/issues/8024))
+
 ## Changes in 1.11.37 (2026-04-01)
 
 🙌 Improvements

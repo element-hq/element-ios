@@ -23,6 +23,7 @@ protocol KeyVerificationSelfVerifyWaitCoordinatorDelegate: AnyObject {
     func keyVerificationSelfVerifyWaitCoordinator(_ coordinator: KeyVerificationSelfVerifyWaitCoordinatorType, didAcceptIncomingSASTransaction incomingSASTransaction: MXSASTransaction)
     func keyVerificationSelfVerifyWaitCoordinatorDidCancel(_ coordinator: KeyVerificationSelfVerifyWaitCoordinatorType)
     func keyVerificationSelfVerifyWaitCoordinator(_ coordinator: KeyVerificationSelfVerifyWaitCoordinatorType, wantsToRecoverSecretsWith secretsRecoveryMode: SecretsRecoveryMode)
+    func keyVerificationSelfVerifyWaitCoordinatorWantsToResetSecrets(_ coordinator: KeyVerificationSelfVerifyWaitCoordinatorType)
 }
 
 /// `KeyVerificationSelfVerifyWaitCoordinatorType` is a protocol describing a Coordinator that handle key backup setup passphrase navigation flow.

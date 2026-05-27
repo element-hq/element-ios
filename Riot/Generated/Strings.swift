@@ -9367,7 +9367,7 @@ public class VectorL10n: NSObject {
   public static func userVerificationStartWaitingPartner(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "user_verification_start_waiting_partner", p1)
   }
-  /// As of April 2026 unverified devices will not be able to send and receive messages
+  /// As of October 2026 unverified devices will not be able to send and receive messages
   public static var verificationRequiredBannerDescription: String { 
     return VectorL10n.tr("Vector", "verification_required_banner_description") 
   }

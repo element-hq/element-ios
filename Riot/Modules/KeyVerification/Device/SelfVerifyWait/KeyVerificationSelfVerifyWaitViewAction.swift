@@ -23,4 +23,5 @@ enum KeyVerificationSelfVerifyWaitViewAction {
     case loadData
     case cancel
     case recoverSecrets
+    case resetSecrets
 }

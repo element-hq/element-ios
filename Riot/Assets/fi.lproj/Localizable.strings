@@ -1,2 +1,9 @@
 /* New message from a specific person, not referencing a room */
-"MSG_FROM_USER" = "Viesti käyttäjältä %@";
+"MSG_FROM_USER" = "%@ lähetti viestin";
+"LOCATION_FROM_USER" = "%@ jakoi sijaintinsa";
+"REPLY_FROM_USER_TITLE" = "%@ vastasi";
+"PICTURE_FROM_USER" = "%@ lähetti kuvan";
+"VIDEO_FROM_USER" = "%@ lähetti videon";
+"VOICE_MESSAGE_FROM_USER" = "%@ lähetti ääniviestin";
+"FILE_FROM_USER" = "%@ lähetti tiedoston %@";
+"Notification" = "Ilmoitus";
