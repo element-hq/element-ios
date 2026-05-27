@@ -43,6 +43,9 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
     @IBOutlet private weak var recoverSecretsButton: RoundedButton!
     @IBOutlet private weak var recoverSecretsAdditionalInformationLabel: UILabel!
     
+    @IBOutlet private weak var resetSecretsContainerView: UIView!
+    @IBOutlet private weak var resetSecretsButton: UIButton!
+    
     // MARK: Private
 
     private var viewModel: KeyVerificationSelfVerifyWaitViewModelType!
@@ -101,6 +104,13 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
         self.mobileClientImageView.tintColor = theme.tintColor
         self.recoverSecretsAvailabilityLoadingLabel.textColor = theme.textSecondaryColor
         self.recoverSecretsAvailabilityActivityIndicatorView.color = theme.tintColor
+        
+        // Reset secrets button
+        let resetSecretsAttributedString = NSMutableAttributedString(string: VectorL10n.secretsRecoveryResetActionPart1,
+                                                                     attributes: [.foregroundColor: self.theme.textPrimaryColor])
+        resetSecretsAttributedString.append(NSAttributedString(string: VectorL10n.secretsRecoveryResetActionPart2,
+                                                               attributes: [.foregroundColor: self.theme.warningColor]))
+        self.resetSecretsButton.setAttributedTitle(resetSecretsAttributedString, for: .normal)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -121,6 +131,9 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
 
             self.navigationItem.rightBarButtonItem = cancelBarButtonItem
             self.cancelBarButtonItem = cancelBarButtonItem
+            
+            self.resetSecretsButton.vc_enableMultiLinesTitle()
+            self.resetSecretsButton.isHidden = !RiotSettings.shared.secretsRecoveryAllowReset
         }
         
         self.titleLabel.text = VectorL10n.deviceVerificationSelfVerifyOpenOnOtherDeviceTitle(AppInfo.current.displayName)
@@ -158,22 +171,26 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
         self.recoverSecretsAvailabilityActivityIndicatorView.startAnimating()
         self.recoverSecretsAvailabilityLoadingContainerView.isHidden = false
         self.recoverSecretsContainerView.isHidden = true
+        self.resetSecretsContainerView.isHidden = true
     }
     
     private func renderLoaded(viewData: KeyVerificationSelfVerifyWaitViewData) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         
         self.cancelBarButtonItem?.title = viewData.isNewSignIn ? VectorL10n.skip : VectorL10n.cancel
-   
+        
         let hideRecoverSecrets: Bool
+        let hideResetSecrets: Bool
         let recoverSecretsButtonTitle: String?
         
         switch viewData.secretsRecoveryAvailability {
         case .notAvailable:
             hideRecoverSecrets = true
+            hideResetSecrets = false
             recoverSecretsButtonTitle = nil
         case .available(let secretsRecoveryMode):
             hideRecoverSecrets = false
+            hideResetSecrets = true
             
             switch secretsRecoveryMode {
             case .passphraseOrKey:
@@ -187,6 +204,8 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
         self.recoverSecretsAvailabilityActivityIndicatorView.stopAnimating()
         self.recoverSecretsContainerView.isHidden = hideRecoverSecrets
         self.recoverSecretsButton.setTitle(recoverSecretsButtonTitle, for: .normal)
+        
+        self.resetSecretsContainerView.isHidden = hideResetSecrets
     }
     
     private func renderCancelled(reason: MXTransactionCancelCode) {
@@ -222,6 +241,10 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
     
     @IBAction private func recoverSecretsButtonAction(_ sender: Any) {
         self.viewModel.process(viewAction: .recoverSecrets)
+    }
+    
+    @IBAction private func resetSecretsButtonAction(_ sender: Any) {
+        self.viewModel.process(viewAction: .resetSecrets)
     }
 }
 

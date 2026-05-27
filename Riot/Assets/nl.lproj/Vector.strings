@@ -2800,3 +2800,9 @@
 "manage_session_sign_out_other_sessions" = "Bij alle andere sessies afmelden";
 "user_sessions_hide_location_info" = "Verberg IP-adres";
 "user_sessions_show_location_info" = "Toon IP-adres";
+
+// Verification Required Banner
+"verification_required_banner_title" = "Dit apparaat verifiëren";
+"verification_required_banner_description" = "Vanaf oktober 2026 kunnen niet-geverifieerde apparaten geen berichten meer verzenden en ontvangen.";
+"verification_required_banner_learn_more" = "Meer informatie";
+"verification_required_banner_verify_button" = "Nu verifiëren";
