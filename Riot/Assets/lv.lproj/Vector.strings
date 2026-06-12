@@ -48,7 +48,6 @@
 
 // MARK: - MatrixKit
 
-
 "matrix" = "Matrix";
 // Login Screen
 "login_create_account" = "Izveidot kontu:";
@@ -140,8 +139,8 @@
 
 // Action
 "no" = "Nē";
-"login_error_resource_limit_exceeded_contact_button" = "Sazinieties ar administratoru";
-"login_error_resource_limit_exceeded_message_contact" = "\n\nLai turpinātu lietot šo pakalpojumu, lūdzu, sazinieties ar savu pakalpojuma administratoru.";
+"login_error_resource_limit_exceeded_contact_button" = "Sazināties ar pārvaldītāju";
+"login_error_resource_limit_exceeded_message_contact" = "\n\nLūgums sazināties ar pakalpojuma pārvaldītāju, lai turpinātu izmantot pakalpojumu.";
 "login_error_resource_limit_exceeded_message_monthly_active_user" = "Šis mājas serveris ir sasniedzis ikmēneša aktīvo lietotāju limitu.";
 "login_error_resource_limit_exceeded_message_default" = "Šis mājas serveris ir sasniedzis vienu no savu resursu limitiem.";
 "login_desktop_device" = "Dators";
