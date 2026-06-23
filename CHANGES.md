@@ -1,3 +1,8 @@
+## Changes in 1.11.39 (2026-06-23)
+
+No significant changes.
+
+
 ## Changes in 1.11.38 (2026-05-27)
 
 🐛 Bugfixes
