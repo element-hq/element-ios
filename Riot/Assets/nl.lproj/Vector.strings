@@ -2806,3 +2806,4 @@
 "verification_required_banner_description" = "Vanaf oktober 2026 kunnen niet-geverifieerde apparaten geen berichten meer verzenden en ontvangen.";
 "verification_required_banner_learn_more" = "Meer informatie";
 "verification_required_banner_verify_button" = "Nu verifiëren";
+"accessibility_selected" = "seleccionat";

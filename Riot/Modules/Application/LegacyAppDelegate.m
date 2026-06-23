@@ -3376,8 +3376,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 case MXCrossSigningStateCrossSigningExists:
                     MXLogDebug(@"[AppDelegate] handleAppState: presentVerifyCurrentSessionAlertIfNeededWithSession");
                     [self.masterTabBarController presentVerifyCurrentSessionAlertIfNeededWithSession:mxSession];
-                    // Temporarily disabled until we have a way to reset from the verification screen.
-                    // [self.masterTabBarController presentVerificationRequiredBannerWithSession:mxSession];
+                    [self.masterTabBarController presentVerificationRequiredBannerWithSession:mxSession];
                     break;
                 case MXCrossSigningStateCanCrossSign:
                     MXLogDebug(@"[AppDelegate] handleAppState: presentReviewUnverifiedSessionsAlertIfNeededWithSession");
