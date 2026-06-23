@@ -1,3 +1,10 @@
+## Changes in 1.11.39 (2026-06-23)
+
+🙌 Improvements
+
+- Reinstate the mandatory verification banner. ([#8023](https://github.com/element-hq/element-ios/issues/8023))
+
+
 ## Changes in 1.11.38 (2026-05-27)
 
 🐛 Bugfixes

@@ -849,7 +849,7 @@ extension AllChatsViewController: SplitViewMasterViewControllerProtocol {
     }
     
     func presentVerificationRequiredBanner(with session: MXSession) {
-        guard bannerView == nil else {
+        guard bannerView == nil, VerificationRequiredBannerChecker().canShowBanner(for: session) else {
             return
         }
         
