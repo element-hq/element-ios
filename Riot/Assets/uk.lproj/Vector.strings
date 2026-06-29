@@ -2991,3 +2991,7 @@
 "room_member_power_level_owner_in" = "Власник у %@";
 "room_member_power_level_short_owner" = "Власник";
 "room_participants_leave_not_allowed_for_last_owner_msg" = "Ви не можете вийти з кімнати, оскільки ви єдиний її власник.";
+"verification_required_banner_title" = "Звірити цей пристрій";
+"verification_required_banner_learn_more" = "Докладніше";
+"verification_required_banner_verify_button" = "Звірити зараз";
+"verification_required_banner_description" = "З жовтня 2026 року не звірені пристрої не зможуть надсилати та отримувати повідомлення";
