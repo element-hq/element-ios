@@ -1,4 +1,4 @@
-# Element iOS
+# Element Classic iOS
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/element-hq/element-ios)
 ![badge-languages](https://img.shields.io/badge/languages-Swift%20%7C%20ObjC-orange.svg)
