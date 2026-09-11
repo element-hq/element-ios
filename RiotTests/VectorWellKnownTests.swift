@@ -88,6 +88,29 @@ class VectorWellKnownTests: XCTestCase {
         }
     }
     
+    func testMigrationBannerParsingContent() {
+        let wellKnownDictionary: [String: Any] = [
+            "io.element.migration_banner": [
+                "title": "Time to move",
+                "body": "Get the new app at https://element.io/download",
+                "button_text": "Get Element Pro",
+                "target_app_id_ios": "123456789"
+            ]
+        ]
+        
+        do {
+            let vectorWellKnown: VectorWellKnown = try SerializationService().deserialize(wellKnownDictionary)
+            let migrationBanner = vectorWellKnown.migrationBanner
+            XCTAssertNil(migrationBanner?.isEnabled)
+            XCTAssertEqual(migrationBanner?.title, "Time to move")
+            XCTAssertEqual(migrationBanner?.body, "Get the new app at https://element.io/download")
+            XCTAssertEqual(migrationBanner?.buttonText, "Get Element Pro")
+            XCTAssertEqual(migrationBanner?.targetAppID, "123456789")
+        } catch {
+            XCTFail("Fail with error: \(error)")
+        }
+    }
+    
     func testMigrationBannerParsingEmptySection() {
         let wellKnownDictionary: [String: Any] = [
             "io.element.migration_banner": [String: Any]()

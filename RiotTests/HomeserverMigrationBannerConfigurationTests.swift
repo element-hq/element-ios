@@ -66,6 +66,77 @@ class HomeserverMigrationBannerConfigurationTests: XCTestCase {
         XCTAssertFalse(buildConfiguration(migrationBannerSection: ["enabled": false], now: afterStartDate).isEnabled)
     }
     
+    // MARK: Content
+    
+    func testDefaultContent() {
+        let configuration = buildConfiguration(migrationBannerSection: [String: Any](), now: beforeStartDate)
+        
+        XCTAssertEqual(configuration.title, VectorL10n.migrationBannerTitle)
+        XCTAssertEqual(configuration.body, VectorL10n.migrationBannerBody)
+        XCTAssertEqual(configuration.buttonText, VectorL10n.migrationBannerDownloadButton)
+        XCTAssertEqual(configuration.targetAppStoreID, BuildSettings.replacementApp?.productID)
+        XCTAssertTrue(configuration.isTargetDefaultReplacementApp)
+    }
+    
+    func testMissingSectionUsesDefaultContent() {
+        let configuration = buildConfiguration(migrationBannerSection: nil, now: afterStartDate)
+        
+        XCTAssertEqual(configuration.title, VectorL10n.migrationBannerTitle)
+        XCTAssertEqual(configuration.body, VectorL10n.migrationBannerBody)
+        XCTAssertEqual(configuration.buttonText, VectorL10n.migrationBannerDownloadButton)
+        XCTAssertEqual(configuration.targetAppStoreID, BuildSettings.replacementApp?.productID)
+        XCTAssertTrue(configuration.isTargetDefaultReplacementApp)
+    }
+    
+    func testCustomContent() {
+        let section: [String: Any] = [
+            "title": "Time to move",
+            "body": "Get the new app at https://element.io/download",
+            "button_text": "Get Element Pro",
+            "target_app_id_ios": "123456789"
+        ]
+        
+        let configuration = buildConfiguration(migrationBannerSection: section, now: beforeStartDate)
+        
+        XCTAssertTrue(configuration.isEnabled)
+        XCTAssertEqual(configuration.title, "Time to move")
+        XCTAssertEqual(configuration.body, "Get the new app at https://element.io/download")
+        XCTAssertEqual(configuration.buttonText, "Get Element Pro")
+        XCTAssertEqual(configuration.targetAppStoreID, "123456789")
+        XCTAssertFalse(configuration.isTargetDefaultReplacementApp)
+    }
+    
+    func testBlankContentUsesDefaults() {
+        let section: [String: Any] = [
+            "title": "  ",
+            "body": "",
+            "button_text": "\n"
+        ]
+        
+        let configuration = buildConfiguration(migrationBannerSection: section, now: beforeStartDate)
+        
+        XCTAssertEqual(configuration.title, VectorL10n.migrationBannerTitle)
+        XCTAssertEqual(configuration.body, VectorL10n.migrationBannerBody)
+        XCTAssertEqual(configuration.buttonText, VectorL10n.migrationBannerDownloadButton)
+    }
+    
+    func testBlankTargetAppIDHidesTheButton() {
+        let configuration = buildConfiguration(migrationBannerSection: ["target_app_id_ios": "", "button_text": "Get it"], now: beforeStartDate)
+        
+        XCTAssertNil(configuration.targetAppStoreID)
+        XCTAssertFalse(configuration.isTargetDefaultReplacementApp)
+    }
+    
+    func testExplicitDefaultTargetAppIDIsRecognised() throws {
+        let defaultTargetAppStoreID = try XCTUnwrap(BuildSettings.replacementApp?.productID)
+        let configuration = buildConfiguration(migrationBannerSection: ["target_app_id_ios": defaultTargetAppStoreID], now: beforeStartDate)
+        
+        XCTAssertEqual(configuration.targetAppStoreID, defaultTargetAppStoreID)
+        XCTAssertTrue(configuration.isTargetDefaultReplacementApp)
+    }
+    
+    // MARK: Invalid values
+    
     func testInvalidSectionIsTreatedAsMissing() {
         XCTAssertFalse(buildConfiguration(migrationBannerSection: "not an object", now: beforeStartDate).isEnabled)
         XCTAssertTrue(buildConfiguration(migrationBannerSection: "not an object", now: afterStartDate).isEnabled)

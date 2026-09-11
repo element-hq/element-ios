@@ -82,9 +82,23 @@ struct VectorWellKnownJitsiConfiguration: Decodable {
 struct VectorWellKnownMigrationBannerConfiguration: Decodable {
     /// Indicate if the banner should be displayed. `nil` when not provided (defaults to enabled).
     let isEnabled: Bool?
+    /// Custom title of the banner. `nil` or blank means the default title is used.
+    let title: String?
+    /// Custom body of the banner. `nil` or blank means the default body is used.
+    let body: String?
+    /// Custom label of the download button. `nil` or blank means the default label is used.
+    let buttonText: String?
+    /// The numeric App Store ID of the app the download button points to, e.g. "1631335820" for
+    /// https://apps.apple.com/app/id1631335820. It is the "Apple ID" shown in App Store Connect.
+    /// `nil` means the default replacement app, blank means no download button.
+    let targetAppID: String?
     
     /// JSON keys associated to `VectorWellKnownMigrationBannerConfiguration`
     enum CodingKeys: String, CodingKey {
         case isEnabled = "enabled"
+        case title
+        case body
+        case buttonText = "button_text"
+        case targetAppID = "target_app_id_ios"
     }
 }
