@@ -13,6 +13,8 @@ import SwiftUI
 ///
 /// The Well Known is refreshed by the SDK at every session start without any notification, so the banner is
 /// re-evaluated when the session state changes, and the Well Known is explicitly refreshed when the app comes back to the foreground.
+///
+/// When the user closes the banner, it stays hidden for `dismissalDuration` on this device.
 final class MigrationBannerCoordinator: Coordinator {
     
     // MARK: - Properties
@@ -26,8 +28,17 @@ final class MigrationBannerCoordinator: Coordinator {
     private var bannerView: MigrationBannerView?
     private var bannerHostingController: VectorHostingController?
     private var wellKnownRefreshOperation: MXHTTPOperation?
-    /// Whether the user closed the banner. Only kept in memory for now: the banner comes back on the next app launch.
-    private var isDismissedByUser = false
+    
+    /// How long the banner stays hidden after the user closed it.
+    private static let dismissalDuration: TimeInterval = 7 * 24 * 60 * 60 // 1 week
+    
+    /// Whether the user closed the banner recently, see `dismissalDuration`.
+    private var isDismissedByUser: Bool {
+        guard let nextDisplayDate = RiotSettings.shared.migrationBannerNextDisplayDate else {
+            return false
+        }
+        return Date() < nextDisplayDate
+    }
     
     // MARK: Public
     
@@ -83,6 +94,9 @@ final class MigrationBannerCoordinator: Coordinator {
     }
     
     @objc private func applicationDidBecomeActive() {
+        // The dismissal may have expired while the app was in the background.
+        updateBanner()
+        
         guard let session = sessionProvider() else {
             return
         }
@@ -117,7 +131,7 @@ final class MigrationBannerCoordinator: Coordinator {
     }
 
     private func handleCloseAction() {
-        isDismissedByUser = true
+        RiotSettings.shared.migrationBannerNextDisplayDate = Date().addingTimeInterval(Self.dismissalDuration)
         dismissBannerIfNeeded()
 
         // The banner slot is free again: let the verification banner be displayed if the device isn't verified.
