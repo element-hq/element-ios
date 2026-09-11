@@ -150,6 +150,8 @@ final class HomeserverConfigurationBuilder: NSObject {
     /// - When the `io.element.migration_banner` section is present, the banner follows its `enabled` value (enabled when not provided).
     /// - When the section is missing (or the Well Known could not be parsed), the banner is hidden until
     /// `BuildSettings.migrationBannerShowWhenNotConfiguredStartDate` and shown from this date on.
+    /// - Content: blank or missing values fall back to the default texts. A missing target app ID points to the default
+    /// replacement app, a blank one means that no download button is displayed.
     private func getMigrationBannerConfiguration(from vectorWellKnownConfiguration: VectorWellKnownMigrationBannerConfiguration?) -> HomeserverMigrationBannerConfiguration {
         let isEnabled: Bool
         if let vectorWellKnownConfiguration = vectorWellKnownConfiguration {
@@ -159,7 +161,20 @@ final class HomeserverConfigurationBuilder: NSObject {
             MXLog.debug("[HomeserverConfigurationBuilder] getMigrationBannerConfiguration - No configuration found, enabled: \(isEnabled)")
         }
         
-        return HomeserverMigrationBannerConfiguration(isEnabled: isEnabled)
+        let defaultTargetAppStoreID = BuildSettings.replacementApp?.productID
+        let targetAppStoreID: String?
+        if let customTargetAppID = vectorWellKnownConfiguration?.targetAppID {
+            targetAppStoreID = customTargetAppID.isBlank ? nil : customTargetAppID
+        } else {
+            targetAppStoreID = defaultTargetAppStoreID
+        }
+        
+        return HomeserverMigrationBannerConfiguration(isEnabled: isEnabled,
+                                                      title: vectorWellKnownConfiguration?.title.nonBlank ?? VectorL10n.migrationBannerTitle,
+                                                      body: vectorWellKnownConfiguration?.body.nonBlank ?? VectorL10n.migrationBannerBody,
+                                                      buttonText: vectorWellKnownConfiguration?.buttonText.nonBlank ?? VectorL10n.migrationBannerDownloadButton,
+                                                      targetAppStoreID: targetAppStoreID,
+                                                      isTargetDefaultReplacementApp: targetAppStoreID != nil && targetAppStoreID == defaultTargetAppStoreID)
     }
     
     private func jitsiServerURL(from jitsiServerDomain: String) -> URL? {
@@ -176,5 +191,21 @@ final class HomeserverConfigurationBuilder: NSObject {
         }
         
         return jitsiServerURL
+    }
+}
+
+private extension String {
+    var isBlank: Bool {
+        trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+}
+
+private extension Optional where Wrapped == String {
+    /// The string when it contains something else than whitespaces, `nil` otherwise.
+    var nonBlank: String? {
+        guard let string = self, !string.isBlank else {
+            return nil
+        }
+        return string
     }
 }

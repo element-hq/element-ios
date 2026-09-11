@@ -102,13 +102,18 @@ final class MigrationBannerCoordinator: Coordinator {
         guard let session = sessionProvider(),
               session.state != .closed,
               !isDismissedByUser,
-              BuildSettings.replacementApp != nil,
-              session.vc_homeserverConfiguration().migrationBanner.isEnabled else {
+              BuildSettings.replacementApp != nil else {
+            dismissBannerIfNeeded()
+            return
+        }
+        
+        let configuration = session.vc_homeserverConfiguration().migrationBanner
+        guard configuration.isEnabled else {
             dismissBannerIfNeeded()
             return
         }
 
-        presentBannerIfNeeded()
+        presentBannerIfNeeded(with: configuration)
     }
 
     private func handleCloseAction() {
@@ -121,24 +126,26 @@ final class MigrationBannerCoordinator: Coordinator {
         }
     }
 
-    private func presentBannerIfNeeded() {
+    private func presentBannerIfNeeded(with configuration: HomeserverMigrationBannerConfiguration) {
         if let bannerView = bannerView, bannerView.superview == nil {
             // The banner has been replaced by another one with a higher priority, forget it so it can be presented again.
             self.bannerView = nil
             self.bannerHostingController = nil
         }
 
-        guard bannerView == nil, let replacementApp = BuildSettings.replacementApp else {
+        guard bannerView == nil else {
             return
         }
         
-        let banner = MigrationBanner(title: VectorL10n.migrationBannerTitle,
-                                     message: VectorL10n.migrationBannerBody,
-                                     buttonTitle: VectorL10n.migrationBannerDownloadButton,
+        let targetAppStoreID = configuration.targetAppStoreID
+        let banner = MigrationBanner(title: configuration.title,
+                                     message: configuration.body,
+                                     buttonTitle: targetAppStoreID == nil ? nil : configuration.buttonText,
+                                     showsAppIcon: configuration.isTargetDefaultReplacementApp,
                                      downloadAction: { [weak self] in
-                                         guard let self = self else { return }
+                                         guard let self = self, let targetAppStoreID = targetAppStoreID else { return }
                                          Task { @MainActor in
-                                             await ReplacementAppStorePresenter.presentStorePage(appStoreID: replacementApp.productID, from: self.rootViewController)
+                                             await ReplacementAppStorePresenter.presentStorePage(appStoreID: targetAppStoreID, from: self.rootViewController)
                                          }
                                      },
                                      closeAction: { [weak self] in
