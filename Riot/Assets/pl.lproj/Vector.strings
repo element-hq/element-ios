@@ -2871,7 +2871,7 @@
 
 // Verification Required Banner
 "verification_required_banner_title" = "Zweryfikuj to urządzenie";
-"verification_required_banner_description" = "Od października 2026 r. niezweryfikowane urządzenia nie będą mogły wysyłać ani odbierać wiadomości.";
+"verification_required_banner_description" = "Wkrótce niezweryfikowane urządzenia nie będą mogły wysyłać ani odbierać wiadomości.";
 "verification_required_banner_learn_more" = "Dowiedz się więcej";
 "verification_required_banner_verify_button" = "Zweryfikuj teraz";
 
