@@ -1,3 +1,8 @@
+## Changes in 1.11.41 (2026-09-24)
+
+No significant changes.
+
+
 ## Changes in 1.11.40 (2026-09-24)
 
 ✨ Features
