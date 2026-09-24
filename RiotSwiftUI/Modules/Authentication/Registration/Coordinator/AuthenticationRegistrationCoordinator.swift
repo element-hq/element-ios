@@ -7,7 +7,6 @@
 
 import CommonKit
 import MatrixSDK
-import StoreKit
 import SwiftUI
 
 struct AuthenticationRegistrationCoordinatorParameters {
@@ -294,16 +293,8 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
         authenticationRegistrationViewModel.update(homeserver: homeserver.viewData)
     }
     
-    /// Presets the App Store page for the replacement app as a sheet.
+    /// Presents the App Store page for the replacement app as a sheet.
     @MainActor private func showReplacementAppStorePage(_ replacementApp: BuildSettings.ReplacementApp) async {
-        do {
-            let storeViewController = SKStoreProductViewController()
-            try await storeViewController.loadProduct(withParameters: [SKStoreProductParameterITunesItemIdentifier: replacementApp.productID])
-            authenticationRegistrationHostingController.present(storeViewController, animated: true)
-        } catch {
-            // Open the app store URL outside of the app as a fallback.
-            MXLog.warning("Unable to open the in-app store product page: \(error)")
-            await UIApplication.shared.open(replacementApp.appStoreURL)
-        }
+        await ReplacementAppStorePresenter.presentStorePage(appStoreID: replacementApp.productID, from: authenticationRegistrationHostingController)
     }
 }

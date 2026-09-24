@@ -116,6 +116,10 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
             let versionCheckCoordinator = createVersionCheckCoordinator(withRootViewController: allChatsViewController, bannerPresentrer: allChatsViewController)
             versionCheckCoordinator.start()
             self.add(childCoordinator: versionCheckCoordinator)
+            
+            let migrationBannerCoordinator = createMigrationBannerCoordinator(withRootViewController: allChatsViewController, bannerPresenter: allChatsViewController)
+            migrationBannerCoordinator.start()
+            self.add(childCoordinator: migrationBannerCoordinator)
         }
         
         self.allChatsViewController?.switchSpace(withId: spaceId)
@@ -595,6 +599,12 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
                                                               bannerPresenter: bannerPresentrer,
                                                               themeService: ThemeService.shared())
         return versionCheckCoordinator
+    }
+    
+    private func createMigrationBannerCoordinator(withRootViewController rootViewController: UIViewController, bannerPresenter: BannerPresentationProtocol) -> MigrationBannerCoordinator {
+        MigrationBannerCoordinator(rootViewController: rootViewController,
+                                   bannerPresenter: bannerPresenter,
+                                   sessionProvider: { [weak self] in self?.currentMatrixSession })
     }
     
     private func showInviteFriends(from sourceView: UIView?) {

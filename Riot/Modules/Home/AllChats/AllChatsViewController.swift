@@ -56,6 +56,14 @@ class AllChatsViewController: HomeViewController {
         didSet {
             bannerView?.translatesAutoresizingMaskIntoConstraints = false
             set(tableHeadeView: bannerView)
+
+            if bannerView == nil {
+                // Notify asynchronously: a banner presented from the observer would be set from within this observer.
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self, self.bannerView == nil else { return }
+                    NotificationCenter.default.post(name: .bannerPresenterDidFreeBannerSlot, object: self)
+                }
+            }
         }
     }
     
@@ -799,11 +807,49 @@ extension AllChatsViewController: SpaceMembersCoordinatorDelegate {
 
 // MARK: - BannerPresentationProtocol
 extension AllChatsViewController: BannerPresentationProtocol {
-    func presentBannerView(_ bannerView: UIView, animated: Bool) {
+    /// The priority of the banners sharing the single banner slot. A banner never replaces a banner with a higher priority.
+    /// The migration banner comes first: the verification banner is displayed once the user has closed it.
+    private enum BannerPriority: Int, Comparable {
+        case versionCheck
+        case verificationRequired
+        case migration
+
+        init(bannerView: UIView) {
+            switch bannerView {
+            case is MigrationBannerView:
+                self = .migration
+            case is VerificationRequiredBannerView:
+                self = .verificationRequired
+            default:
+                self = .versionCheck
+            }
+        }
+        
+        static func < (lhs: BannerPriority, rhs: BannerPriority) -> Bool {
+            lhs.rawValue < rhs.rawValue
+        }
+    }
+    
+    @discardableResult
+    func presentBannerView(_ bannerView: UIView, animated: Bool) -> Bool {
+        if let currentBannerView = self.bannerView, BannerPriority(bannerView: bannerView) < BannerPriority(bannerView: currentBannerView) {
+            MXLog.debug("[AllChatsViewController] presentBannerView: a banner with a higher priority is already displayed.")
+            return false
+        }
+        
         self.bannerView = bannerView
+        return true
     }
     
     func dismissBannerView(animated: Bool) {
+        self.bannerView = nil
+    }
+    
+    func dismissBannerView(_ bannerView: UIView, animated: Bool) {
+        guard self.bannerView === bannerView else {
+            return
+        }
+        
         self.bannerView = nil
     }
 }
@@ -849,7 +895,8 @@ extension AllChatsViewController: SplitViewMasterViewControllerProtocol {
     }
     
     func presentVerificationRequiredBanner(with session: MXSession) {
-        guard bannerView == nil, VerificationRequiredBannerChecker().canShowBanner(for: session) else {
+        // The verification banner has the highest priority: it can replace any other banner, but must not be presented twice.
+        guard !(bannerView is VerificationRequiredBannerView), VerificationRequiredBannerChecker().canShowBanner(for: session) else {
             return
         }
         

@@ -15,12 +15,15 @@ final class HomeserverConfiguration: NSObject {
     let jitsi: HomeserverJitsiConfiguration
     let encryption: HomeserverEncryptionConfiguration
     let tileServer: HomeserverTileServerConfiguration
+    let migrationBanner: HomeserverMigrationBannerConfiguration
     
     init(jitsi: HomeserverJitsiConfiguration,
          encryption: HomeserverEncryptionConfiguration,
-         tileServer: HomeserverTileServerConfiguration) {
+         tileServer: HomeserverTileServerConfiguration,
+         migrationBanner: HomeserverMigrationBannerConfiguration) {
         self.jitsi = jitsi
         self.encryption = encryption
         self.tileServer = tileServer
+        self.migrationBanner = migrationBanner
     }
 }

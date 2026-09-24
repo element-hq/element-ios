@@ -57,7 +57,8 @@ class HomeViewControllerWithBannerWrapperViewController: UIViewController, MXKVi
         
     // MARK: - BannerPresentationProtocol
     
-    func presentBannerView(_ bannerView: UIView, animated: Bool) {
+    @discardableResult
+    func presentBannerView(_ bannerView: UIView, animated: Bool) -> Bool {
         bannerView.alpha = 0.0
         bannerView.isHidden = true
         self.stackView.insertArrangedSubview(bannerView, at: 0)
@@ -68,6 +69,8 @@ class HomeViewControllerWithBannerWrapperViewController: UIViewController, MXKVi
             bannerView.isHidden = false
             self.stackView.layoutIfNeeded()
         }
+        
+        return true
     }
     
     func dismissBannerView(animated: Bool) {
@@ -82,6 +85,14 @@ class HomeViewControllerWithBannerWrapperViewController: UIViewController, MXKVi
         } completion: { _ in
             bannerView.removeFromSuperview()
         }
+    }
+    
+    func dismissBannerView(_ bannerView: UIView, animated: Bool) {
+        guard stackView.arrangedSubviews.count > 1, self.stackView.arrangedSubviews.first === bannerView else {
+            return
+        }
+        
+        dismissBannerView(animated: animated)
     }
     
     // MARK: - MXKViewControllerActivityHandling

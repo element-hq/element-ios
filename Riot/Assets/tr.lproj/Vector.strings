@@ -115,3 +115,9 @@
 "authentication_forgot_password_input_message" = "%@ size bir doğrulama bağlantısı gönderecektir";
 "authentication_verify_msisdn_waiting_message" = "%@ adresine bir kod gönderildi";
 "authentication_qr_login_display_subtitle" = "Oturumunuz kapalı olan cihazınızla aşağıdaki QR kodunu tarayın.";
+"all_chats_section_title" = "Sohbetler";
+"all_chats_edit_layout" = "Arayüz tercihleri";
+"all_chats_edit_layout_recents" = "Son Sohbetler";
+"all_chats_title" = "Tüm Sohbetler";
+"all_chats_edit_layout_unreads" = "Okunmamışlar";
+"all_chats_edit_layout_add_filters_title" = "Mesajları filtreleyin";

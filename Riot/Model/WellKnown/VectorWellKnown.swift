@@ -13,6 +13,7 @@ import Foundation
 struct VectorWellKnown {
     let encryption: VectorWellKnownEncryptionConfiguration?
     let jitsi: VectorWellKnownJitsiConfiguration?
+    let migrationBanner: VectorWellKnownMigrationBannerConfiguration?
     
     // Deprecated properties
     let deprecatedEncryption: VectorWellKnownEncryptionConfiguration?
@@ -25,6 +26,7 @@ extension VectorWellKnown: Decodable {
     enum CodingKeys: String, CodingKey {
         case encryption = "io.element.e2ee"
         case jitsi = "io.element.jitsi"
+        case migrationBanner = "io.element.migration_banner"
         // Deprecated keys
         case deprecatedEncryption = "im.vector.riot.e2ee"
         case deprecatedJitsi = "im.vector.riot.jitsi"
@@ -69,4 +71,34 @@ struct VectorWellKnownJitsiConfiguration: Decodable {
     let preferredDomain: String?
     /// Override native calling with Jitsi for 1:1 calls.
     let useFor1To1Calls: Bool?
+}
+
+// MARK: - Migration Banner
+
+/// Raw content of the `io.element.migration_banner` Well Known section, used to configure the banner
+/// inviting users to migrate to the new app.
+///
+/// The resolution of the default values is done by `HomeserverConfigurationBuilder`.
+struct VectorWellKnownMigrationBannerConfiguration: Decodable {
+    /// Indicate if the banner should be displayed. `nil` when not provided (defaults to enabled).
+    let isEnabled: Bool?
+    /// Custom title of the banner. `nil` or blank means the default title is used.
+    let title: String?
+    /// Custom body of the banner. `nil` or blank means the default body is used.
+    let body: String?
+    /// Custom label of the download button. `nil` or blank means the default label is used.
+    let buttonText: String?
+    /// The numeric App Store ID of the app the download button points to, e.g. "1631335820" for
+    /// https://apps.apple.com/app/id1631335820. It is the "Apple ID" shown in App Store Connect.
+    /// `nil` means the default replacement app, blank means no download button.
+    let targetAppID: String?
+    
+    /// JSON keys associated to `VectorWellKnownMigrationBannerConfiguration`
+    enum CodingKeys: String, CodingKey {
+        case isEnabled = "enabled"
+        case title
+        case body
+        case buttonText = "button_text"
+        case targetAppID = "target_app_id_ios"
+    }
 }

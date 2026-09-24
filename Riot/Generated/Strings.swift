@@ -3803,6 +3803,18 @@ public class VectorL10n: NSObject {
   public static func microphoneAccessNotGrantedForVoiceMessage(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "microphone_access_not_granted_for_voice_message", p1)
   }
+  /// Faster sync, a cleaner design, and new features you won't find here. The Element Classic app will be retired soon, so now's the time to make the move.
+  public static var migrationBannerBody: String { 
+    return VectorL10n.tr("Vector", "migration_banner_body") 
+  }
+  /// Download app
+  public static var migrationBannerDownloadButton: String { 
+    return VectorL10n.tr("Vector", "migration_banner_download_button") 
+  }
+  /// Download Element X
+  public static var migrationBannerTitle: String { 
+    return VectorL10n.tr("Vector", "migration_banner_title") 
+  }
   /// More
   public static var more: String { 
     return VectorL10n.tr("Vector", "more") 
