@@ -6,7 +6,6 @@
 //
 
 import CommonKit
-import StoreKit
 import SwiftUI
 
 struct AuthenticationServerSelectionCoordinatorParameters {
@@ -138,16 +137,8 @@ final class AuthenticationServerSelectionCoordinator: Coordinator, Presentable {
         }
     }
     
-    /// Presets the App Store page for the replacement app as a sheet.
+    /// Presents the App Store page for the replacement app as a sheet.
     @MainActor private func showReplacementAppStorePage(_ replacementApp: BuildSettings.ReplacementApp) async {
-        do {
-            let storeViewController = SKStoreProductViewController()
-            try await storeViewController.loadProduct(withParameters: [SKStoreProductParameterITunesItemIdentifier: replacementApp.productID])
-            authenticationServerSelectionHostingController.present(storeViewController, animated: true)
-        } catch {
-            // Open the app store URL outside of the app as a fallback.
-            MXLog.warning("Unable to open the in-app store product page: \(error)")
-            await UIApplication.shared.open(replacementApp.appStoreURL)
-        }
+        await ReplacementAppStorePresenter.presentStorePage(appStoreID: replacementApp.productID, from: authenticationServerSelectionHostingController)
     }
 }

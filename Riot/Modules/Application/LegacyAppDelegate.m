@@ -2181,6 +2181,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     [[[ReviewSessionAlertSnoozeController alloc] init] clearSnooze];
     
+    // Reset the migration banner dismissal
+    RiotSettings.shared.migrationBannerNextDisplayDate = nil;
+    
     [TimelinePollProvider.shared reset];
     
 #ifdef MX_CALL_STACK_ENDPOINT

@@ -1,2 +1,2 @@
 brew "mint"
-brew "getsentry/tools/sentry-cli"
+cask "sentry-cli"

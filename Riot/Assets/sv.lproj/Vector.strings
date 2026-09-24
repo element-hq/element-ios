@@ -2733,3 +2733,7 @@
 "room_member_power_level_short_owner" = "Ägare";
 "room_member_power_level_owner_in" = "Ägare i %@";
 "room_participants_leave_not_allowed_for_last_owner_msg" = "Du kan inte lämna rummet eftersom du är den enda ägaren av det.";
+"verification_required_banner_title" = "Verifiera den här enheten";
+"verification_required_banner_description" = "Efter oktober 2026 kommer overifierade enheter inte kunna skicka eller ta emot meddelanden";
+"verification_required_banner_learn_more" = "Läs mer";
+"verification_required_banner_verify_button" = "Verifiera nu";

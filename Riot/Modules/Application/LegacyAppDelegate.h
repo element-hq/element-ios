@@ -193,6 +193,11 @@ UINavigationControllerDelegate
 
 - (BOOL)presentCompleteSecurityForSession:(MXSession*)mxSession;
 
+/**
+ Check the cross-signing state of the session and present or dismiss the verification banners and alerts accordingly.
+ */
+- (void)checkCrossSigningForSession:(MXSession*)mxSession;
+
 - (void)configureCallManagerIfRequiredForSession:(MXSession *)mxSession;
 
 - (void)authenticationDidComplete;

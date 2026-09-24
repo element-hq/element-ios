@@ -69,6 +69,95 @@ class VectorWellKnownTests: XCTestCase {
         }
     }        
     
+    func testMigrationBannerParsing() {
+        let wellKnownDictionary: [String: Any] = [
+            "io.element.e2ee": [
+                "default": false
+            ],
+            "io.element.migration_banner": [
+                "enabled": false
+            ]
+        ]
+        
+        do {
+            let vectorWellKnown: VectorWellKnown = try SerializationService().deserialize(wellKnownDictionary)
+            XCTAssertEqual(vectorWellKnown.migrationBanner?.isEnabled, false)
+            XCTAssertEqual(vectorWellKnown.encryption?.isE2EEByDefaultEnabled, false)
+        } catch {
+            XCTFail("Fail with error: \(error)")
+        }
+    }
+    
+    func testMigrationBannerParsingContent() {
+        let wellKnownDictionary: [String: Any] = [
+            "io.element.migration_banner": [
+                "title": "Time to move",
+                "body": "Get the new app at https://element.io/download",
+                "button_text": "Get Element Pro",
+                "target_app_id_ios": "123456789"
+            ]
+        ]
+        
+        do {
+            let vectorWellKnown: VectorWellKnown = try SerializationService().deserialize(wellKnownDictionary)
+            let migrationBanner = vectorWellKnown.migrationBanner
+            XCTAssertNil(migrationBanner?.isEnabled)
+            XCTAssertEqual(migrationBanner?.title, "Time to move")
+            XCTAssertEqual(migrationBanner?.body, "Get the new app at https://element.io/download")
+            XCTAssertEqual(migrationBanner?.buttonText, "Get Element Pro")
+            XCTAssertEqual(migrationBanner?.targetAppID, "123456789")
+        } catch {
+            XCTFail("Fail with error: \(error)")
+        }
+    }
+    
+    func testMigrationBannerParsingEmptySection() {
+        let wellKnownDictionary: [String: Any] = [
+            "io.element.migration_banner": [String: Any]()
+        ]
+        
+        do {
+            let vectorWellKnown: VectorWellKnown = try SerializationService().deserialize(wellKnownDictionary)
+            XCTAssertNotNil(vectorWellKnown.migrationBanner)
+            XCTAssertNil(vectorWellKnown.migrationBanner?.isEnabled)
+        } catch {
+            XCTFail("Fail with error: \(error)")
+        }
+    }
+    
+    func testMigrationBannerParsingMissingSection() {
+        let wellKnownDictionary: [String: Any] = [
+            "io.element.e2ee": [
+                "default": false
+            ]
+        ]
+        
+        do {
+            let vectorWellKnown: VectorWellKnown = try SerializationService().deserialize(wellKnownDictionary)
+            XCTAssertNil(vectorWellKnown.migrationBanner)
+        } catch {
+            XCTFail("Fail with error: \(error)")
+        }
+    }
+    
+    func testMigrationBannerParsingInvalidEnabledValueFails() {
+        let wellKnownDictionary: [String: Any] = [
+            "io.element.migration_banner": [
+                "enabled": "false"
+            ]
+        ]
+        
+        XCTAssertThrowsError(try SerializationService().deserialize(wellKnownDictionary) as VectorWellKnown)
+    }
+    
+    func testMigrationBannerParsingInvalidSectionFails() {
+        let wellKnownDictionary: [String: Any] = [
+            "io.element.migration_banner": "not an object"
+        ]
+        
+        XCTAssertThrowsError(try SerializationService().deserialize(wellKnownDictionary) as VectorWellKnown)
+    }
+    
     func testVectorWellKnownParsingMissingKey() {
                 
         let expectedE2EEEByDefaultEnabled = false

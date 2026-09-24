@@ -463,6 +463,17 @@ final class BuildSettings: NSObject {
     /// are ready to migrate your users.
     static let replacementApp: ReplacementApp? = .init()
     
+    // MARK: - Migration Banner
+    
+    /// The date from which the migration banner is displayed when the homeserver Well Known has no
+    /// `io.element.migration_banner` section. Before this date, a missing section hides the banner.
+    /// When the section is present, its `enabled` value is always used instead.
+    static let migrationBannerShowWhenNotConfiguredStartDate = DateComponents(calendar: Calendar(identifier: .gregorian),
+                                                                              timeZone: TimeZone(secondsFromGMT: 0),
+                                                                              year: 2026,
+                                                                              month: 11,
+                                                                              day: 15).date!
+    
     // MARK: - Verification Required Banner
     
     static let verificationRequiredBannerLearnMoreURL = URL(string: "https://docs.element.io/latest/element-support/device-verification/how-to-verify-devices")!

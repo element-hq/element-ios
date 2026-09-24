@@ -384,6 +384,12 @@ final class RiotSettings: NSObject {
     @UserDefault(key: "versionCheckNextDisplayDateTimeInterval", defaultValue: 0.0, storage: defaults)
     var versionCheckNextDisplayDateTimeInterval
     
+    // MARK: - Migration banner
+    
+    /// The date before which the migration banner stays hidden after the user closed it. `nil` when never closed.
+    @UserDefault(key: "migrationBannerNextDisplayDate", storage: defaults)
+    var migrationBannerNextDisplayDate: Date?
+    
     @UserDefault(key: "slideMenuRoomsCoachMessageHasBeenDisplayed", defaultValue: false, storage: defaults)
     var slideMenuRoomsCoachMessageHasBeenDisplayed
     
