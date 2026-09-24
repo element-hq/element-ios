@@ -2994,7 +2994,7 @@
 "verification_required_banner_title" = "Звірити цей пристрій";
 "verification_required_banner_learn_more" = "Докладніше";
 "verification_required_banner_verify_button" = "Звірити зараз";
-"verification_required_banner_description" = "З жовтня 2026 року не звірені пристрої не зможуть надсилати та отримувати повідомлення";
+"verification_required_banner_description" = "Невдовзі незвірені пристрої не зможуть надсилати та отримувати повідомлення";
 "migration_banner_title" = "Завантажити Element X";
 "migration_banner_body" = "Швидша синхронізація, лаконічніший дизайн та нові функції, яких тут немає. Уже незабаром застосунок Element Classic буде виведений з експлуатації, тож саме зараз час перейти на нову версію.";
 "migration_banner_download_button" = "Завантажити застосунок";
