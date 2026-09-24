@@ -1,3 +1,11 @@
+## Changes in 1.11.40 (2026-09-24)
+
+✨ Features
+
+- Display a banner in the room list inviting users to migrate to Element X, enabled via the homeserver Well Known file. ([#8030](https://github.com/element-hq/element-ios/issues/8030))
+- Migration banner: the title, body, button and target app can be tailored via the homeserver Well Known file, and the banner stays hidden for a week once closed. ([#8034](https://github.com/element-hq/element-ios/issues/8034))
+
+
 ## Changes in 1.11.39 (2026-06-23)
 
 🙌 Improvements
