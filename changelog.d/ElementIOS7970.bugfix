@@ -1,0 +1,1 @@
+WysiwygInputToolbarView: Fixes the toolbarview hiding the chat room 75% when typing text in minimsed mode. This happens from iOS26!. Contributed by Shunmugaraj Subramanian.
